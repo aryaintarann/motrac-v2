@@ -36,10 +36,6 @@ export default async function LoginPage(props: {
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-[440px]">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-4 py-1.5 mb-8">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-white/80 text-[13px] font-medium">Smart Financial Tracking</span>
-          </div>
           <h1 className="text-[44px] font-bold text-white leading-[1.15] tracking-tight mb-5">
             Take control of your finances, today.
           </h1>
@@ -47,14 +43,6 @@ export default async function LoginPage(props: {
             Track every expense, plan your budget, and let AI guide you to your financial goals.
           </p>
           
-          {/* Feature Chips */}
-          <div className="flex flex-wrap gap-3">
-            {['💡 AI Advisor', '📊 Smart Budgets', '🧾 Expense Tracking', '🔒 Secure'].map(f => (
-              <span key={f} className="bg-white/10 border border-white/15 text-white/80 text-[13px] font-medium px-4 py-1.5 rounded-full backdrop-blur-sm">
-                {f}
-              </span>
-            ))}
-          </div>
         </div>
 
         {/* Bottom Stats */}
