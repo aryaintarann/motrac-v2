@@ -57,7 +57,7 @@ export function DebtForm({ accounts, onSuccess }: { accounts: any[], onSuccess?:
         />
       </div>
       
-      <select name="account_id" className="bg-white text-gray-900 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-600">
+      <select name="account_id" className="bg-white text-gray-900 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]">
         <option value="">No Account (Don't adjust balance)</option>
         {accounts.map(acc => (
           <option key={acc.id} value={acc.id}>{acc.name}</option>
