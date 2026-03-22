@@ -38,11 +38,23 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Redirect users who are logged in away from the login page
-  if (user && request.nextUrl.pathname.startsWith('/login')) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/' // Redirect to dashboard
-    return NextResponse.redirect(url)
+  if (user) {
+    const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+    const needsMfa = aal?.nextLevel === 'aal2' && aal.nextLevel !== aal.currentLevel
+
+    if (needsMfa) {
+      if (!request.nextUrl.pathname.startsWith('/login/mfa') && !request.nextUrl.pathname.startsWith('/auth')) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/login/mfa'
+        return NextResponse.redirect(url)
+      }
+    } else {
+      if (request.nextUrl.pathname.startsWith('/login')) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/'
+        return NextResponse.redirect(url)
+      }
+    }
   }
 
   return supabaseResponse

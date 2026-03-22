@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { BalanceProvider } from '@/components/BalanceContext'
 import { HeaderActions } from '@/components/HeaderActions'
 import { Sidebar } from '@/components/Sidebar'
+import { ProfileDropdown } from '@/components/ProfileDropdown'
 
 export default async function DashboardLayout({
   children,
@@ -29,9 +30,7 @@ export default async function DashboardLayout({
         <header className="hidden lg:flex items-center justify-end px-8 bg-white border-b border-[#E5E7EB] print:hidden h-[72px]">
           <div className="flex items-center gap-3">
             <HeaderActions />
-            <div className="h-10 w-10 ml-2 rounded-full bg-gradient-to-tr from-gray-700 to-black overflow-hidden shadow-sm" >
-               <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${user?.email}`} alt="avatar" className="w-full h-full object-cover" />
-            </div>
+            <ProfileDropdown user={user} />
           </div>
         </header>
 
