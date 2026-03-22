@@ -27,11 +27,11 @@ export default async function LoginPage(props: {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-2xl pointer-events-none" />
 
         {/* Logo */}
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-white font-bold text-xl shadow-lg border border-white/20">
+        <div className="relative z-10 flex items-center gap-2.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-white font-black text-[#2563EB] text-xl shadow-sm shrink-0">
             M
           </div>
-          <span className="text-white font-bold text-[22px] tracking-tight">Motrac</span>
+          <span className="text-[22px] font-black tracking-[0.05em] text-white whitespace-nowrap">MOTRAC</span>
         </div>
 
         {/* Hero Content */}
@@ -60,10 +60,10 @@ export default async function LoginPage(props: {
       <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-10">
         {/* Mobile Logo */}
         <div className="flex lg:hidden items-center gap-2.5 mb-10">
-          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
+          <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#2563EB] font-black text-white text-xl shadow-sm shrink-0">
             M
           </div>
-          <span className="text-gray-900 font-bold text-[20px] tracking-tight">Motrac</span>
+          <span className="text-[22px] font-black tracking-[0.05em] text-[#2563EB] whitespace-nowrap">MOTRAC</span>
         </div>
 
         <div className="w-full max-w-[400px]">
