@@ -1,7 +1,52 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { useState, useEffect } from 'react';
+import { supabase } from './src/utils/supabase';
+import { Account, Transaction } from '@motrac/shared';
 
 export default function App() {
+  const [session, setSession] = useState<any>(null);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [totalBalance, setTotalBalance] = useState(0);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (session) {
+      fetchData()
+    }
+  }, [session])
+
+  async function fetchData() {
+    // Fetch Accounts
+    const { data: accData } = await supabase.from('accounts').select('*').order('name');
+    if (accData) {
+      setAccounts(accData as Account[]);
+      setTotalBalance(accData.reduce((sum, acc) => sum + Number(acc.balance), 0));
+    }
+
+    // Fetch Transactions
+    const { data: txnData } = await supabase
+      .from('transactions')
+      .select('*, account:accounts(name)')
+      .order('date', { ascending: false })
+      .limit(5);
+    
+    if (txnData) {
+      setTransactions(txnData as Transaction[]);
+    }
+  }
+
+  const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -22,21 +67,18 @@ export default function App() {
         {/* Total Balance Card */}
         <View className="bg-[#1A6FD6] rounded-2xl p-6 shadow-sm mb-6">
           <Text className="text-white/80 font-medium text-sm">Total Balance</Text>
-          <Text className="text-white font-bold text-3xl mt-2 tracking-tight">Rp 12.500.000</Text>
+          <Text className="text-white font-bold text-3xl mt-2 tracking-tight">{formatter.format(totalBalance)}</Text>
           
           <View className="flex-row justify-between mt-6 pt-4 border-t border-white/20">
-            <View>
-              <Text className="text-white/70 text-xs">BCA</Text>
-              <Text className="text-white font-semibold text-sm">Rp 10M</Text>
-            </View>
-            <View>
-              <Text className="text-white/70 text-xs">GoPay</Text>
-              <Text className="text-white font-semibold text-sm">Rp 2M</Text>
-            </View>
-            <View>
-              <Text className="text-white/70 text-xs">Cash</Text>
-              <Text className="text-white font-semibold text-sm">Rp 500k</Text>
-            </View>
+            {accounts.slice(0, 3).map(acc => (
+              <View key={acc.id}>
+                <Text className="text-white/70 text-xs">{acc.name}</Text>
+                <Text className="text-white font-semibold text-sm">{formatter.format(Number(acc.balance))}</Text>
+              </View>
+            ))}
+            {accounts.length === 0 && (
+              <Text className="text-white/70 text-xs italic">No accounts linked yet.</Text>
+            )}
           </View>
         </View>
 
@@ -74,20 +116,26 @@ export default function App() {
           <Text className="text-[#1A6FD6] text-sm font-medium">View All</Text>
         </View>
         <View className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-          {[
-            { id: 1, title: 'Starbucks', amount: '-Rp 55.000', account: 'GoPay', date: 'Today' },
-            { id: 2, title: 'Salary', amount: '+Rp 15.000.000', account: 'BCA', date: 'Yesterday' },
-          ].map((txn, idx) => (
-            <View key={txn.id} className={`flex-row justify-between items-center py-3 ${idx !== 0 ? 'border-t border-gray-100' : ''}`}>
-              <View>
-                <Text className="font-medium text-[#333333] mb-1">{txn.title}</Text>
-                <Text className="text-gray-500 text-xs">{txn.account} • {txn.date}</Text>
-              </View>
-              <Text className={`font-medium ${txn.amount.startsWith('+') ? 'text-green-600' : 'text-[#333333]'}`}>
-                {txn.amount}
-              </Text>
-            </View>
-          ))}
+            {transactions.length > 0 ? transactions.map((txn, idx) => {
+              const isIncome = txn.type === 'income';
+              const sign = isIncome ? '+' : (txn.type === 'expense' ? '-' : '');
+              const amountLabel = `${sign}${formatter.format(Number(txn.amount))}`;
+              const accountName = (txn as any).account?.name || 'Unknown Account';
+              
+              return (
+                <View key={txn.id} className={`flex-row justify-between items-center py-3 ${idx !== 0 ? 'border-t border-gray-100' : ''}`}>
+                  <View>
+                    <Text className="font-medium text-[#333333] mb-1">{txn.description || txn.type}</Text>
+                    <Text className="text-gray-500 text-xs">{accountName} • {new Date(txn.date).toLocaleDateString()}</Text>
+                  </View>
+                  <Text className={`font-medium ${isIncome ? 'text-green-600' : 'text-[#333333]'}`}>
+                    {amountLabel}
+                  </Text>
+                </View>
+              );
+            }) : (
+              <Text className="text-center text-gray-400 py-4 text-sm">No transactions found.</Text>
+            )}
         </View>
       </ScrollView>
 

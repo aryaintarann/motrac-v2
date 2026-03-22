@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { Account } from '@motrac/shared'
 
 export default async function Dashboard() {
@@ -75,18 +76,18 @@ export default async function Dashboard() {
                 <span className="mt-2 text-sm font-medium text-[var(--foreground)]">{t.split(' ')[1]}</span>
               </button>
             ))}
-            <button className="flex flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 px-6 py-4 text-gray-400 hover:border-gray-400 hover:text-gray-500 hover:bg-gray-50">
+            <Link href="/transactions" className="flex flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 px-6 py-4 text-gray-400 hover:border-gray-400 hover:text-gray-500 hover:bg-gray-50">
               <span className="text-xl">+</span>
               <span className="mt-2 text-sm font-medium">Add New</span>
-            </button>
+            </Link>
           </div>
         </div>
 
         {/* Recent Transactions */}
         <div className="col-span-1 rounded-xl bg-[var(--surface)] p-6 shadow-sm ring-1 ring-gray-100 md:col-span-2">
-          <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between">
             <h3 className="font-medium text-[var(--foreground)]">Recent Transactions</h3>
-            <button className="text-sm font-medium text-[var(--primary)] hover:underline">View All</button>
+            <Link href="/transactions" className="text-sm font-medium text-[var(--primary)] hover:underline">View All</Link>
           </div>
           <div className="flex flex-col divide-y divide-gray-100">
             {transactions.length > 0 ? transactions.map((txn) => {

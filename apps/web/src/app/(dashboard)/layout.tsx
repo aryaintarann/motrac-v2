@@ -23,9 +23,9 @@ export default async function DashboardLayout({
           <h1 className="ml-3 text-xl font-bold text-[var(--primary)]">Motrac</h1>
         </div>
         <nav className="flex flex-1 flex-col gap-2">
-          <Link href="/" className="rounded-md bg-blue-50 px-4 py-2 text-sm font-medium text-[var(--primary)] text-left hover:bg-blue-100">Home</Link>
+          <Link href="/" className="rounded-md px-4 py-2 text-sm font-medium text-[var(--foreground)] text-left opacity-80 hover:bg-gray-100">Home</Link>
           <Link href="/accounts" className="rounded-md px-4 py-2 text-sm font-medium text-[var(--foreground)] text-left opacity-80 hover:bg-gray-100">Accounts</Link>
-          <a href="#" className="rounded-md px-4 py-2 text-sm font-medium text-[var(--foreground)] text-left opacity-80 hover:bg-gray-100">Reports</a>
+          <Link href="/transactions" className="rounded-md px-4 py-2 text-sm font-medium text-[var(--foreground)] text-left opacity-80 hover:bg-gray-100">Transactions</Link>
           <a href="#" className="rounded-md px-4 py-2 text-sm font-medium text-[var(--foreground)] text-left opacity-80 hover:bg-gray-100">Settings</a>
         </nav>
         <div className="mt-auto border-t border-gray-100 pt-4">
@@ -51,15 +51,15 @@ export default async function DashboardLayout({
       
       {/* Mobile Bottom Navigation */}
       <nav className="flex justify-around border-t border-gray-200 bg-[var(--surface)] px-2 py-3 lg:hidden pt-4 pb-6">
-        <Link href="/" className="flex flex-col items-center gap-1 text-[var(--primary)] text-xs font-medium">Home</Link>
-        <Link href="/accounts" className="flex flex-col items-center gap-1 text-gray-400 text-xs font-medium hover:text-[var(--foreground)]">Accounts</Link>
+        <Link href="/" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80">Home</Link>
+        <Link href="/accounts" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">Accounts</Link>
         <div className="relative -mt-6">
-          <button className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary)] text-white shadow-lg shadow-blue-200 hover:opacity-90 hover:-translate-y-1 transition-all">
+          <Link href="/transactions" className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary)] text-white shadow-lg shadow-blue-200 hover:opacity-90 hover:-translate-y-1 transition-all">
             +
-          </button>
+          </Link>
         </div>
-        <button className="flex flex-col items-center gap-1 text-gray-400 text-xs font-medium hover:text-[var(--foreground)]">Reports</button>
-        <button className="flex flex-col items-center gap-1 text-gray-400 text-xs font-medium hover:text-[var(--foreground)]">Settings</button>
+        <Link href="/transactions" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">History</Link>
+        <button className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">Settings</button>
       </nav>
     </div>
   )

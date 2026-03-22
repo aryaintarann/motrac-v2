@@ -2,11 +2,10 @@ import { login, signup } from './actions'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: { error?: string }
+export default async function LoginPage(props: {
+  searchParams: Promise<{ error?: string }>
 }) {
+  const searchParams = await props.searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (user) {
@@ -86,7 +85,7 @@ export default async function LoginPage({
               const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                  redirectTo: \`\${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/auth/callback\`
+                  redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/auth/callback`
                 }
               })
               if (data.url) redirect(data.url)
