@@ -60,29 +60,12 @@ export default async function DashboardLayout({
           
           <div className="flex-1"></div>
 
-          <button className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-[#475569] hover:bg-gray-50 flex items-center gap-3 text-left">
+          <Link href="/help" className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-[#475569] hover:bg-gray-50 flex items-center gap-3 text-left">
              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
              Help & Support
-          </button>
+          </Link>
         </nav>
 
-        <div className="mt-8 pt-4 print:hidden">
-          {/* Promo Card that looks exactly like reference */}
-          <div className="relative rounded-[20px] border border-[#E5E7EB] bg-white pt-[50px] overflow-hidden text-center shadow-sm">
-             <div className="absolute -top-[60px] left-1/2 -translate-x-1/2 w-48 h-32 bg-[#F8FAFC] rounded-2xl border border-[#E5E7EB]/50 flex items-end justify-center pb-4 shadow-sm">
-                <div className="w-32 h-20 bg-white rounded-t-xl border border-[#E5E7EB] shadow-[0_4px_10px_rgba(0,0,0,0.02)] pt-2 px-3">
-                   <div className="w-6 h-4 bg-yellow-400 rounded-[2px]" />
-                </div>
-             </div>
-             
-             <div className="px-4 pb-4 bg-white relative z-10">
-               <h3 className="text-[15px] font-bold text-gray-900 leading-tight mb-4">Accept credit cards and bank payments</h3>
-               <button className="w-full rounded-[10px] bg-[#2563EB] py-2.5 text-[13px] font-semibold text-white hover:bg-blue-700 transition-colors">
-                 Set up now
-               </button>
-             </div>
-          </div>
-        </div>
       </aside>
 
       {/* Main Content Area */}
