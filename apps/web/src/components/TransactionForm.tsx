@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { createTransaction } from '../app/(dashboard)/transactions/actions'
 
-export function TransactionForm({ accounts, categories }: { accounts: any[], categories: any[] }) {
+export function TransactionForm({ accounts, categories, onSuccess }: { accounts: any[], categories: any[], onSuccess?: () => void }) {
   const [loading, setLoading] = useState(false)
   const [type, setType] = useState('expense')
 
@@ -11,6 +11,7 @@ export function TransactionForm({ accounts, categories }: { accounts: any[], cat
     setLoading(true)
     try {
       await createTransaction(formData)
+      onSuccess?.()
     } catch (e) {
       alert('Failed to log transaction')
     }
@@ -38,22 +39,25 @@ export function TransactionForm({ accounts, categories }: { accounts: any[], cat
       
       <input type="hidden" name="type" value={type} />
 
-      <input 
-        name="amount" 
-        type="number" 
-        placeholder="Amount" 
-        required
-        className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-lg font-semibold"
-      />
+      <div className="flex items-center w-full rounded-md border border-gray-200 bg-white overflow-hidden focus-within:ring-1 focus-within:ring-[var(--primary)] focus-within:border-[var(--primary)]">
+        <span className="pl-3 pr-1 text-gray-500 font-semibold text-sm">Rp</span>
+        <input 
+          name="amount" 
+          type="number" 
+          placeholder="Amount" 
+          required
+          className="w-full bg-transparent text-gray-900 placeholder:text-gray-400 px-2 py-2 text-[15px] focus:outline-none font-semibold"
+        />
+      </div>
       
-      <select name="account_id" className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" required defaultValue={accounts[0]?.id}>
+      <select name="account_id" className="bg-white text-gray-900 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" required defaultValue={accounts[0]?.id}>
         <option value="" disabled>Select Account</option>
         {accounts.map(acc => (
           <option key={acc.id} value={acc.id}>{acc.name}</option>
         ))}
       </select>
 
-      <select name="category_id" className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]">
+      <select name="category_id" className="bg-white text-gray-900 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]">
         <option value="">No Category</option>
         {categories.filter(c => c.type === type).map(cat => (
           <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -63,7 +67,7 @@ export function TransactionForm({ accounts, categories }: { accounts: any[], cat
       <input 
         name="note" 
         placeholder="Note (optional)" 
-        className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+        className="bg-white text-gray-900 placeholder:text-gray-400 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
       />
 
       <input 
@@ -71,7 +75,7 @@ export function TransactionForm({ accounts, categories }: { accounts: any[], cat
         type="date" 
         defaultValue={new Date().toISOString().split('T')[0]}
         required
-        className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+        className="bg-white text-gray-900 placeholder:text-gray-400 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
       />
       
       <button 

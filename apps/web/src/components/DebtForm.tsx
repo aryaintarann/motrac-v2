@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { createDebt } from '../app/(dashboard)/debts/actions'
 
-export function DebtForm({ accounts }: { accounts: any[] }) {
+export function DebtForm({ accounts, onSuccess }: { accounts: any[], onSuccess?: () => void }) {
   const [loading, setLoading] = useState(false)
   const [direction, setDirection] = useState('i_owe')
 
@@ -11,6 +11,7 @@ export function DebtForm({ accounts }: { accounts: any[] }) {
     setLoading(true)
     try {
       await createDebt(formData)
+      onSuccess?.()
     } catch (e) {
       alert('Failed to log debt')
     }
@@ -42,21 +43,21 @@ export function DebtForm({ accounts }: { accounts: any[] }) {
         name="counterparty" 
         placeholder={direction === 'i_owe' ? "Who did you borrow from?" : "Who did you lend to?"}
         required
-        className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+        className="bg-white text-gray-900 placeholder:text-gray-400 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
       />
 
-      <div className="relative">
-        <span className="absolute left-3 top-2.5 text-gray-400 font-medium">Rp</span>
+      <div className="flex items-center w-full rounded-md border border-gray-200 bg-white overflow-hidden focus-within:ring-1 focus-within:ring-[var(--primary)] focus-within:border-[var(--primary)]">
+        <span className="pl-3 pr-1 text-gray-500 font-semibold text-sm">Rp</span>
         <input 
           name="principal" 
           type="number" 
           placeholder="Amount" 
           required
-          className="w-full rounded-md border border-gray-200 pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)] font-semibold"
+          className="w-full bg-transparent text-gray-900 placeholder:text-gray-400 px-2 py-2 text-sm focus:outline-none font-semibold"
         />
       </div>
       
-      <select name="account_id" className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-600">
+      <select name="account_id" className="bg-white text-gray-900 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-600">
         <option value="">No Account (Don't adjust balance)</option>
         {accounts.map(acc => (
           <option key={acc.id} value={acc.id}>{acc.name}</option>
@@ -68,7 +69,7 @@ export function DebtForm({ accounts }: { accounts: any[] }) {
         <input 
           name="due_date" 
           type="date" 
-          className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+          className="bg-white text-gray-900 placeholder:text-gray-400 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
         />
       </div>
       

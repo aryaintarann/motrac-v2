@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { DebtForm } from '@/components/DebtForm'
+import { AddDebtModal } from '@/components/AddDebtModal'
 import { markDebtPaid } from './actions'
 
 export default async function DebtsPage() {
@@ -31,9 +32,10 @@ export default async function DebtsPage() {
   const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 })
 
   return (
-    <div className="mx-auto max-w-[1200px]">
+    <div className="mx-auto max-w-[900px]">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-[26px] font-bold text-gray-900 tracking-[-0.02em]">Debt & Receivables</h1>
+        <AddDebtModal accounts={accounts || []} />
       </div>
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 mb-5">
@@ -51,9 +53,9 @@ export default async function DebtsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-5">
         {/* Debt List */}
-        <div className="xl:col-span-8 flex flex-col rounded-[20px] border border-[#E5E7EB] bg-white p-7 shadow-sm">
+        <div className="flex flex-col rounded-[20px] border border-[#E5E7EB] bg-white p-7 shadow-sm">
           <h3 className="font-bold text-[#0f172a] text-[18px] mb-6">Active Records</h3>
           
           <div className="flex flex-col divide-y divide-gray-100">
@@ -80,9 +82,12 @@ export default async function DebtsPage() {
                     <div className="font-bold text-[#0f172a] text-[15px]">
                       {formatter.format(Number(debt.principal)).replace('Rp', '').trim()} <span className="text-[#64748b] text-[13px]">IDR</span>
                     </div>
-                    <form action={markDebtPaid}>
+                    <form action={markDebtPaid} className="mt-2.5">
                       <input type="hidden" name="debt_id" value={debt.id} />
-                      <button type="submit" className="text-[12px] font-bold text-[#2563EB] hover:text-blue-700 hover:underline mt-1 bg-blue-50/50 px-2 py-0.5 rounded-md">Mark Paid</button>
+                      <button type="submit" className="flex items-center justify-center w-[120px] ml-auto gap-1.5 rounded-lg border border-[#E5E7EB] bg-white px-3 py-1.5 text-[12px] font-semibold text-gray-700 shadow-sm hover:bg-gray-50 transition-all">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Mark Paid
+                      </button>
                     </form>
                   </div>
                 </div>
@@ -91,12 +96,6 @@ export default async function DebtsPage() {
               <div className="py-8 text-center text-[13px] text-[#64748b]">No debts or receivables recorded.</div>
             )}
           </div>
-        </div>
-
-        {/* Add Record Form */}
-        <div className="xl:col-span-4 rounded-[20px] border border-[#E5E7EB] bg-white p-7 shadow-sm self-start">
-          <h3 className="font-bold text-[#0f172a] text-[18px] mb-6">Log New Record</h3>
-          <DebtForm accounts={accounts || []} />
         </div>
       </div>
     </div>
