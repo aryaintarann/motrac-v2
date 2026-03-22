@@ -63,9 +63,29 @@ export function TransactionForm({ accounts, categories, onSuccess }: { accounts:
 
       <select name="category_id" className="bg-white text-gray-900 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]">
         <option value="">No Category</option>
-        {categories.filter(c => c.type === type).map(cat => (
-          <option key={cat.id} value={cat.id}>{cat.name}</option>
-        ))}
+        {(() => {
+          const typeCats = categories.filter(c => c.type === type);
+          const mainCats = typeCats.filter(c => !c.parent_id);
+          const subCats = typeCats.filter(c => !!c.parent_id);
+
+          if (mainCats.length === 0) {
+            return typeCats.map(cat => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
+            ));
+          }
+
+          return mainCats.map(main => {
+            const children = subCats.filter(sub => sub.parent_id === main.id);
+            return (
+              <optgroup key={main.id} label={`${main.icon ? main.icon + ' ' : ''}${main.name}`}>
+                <option value={main.id}>General {main.name}</option>
+                {children.map(sub => (
+                  <option key={sub.id} value={sub.id}>{sub.icon ? sub.icon + ' ' : ''}{sub.name}</option>
+                ))}
+              </optgroup>
+            );
+          });
+        })()}
       </select>
 
       <input 

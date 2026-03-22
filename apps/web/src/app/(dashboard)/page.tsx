@@ -220,12 +220,12 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                   No accounts added yet
                 </div>
               )}
-            </div>
-          </div>
+             </div>
+           </div>
 
-          {/* Financial Planning / AI Pacing */}
+           {/* Financial Planning / AI Pacing */}
           <div className="p-8 rounded-[20px] shadow-sm text-white relative overflow-hidden bg-gradient-to-br from-[#1E40AF] via-[#2563EB] to-[#3B82F6] flex flex-col min-h-[220px]">
-             <div className="relative z-10">
+             <div className="relative z-10 w-full sm:w-4/5">
                <div className="text-[13px] font-medium text-[#93C5FD] mb-2 tracking-wide">Financial planning</div>
                <h3 className="text-[24px] font-bold tracking-tight leading-[1.15] mb-3 pr-8">Plan, budget and<br />forecast.</h3>
                <Link href="/reports" className="inline-block rounded-lg bg-[#111827] hover:bg-black px-5 py-2.5 text-[14px] font-semibold transition-colors shadow-sm mt-4">

@@ -37,6 +37,25 @@ export async function upsertBudget(formData: FormData) {
     })
   }
 
+  // Check and seed default categories
+  const { data: catCheck } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('user_id', user.id)
+    .eq('budget_type', 'needs')
+    .limit(1)
+
+  if (!catCheck || catCheck.length === 0) {
+    await supabase.from('categories').insert([
+      { user_id: user.id, name: 'Needs', icon: '🛒', type: 'expense', is_default: true, budget_type: 'needs' },
+      { user_id: user.id, name: 'Wants', icon: '🎬', type: 'expense', is_default: true, budget_type: 'wants' },
+      { user_id: user.id, name: 'Savings', icon: '🏦', type: 'expense', is_default: true, budget_type: 'savings' },
+      { user_id: user.id, name: 'Income', icon: '💰', type: 'income', is_default: true, budget_type: 'income' }
+    ])
+  }
+
   revalidatePath('/budgets')
+  revalidatePath('/transactions')
+  revalidatePath('/categories')
   revalidatePath('/')
 }
