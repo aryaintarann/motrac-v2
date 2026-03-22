@@ -16,22 +16,28 @@ export async function createTransaction(formData: FormData) {
   const category_id = formData.get('category_id') as string // optional
   const amount = Number(formData.get('amount'))
   const note = formData.get('note') as string
-  const date = formData.get('date') as string
+  const rawDate = formData.get('date') as string
+  
+  let finalDate = new Date().toISOString()
+  if (rawDate) {
+    const timeStr = new Date().toISOString().split('T')[1]
+    finalDate = new Date(`${rawDate}T${timeStr}`).toISOString()
+  }
 
   // Insert Transaction
-  const { error: txnError } = await supabase.from('transactions').insert({
+  const { data: txn, error: txnError } = await supabase.from('transactions').insert({
     user_id: user.id,
     type,
     account_id,
     category_id: category_id || null,
     amount,
     note: note || null,
-    date: date ? new Date(date).toISOString() : new Date().toISOString()
-  })
+    date: finalDate
+  }).select().single()
 
   if (txnError) {
     console.error('Error creating transaction:', txnError)
-    throw new Error('Failed to create transaction')
+    throw new Error('Transaction Insert Failed: ' + txnError.message)
   }
 
   // Update Account Balance
@@ -44,9 +50,15 @@ export async function createTransaction(formData: FormData) {
       newBalance -= amount;
     }
 
-    await supabase.from('accounts').update({ balance: newBalance }).eq('id', account_id);
+    const { error: updateError } = await supabase.from('accounts').update({ balance: newBalance }).eq('id', account_id);
+    if (updateError) {
+      console.error('Error updating account:', updateError)
+      throw new Error('Account Update Failed: ' + updateError.message)
+    }
   }
 
   revalidatePath('/transactions')
   revalidatePath('/')
+  
+  return { success: true, txnId: txn?.id }
 }

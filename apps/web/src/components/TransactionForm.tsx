@@ -1,19 +1,23 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createTransaction } from '../app/(dashboard)/transactions/actions'
 
 export function TransactionForm({ accounts, categories, onSuccess }: { accounts: any[], categories: any[], onSuccess?: () => void }) {
   const [loading, setLoading] = useState(false)
   const [type, setType] = useState('expense')
 
+  const router = useRouter()
+
   async function onSubmit(formData: FormData) {
     setLoading(true)
     try {
       await createTransaction(formData)
+      router.refresh()
       onSuccess?.()
-    } catch (e) {
-      alert('Failed to log transaction')
+    } catch (e: any) {
+      alert('Failed to log transaction: ' + e.message)
     }
     setLoading(false)
   }
