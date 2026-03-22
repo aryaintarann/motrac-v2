@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { Transaction } from '@motrac/shared'
-import { TransactionForm } from '@/components/TransactionForm'
+import { TransactionForm } from '../../../components/TransactionForm'
 
 export default async function TransactionsPage() {
   const supabase = await createClient()
@@ -18,43 +18,43 @@ export default async function TransactionsPage() {
   // Fetch Transaction History
   const { data: rawTransactions } = await supabase
     .from('transactions')
-    .select('*, account:accounts(name), category:categories(name)')
+    .select('*')
     .order('date', { ascending: false })
   
   const transactions = rawTransactions || []
   const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 })
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-[var(--foreground)]">Transactions</h1>
+    <div className="mx-auto max-w-[1200px]">
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="text-[26px] font-bold text-gray-900 tracking-[-0.02em]">Transactions</h1>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
         {/* Transaction History */}
-        <div className="lg:col-span-2 flex flex-col rounded-xl bg-[var(--surface)] p-6 shadow-sm ring-1 ring-gray-100">
-          <h3 className="font-semibold mb-4 text-[var(--foreground)]">History</h3>
+        <div className="xl:col-span-8 flex flex-col rounded-[20px] border border-[#E5E7EB] bg-white p-7 shadow-sm">
+          <h3 className="font-bold text-[#0f172a] text-[18px] mb-6">History</h3>
           <div className="flex flex-col divide-y divide-gray-100">
             {transactions.length > 0 ? transactions.map((txn) => {
               const isIncome = txn.type === 'income'
               const sign = isIncome ? '+' : (txn.type === 'expense' ? '-' : '')
               const amountLabel = `${sign}${formatter.format(Number(txn.amount))}`
               const icon = txn.type === 'income' ? '💰' : (txn.type === 'expense' ? '💸' : '🔄')
-              const accountName = (txn.account as any)?.name || 'Unknown Account'
-              const categoryName = (txn.category as any)?.name || 'Uncategorized'
+              const accountName = accounts?.find(a => a.id === txn.account_id)?.name || 'Unknown Account'
+              const categoryName = categories?.find(c => c.id === txn.category_id)?.name || 'Uncategorized'
               
               return (
-                <div key={txn.id} className="group flex items-center justify-between py-3 hover:bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-lg">
+                <div key={txn.id} className="group flex items-center justify-between py-2 border-b border-[#F8FAFC] last:border-0 hover:bg-[#F8FAFC] rounded-lg -mx-2 px-2 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#F1F5F9] border border-[#E5E7EB]/50 text-xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)]">
                       {icon}
                     </div>
                     <div>
-                      <div className="font-medium text-[var(--foreground)]">{txn.description || categoryName}</div>
-                      <div className="text-xs text-gray-500">{accountName} • {new Date(txn.date).toLocaleDateString()}</div>
+                      <div className="font-bold text-[#0f172a] text-[15px]">{txn.note || categoryName}</div>
+                      <div className="text-[13px] text-[#64748b] mt-0.5 tracking-tight">{new Date(txn.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} • {accountName}</div>
                     </div>
                   </div>
-                  <div className={`font-medium ${isIncome ? 'text-green-600' : 'text-[var(--foreground)]'}`}>
+                  <div className={`font-bold text-[15px] ${isIncome ? 'text-[#16A34A]' : 'text-[#0f172a]'}`}>
                     {amountLabel}
                   </div>
                 </div>
@@ -66,12 +66,12 @@ export default async function TransactionsPage() {
         </div>
 
         {/* Add Transaction Form */}
-        <div className="col-span-1 rounded-xl bg-gray-50 border border-dashed border-gray-300 p-6 self-start">
-          <h3 className="font-semibold mb-4 text-[var(--foreground)]">Log Transaction</h3>
+        <div className="xl:col-span-4 rounded-[20px] border border-[#E5E7EB] bg-white p-7 shadow-sm self-start">
+          <h3 className="font-bold text-[#0f172a] text-[18px] mb-6">Log Transaction</h3>
           {accounts && accounts.length > 0 ? (
              <TransactionForm accounts={accounts} categories={categories || []} />
           ) : (
-             <p className="text-sm text-gray-500">Please create an account first before logging a transaction.</p>
+             <p className="text-[13px] text-[#64748b]">Please create an account first before logging a transaction.</p>
           )}
         </div>
       </div>

@@ -15,7 +15,7 @@ export async function createTransaction(formData: FormData) {
   const account_id = formData.get('account_id') as string
   const category_id = formData.get('category_id') as string // optional
   const amount = Number(formData.get('amount'))
-  const description = formData.get('description') as string
+  const note = formData.get('note') as string
   const date = formData.get('date') as string
 
   // Insert Transaction
@@ -25,7 +25,7 @@ export async function createTransaction(formData: FormData) {
     account_id,
     category_id: category_id || null,
     amount,
-    description: description || null,
+    note: note || null,
     date: date ? new Date(date).toISOString() : new Date().toISOString()
   })
 

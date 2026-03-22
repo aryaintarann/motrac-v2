@@ -61,7 +61,7 @@ export function TransactionForm({ accounts, categories }: { accounts: any[], cat
       </select>
 
       <input 
-        name="description" 
+        name="note" 
         placeholder="Note (optional)" 
         className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
       />
