@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { BalanceProvider } from '@/components/BalanceContext'
 import { HeaderActions } from '@/components/HeaderActions'
+import { Sidebar } from '@/components/Sidebar'
+
 export default async function DashboardLayout({
   children,
 }: {
@@ -19,54 +21,7 @@ export default async function DashboardLayout({
     <BalanceProvider>
     <div className="flex h-screen w-full flex-col bg-[var(--background)] lg:flex-row">
       {/* Sidebar (Desktop) */}
-      <aside className="hidden w-[260px] flex-col border-r border-[#E5E7EB] bg-white p-6 pb-6 lg:flex print:hidden relative">
-        <div className="mb-10 flex items-center">
-          <div className="flex items-center gap-2 text-xl font-bold text-gray-900 tracking-tight">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 4H10C6.68629 4 4 6.68629 4 10V14C4 17.3137 6.68629 20 10 20H14C17.3137 20 20 17.3137 20 14V10C20 6.68629 17.3137 4 14 4Z" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M14 4L10 20" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <span className="text-[20px] font-extrabold tracking-[-0.03em] text-[#0f172a]">p̄ayland</span>
-          </div>
-          <button className="ml-auto text-gray-400">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-          </button>
-        </div>
-        <nav className="flex flex-1 flex-col gap-1.5 print:hidden">
-          <Link href="/" className="rounded-lg px-3 py-2.5 text-[15px] font-semibold text-[#2563EB] bg-[#EFF6FF] flex items-center gap-3">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="opacity-100"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-             Dashboard
-          </Link>
-          <Link href="/transactions" className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-[#475569] hover:bg-gray-50 flex items-center gap-3">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-             Transactions
-          </Link>
-          <Link href="/budgets" className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-[#475569] hover:bg-gray-50 flex items-center gap-3">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg>
-             Budgets
-          </Link>
-          <Link href="/debts" className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-[#475569] hover:bg-gray-50 flex items-center gap-3">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>
-             Debt
-          </Link>
-          <Link href="/reports" className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-[#475569] hover:bg-gray-50 flex items-center gap-3">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-             Reports
-          </Link>
-          <Link href="/accounts" className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-[#475569] hover:bg-gray-50 flex items-center gap-3">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-             Accounts
-          </Link>
-          
-          <div className="flex-1"></div>
-
-          <Link href="/help" className="rounded-lg px-3 py-2.5 text-[15px] font-medium text-[#475569] hover:bg-gray-50 flex items-center gap-3 text-left">
-             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-             Help & Support
-          </Link>
-        </nav>
-
-      </aside>
+      <Sidebar />
 
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col bg-[#F9FAFB]">
@@ -83,8 +38,8 @@ export default async function DashboardLayout({
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 pt-6 lg:pt-8 print:p-0 print:overflow-visible">
           <header className="mb-8 flex items-center justify-between lg:hidden print:hidden">
             <div className="flex items-center">
-              <div className="h-8 w-8 rounded-md text-blue-600 bg-blue-100 text-center font-bold leading-8">M</div>
-              <h1 className="ml-3 text-xl font-bold text-[var(--primary)]">Motrac</h1>
+              <div className="h-8 w-8 rounded-md text-white bg-blue-600 text-center font-bold leading-8">M</div>
+              <h1 className="ml-3 text-xl font-black text-blue-600 tracking-[0.05em]">MOTRAC</h1>
             </div>
             <div className="h-8 w-8 rounded-full bg-gray-200" />
           </header>
