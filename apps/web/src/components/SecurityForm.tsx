@@ -24,9 +24,39 @@ export function SecurityForm({ user }: { user: any }) {
   const [deleteConfirm, setDeleteConfirm] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
+  // Sessions State
+  const [sessions, setSessions] = useState<any[]>([])
+
   useEffect(() => {
     checkMfaStatus()
+    fetchSessions()
   }, [])
+
+  const fetchSessions = async () => {
+    const { data, error } = await supabase.rpc('get_my_sessions')
+    if (!error && data) {
+      setSessions(data)
+    }
+  }
+
+  const parseDevice = (ua: string) => {
+    if (!ua) return 'Unknown Device'
+    let browser = 'Web Browser'
+    let os = 'Unknown OS'
+
+    if (ua.includes('Chrome')) browser = 'Chrome'
+    else if (ua.includes('Firefox')) browser = 'Firefox'
+    else if (ua.includes('Safari') && !ua.includes('Chrome')) browser = 'Safari'
+    else if (ua.includes('Edge')) browser = 'Edge'
+
+    if (ua.includes('Windows')) os = 'Windows'
+    else if (ua.includes('Mac OS')) os = 'macOS'
+    else if (ua.includes('Linux')) os = 'Linux'
+    else if (ua.includes('Android')) os = 'Android'
+    else if (ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS'
+
+    return `${browser} on ${os}`
+  }
 
   const checkMfaStatus = async () => {
     const { data, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
@@ -117,8 +147,12 @@ export function SecurityForm({ user }: { user: any }) {
 
   const handleLogoutOthers = async () => {
     const { error } = await supabase.auth.signOut({ scope: 'others' })
-    if (error) alert("Failed to log out of other devices: " + error.message)
-    else alert("Successfully logged out from all other devices.")
+    if (error) {
+      alert("Failed to log out of other devices: " + error.message)
+    } else {
+      alert("Successfully logged out from all other devices.")
+      fetchSessions() // Refresh the list
+    }
   }
 
   const handleExportData = async () => {
@@ -252,23 +286,37 @@ export function SecurityForm({ user }: { user: any }) {
       </div>
 
       {/* Session Management & Export */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         <div className="rounded-[20px] border border-[#E5E7EB] bg-white p-7 shadow-sm flex flex-col items-start gap-4">
-          <div>
+          <div className="w-full">
             <h3 className="font-bold text-[#0f172a] text-[16px]">Active Sessions</h3>
-            <p className="text-[13px] text-gray-500 mt-1">Logged in on a public computer? Sign out of all other remote sessions immediately.</p>
+            <p className="text-[13px] text-gray-500 mt-1 mb-4">Logged in on a public computer? Sign out of all other remote sessions immediately.</p>
+            
+            {sessions.length > 0 && (
+              <div className="flex flex-col gap-3 w-full max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                {sessions.map((sess, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 shrink-0">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-[13px] font-bold text-gray-900">{parseDevice(sess.user_agent)}</span>
+                      <span className="text-[11.5px] font-mono text-gray-500">{sess.ip} • Started {new Date(sess.created_at).toLocaleDateString()}</span>
+                    </div>
+                    {idx === 0 && <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded">CURRENT</span>}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          <button onClick={handleLogoutOthers} className="mt-auto items-center flex gap-2 rounded-lg bg-orange-50 px-4 py-2 text-[13px] font-semibold text-orange-700 hover:bg-orange-100 transition-colors">
-            Log out of all devices
+          <button onClick={handleLogoutOthers} className="mt-auto items-center flex gap-2 rounded-lg bg-orange-50 px-4 py-2 text-[13px] font-semibold text-orange-700 hover:bg-orange-100 transition-colors w-full justify-center">
+            Log out of all other devices
           </button>
         </div>
         
         <div className="rounded-[20px] border border-[#E5E7EB] bg-white p-7 shadow-sm flex flex-col items-start gap-4">
-          <div>
+          <div className="w-full">
             <h3 className="font-bold text-[#0f172a] text-[16px]">Export My Data</h3>
-            <p className="text-[13px] text-gray-500 mt-1">Download all your transaction history in a raw CSV format.</p>
+            <p className="text-[13px] text-gray-500 mt-1 mb-4">Download all your transaction history in a raw CSV format.</p>
           </div>
-          <button onClick={handleExportData} className="mt-auto items-center flex gap-2 rounded-lg bg-blue-50 px-4 py-2 text-[13px] font-semibold text-blue-700 hover:bg-blue-100 transition-colors">
+          <button onClick={handleExportData} className="w-full justify-center items-center flex gap-2 rounded-lg bg-blue-50 px-4 py-2 text-[13px] font-semibold text-blue-700 hover:bg-blue-100 transition-colors">
             Download CSV
           </button>
         </div>
