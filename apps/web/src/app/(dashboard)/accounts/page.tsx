@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { Account } from '@motrac/shared'
-import { AccountForm } from '@/components/AccountForm'
+import { AddAccountModal } from '@/components/AddAccountModal'
 
 export default async function AccountsPage() {
   const supabase = await createClient()
@@ -23,6 +23,7 @@ export default async function AccountsPage() {
     <div className="mx-auto max-w-[1200px]">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-[26px] font-bold text-gray-900 tracking-[-0.02em]">My Accounts</h1>
+        <AddAccountModal />
       </div>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -53,13 +54,6 @@ export default async function AccountsPage() {
           )
         })}
 
-        {/* Add Account Card / Form */}
-        <div className="col-span-1 md:col-span-2 lg:col-span-3 rounded-[20px] bg-white border border-[#E5E7EB] p-7 shadow-sm mt-4">
-          <h3 className="font-bold text-[#0f172a] text-[18px] mb-6">Add New Account</h3>
-          <div className="max-w-xl">
-            <AccountForm />
-          </div>
-        </div>
       </div>
     </div>
   )

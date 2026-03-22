@@ -3,13 +3,14 @@
 import { useState } from 'react'
 import { createAccount } from '../app/(dashboard)/accounts/actions'
 
-export function AccountForm() {
+export function AccountForm({ onSuccess }: { onSuccess?: () => void }) {
   const [loading, setLoading] = useState(false)
 
   async function onSubmit(formData: FormData) {
     setLoading(true)
     try {
       await createAccount(formData)
+      onSuccess?.()
     } catch (e) {
       alert('Failed to create account')
     }
@@ -22,10 +23,10 @@ export function AccountForm() {
         name="name" 
         placeholder="Account Name (e.g. BCA)" 
         required 
-        className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+        className="bg-white text-gray-900 placeholder:text-gray-400 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
       />
       
-      <select name="type" className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" required>
+      <select name="type" className="bg-white text-gray-900 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" required>
         <option value="bank">Bank</option>
         <option value="e_wallet">E-Wallet</option>
         <option value="cash">Cash</option>
@@ -33,20 +34,36 @@ export function AccountForm() {
         <option value="credit">Credit Card</option>
       </select>
       
-      <input 
-        name="balance" 
-        type="number" 
-        placeholder="Initial Balance" 
-        required
-        className="rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
-      />
-      
-      <div className="flex gap-2">
+      <div className="flex items-center w-full rounded-md border border-gray-200 bg-white overflow-hidden focus-within:ring-1 focus-within:ring-[var(--primary)] focus-within:border-[var(--primary)]">
+        <span className="pl-3 pr-1 text-gray-500 font-semibold text-sm">Rp</span>
         <input 
-          name="icon" 
-          placeholder="Icon (e.g. 🏦)" 
-          className="flex-1 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+          name="balance" 
+          type="number" 
+          placeholder="Initial Balance" 
+          required
+          className="w-full bg-transparent text-gray-900 placeholder:text-gray-400 px-2 py-2 text-[15px] focus:outline-none font-semibold"
         />
+      </div>
+      <div className="flex gap-2">
+        <div className="relative flex-1">
+          <select 
+            name="icon" 
+            className="w-full appearance-none rounded-md border border-gray-200 bg-white pl-4 pr-10 py-2.5 text-[14px] focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-900 cursor-pointer"
+            defaultValue="🏦"
+          >
+            <option value="🏦">🏦 Bank</option>
+            <option value="💳">💳 Credit Card</option>
+            <option value="💸">💸 Cash</option>
+            <option value="📱">📱 E-Wallet</option>
+            <option value="📈">📈 Investment</option>
+            <option value="🪙">🪙 Crypto</option>
+            <option value="💰">💰 Savings</option>
+            <option value="💼">💼 Business</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+        </div>
         <input 
           name="color" 
           type="color" 
