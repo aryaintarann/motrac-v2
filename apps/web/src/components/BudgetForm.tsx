@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { upsertBudget } from '../app/(dashboard)/budgets/actions'
 
-export function BudgetForm() {
+export function BudgetForm({ onSuccess }: { onSuccess?: () => void }) {
   const [loading, setLoading] = useState(false)
   const [income, setIncome] = useState<number>(10000000)
   
@@ -18,6 +18,7 @@ export function BudgetForm() {
     setLoading(true)
     try {
       await upsertBudget(formData)
+      onSuccess?.()
     } catch (e) {
       alert('Failed to save budget')
     }
@@ -33,14 +34,14 @@ export function BudgetForm() {
       
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium">Monthly Income</label>
-        <div className="relative">
-          <span className="absolute left-3 top-2.5 text-gray-400 font-medium">Rp</span>
+        <div className="flex items-center w-full rounded-md border border-gray-200 bg-white overflow-hidden focus-within:ring-1 focus-within:ring-[var(--primary)] focus-within:border-[var(--primary)]">
+          <span className="pl-3 pr-1 text-gray-500 font-semibold text-sm">Rp</span>
           <input 
             type="number" 
             value={income || ''}
             onChange={(e) => setIncome(Number(e.target.value))}
             required
-            className="w-full rounded-md border border-gray-200 pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--primary)] font-semibold"
+            className="w-full bg-transparent text-gray-900 placeholder:text-gray-400 px-2 py-2 text-[15px] focus:outline-none font-semibold"
           />
         </div>
         <p className="text-xs text-gray-500 mt-1">Input your expected monthly salary to get an AI-recommended breakdown.</p>
