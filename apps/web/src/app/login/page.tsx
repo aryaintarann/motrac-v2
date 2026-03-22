@@ -144,21 +144,22 @@ export default async function LoginPage(props: {
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mt-2">
+            <div className="mt-2">
               <button
                 formAction={login}
-                className="flex-1 rounded-xl bg-blue-600 px-5 py-3 text-[14px] font-bold text-white shadow-sm hover:bg-blue-700 transition-colors"
+                className="w-full rounded-xl bg-blue-600 px-5 py-3 text-[14px] font-bold text-white shadow-sm hover:bg-blue-700 transition-colors"
               >
                 Sign In
               </button>
-              <Link
-                href="/signup"
-                className="flex-1 text-center rounded-xl border border-blue-600 bg-blue-50 px-5 py-3 text-[14px] font-bold text-blue-600 hover:bg-blue-100 transition-colors"
-              >
-                Create Account
-              </Link>
             </div>
           </form>
+
+          <Link
+            href="/signup"
+            className="mt-3 block w-full text-center rounded-xl border border-blue-600 bg-blue-50 px-5 py-3 text-[14px] font-bold text-blue-600 hover:bg-blue-100 transition-colors"
+          >
+            Create Account
+          </Link>
 
           <p className="text-center text-[13px] text-gray-400 mt-8">
             By continuing, you agree to Motrac's{' '}
