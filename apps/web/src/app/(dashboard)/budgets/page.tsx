@@ -33,7 +33,7 @@ export default async function BudgetsPage() {
           <h3 className="font-bold text-[#0f172a] text-[18px] mb-6">Past Budgets</h3>
           <div className="flex flex-col divide-y divide-gray-100">
             {budgets.length > 0 ? budgets.map((b) => {
-              const total = Number(b.needs_amount) + Number(b.wants_amount) + Number(b.savings_amount)
+              const total = Number(b.needs_amount) + Number(b.wants_amount) + Number(b.savings_amount) + Number(b.debt_amount || 0)
               return (
                 <div key={b.id} className="group flex items-center justify-between py-3 border-b border-[#F8FAFC] last:border-0 hover:bg-[#F8FAFC] rounded-lg -mx-2 px-3 transition-colors">
                   <div className="flex items-center gap-4">
@@ -46,6 +46,9 @@ export default async function BudgetsPage() {
                         <span>Needs: {formatter.format(Number(b.needs_amount)).replace('Rp', '').trim()}</span>
                         <span>Wants: {formatter.format(Number(b.wants_amount)).replace('Rp', '').trim()}</span>
                         <span>Savings: {formatter.format(Number(b.savings_amount)).replace('Rp', '').trim()}</span>
+                        {Number(b.debt_amount) > 0 && (
+                          <span className="text-red-500 font-medium">Debt: {formatter.format(Number(b.debt_amount)).replace('Rp', '').trim()}</span>
+                        )}
                       </div>
                     </div>
                   </div>
