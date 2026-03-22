@@ -56,7 +56,7 @@ export function AddCategoryModal({ parentId, parentName, parentType }: { parentI
                   autoFocus
                   placeholder="e.g. Groceries, Netflix, Gas" 
                   required
-                  className="rounded-xl border border-gray-200 px-4 py-2.5 text-[14px] outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-gray-50 focus:bg-white transition-all"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-[14px] text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-gray-50 focus:bg-white transition-all"
                 />
               </div>
 
@@ -66,7 +66,7 @@ export function AddCategoryModal({ parentId, parentName, parentType }: { parentI
                   name="icon" 
                   placeholder="e.g. 🍎" 
                   maxLength={5}
-                  className="w-20 rounded-xl border border-gray-200 px-4 py-2.5 text-[18px] text-center outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-gray-50 focus:bg-white transition-all"
+                  className="w-20 rounded-xl border border-gray-200 px-4 py-2.5 text-[18px] text-gray-900 text-center outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-gray-50 focus:bg-white transition-all"
                 />
               </div>
 
