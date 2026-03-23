@@ -106,7 +106,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="2"/></svg>
                   Accounts
                 </Link>
-                <Link href="/reports" className="rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 shadow-sm transition-colors hover:bg-gray-50">
+                <Link href="/reports" className="rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-[#475569] shadow-sm transition-colors hover:bg-gray-50">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
                 </Link>
               </div>
