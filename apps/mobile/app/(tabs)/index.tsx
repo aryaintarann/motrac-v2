@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
-import { supabase } from './src/utils/supabase';
+import { supabase } from '../../src/utils/supabase';
 import { Account, Transaction } from '@motrac/shared';
 
-export default function App() {
+export default function Dashboard() {
   const [session, setSession] = useState<any>(null);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -47,6 +47,7 @@ export default function App() {
   }
 
   const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
+  
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -59,10 +60,12 @@ export default function App() {
           </View>
           <Text className="ml-3 text-xl font-bold text-[#1A6FD6]">Motrac</Text>
         </View>
-        <View className="h-8 w-8 rounded-full bg-gray-200" />
+        <TouchableOpacity onPress={() => supabase.auth.signOut()} className="h-8 w-8 rounded-full bg-gray-200 items-center justify-center">
+            <Text className="text-xs">👋</Text>
+        </TouchableOpacity>
       </View>
 
-      <ScrollView className="flex-1" contentContainerStyle={{ padding: 24, paddingBottom: 100 }}>
+      <ScrollView className="flex-1" contentContainerStyle={{ padding: 24, paddingBottom: 40 }}>
         
         {/* Total Balance Card */}
         <View className="bg-[#1A6FD6] rounded-2xl p-6 shadow-sm mb-6">
@@ -138,27 +141,6 @@ export default function App() {
             )}
         </View>
       </ScrollView>
-
-      {/* Bottom Nav */}
-      <View className="flex-row justify-around items-center bg-white border-t border-gray-100 pt-4 pb-8 absolute bottom-0 w-full">
-        <TouchableOpacity className="items-center">
-          <Text className="text-[#1A6FD6] text-xs font-medium mt-1">Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="items-center">
-          <Text className="text-gray-400 text-xs font-medium mt-1">Accounts</Text>
-        </TouchableOpacity>
-        <View className="relative -mt-8 items-center justify-center">
-          <TouchableOpacity className="bg-[#1A6FD6] h-14 w-14 rounded-full items-center justify-center shadow-lg shadow-blue-200">
-            <Text className="text-white text-3xl font-light -mt-1">+</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity className="items-center">
-          <Text className="text-gray-400 text-xs font-medium mt-1">Reports</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="items-center">
-          <Text className="text-gray-400 text-xs font-medium mt-1">Settings</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
