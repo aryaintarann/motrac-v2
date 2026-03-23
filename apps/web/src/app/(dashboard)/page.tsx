@@ -193,39 +193,79 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
               )}
             </div>
 
-            {/* Card 4: Weekly Budget Pace (derived from AI monthly allocation) */}
+            {/* Card 4: Weekly Pace with Rollover (Needs & Wants) */}
             {(() => {
               const today = new Date()
               const dayOfMonth = today.getDate()
               const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()
               const weekNumber = Math.ceil(dayOfMonth / 7)
-              const budgetPerWeek = allowableSpend > 0 ? allowableSpend / (daysInMonth / 7) : 0
-              const spentThisWeek = allowableSpend > 0
-                ? monthExpense - (budgetPerWeek * (weekNumber - 1))
-                : 0
-              const weeklyRemaining = budgetPerWeek - Math.max(spentThisWeek, 0)
-              const weeklyPct = budgetPerWeek > 0 ? Math.min((Math.max(spentThisWeek, 0) / budgetPerWeek) * 100, 100) : 0
+              const weeksInMonth = daysInMonth / 7
+              
+              // Needs setup
+              const budgetNeedsPerWeek = budgetNeeds > 0 ? budgetNeeds / weeksInMonth : 0
+              const needsAllocatedSoFar = budgetNeedsPerWeek * weekNumber
+              const needsRemainingThisWeek = needsAllocatedSoFar - spentNeeds
+              
+              const needsPct = needsAllocatedSoFar > 0 ? Math.min((spentNeeds / needsAllocatedSoFar) * 100, 100) : 0
+              
+              // Wants setup
+              const budgetWantsPerWeek = budgetWants > 0 ? budgetWants / weeksInMonth : 0
+              const wantsAllocatedSoFar = budgetWantsPerWeek * weekNumber
+              const wantsRemainingThisWeek = wantsAllocatedSoFar - spentWants
+              
+              const wantsPct = wantsAllocatedSoFar > 0 ? Math.min((spentWants / wantsAllocatedSoFar) * 100, 100) : 0
 
               return (
                 <div className="col-span-1 xl:col-span-2 rounded-[20px] border border-[#E5E7EB] bg-white p-5 shadow-sm">
-                  <div className="flex items-start justify-between mb-3">
-                    <p className="text-[13px] font-medium text-[#64748b]">Weekly Pace</p>
+                  <div className="flex items-start justify-between mb-4">
+                    <p className="text-[13px] font-medium text-[#64748b]">Weekly Pace (Rollover)</p>
                     <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
                       Week {weekNumber}
                     </span>
                   </div>
-                  <div className={`text-[24px] font-bold tracking-[-0.02em] leading-none mb-3 ${weeklyRemaining >= 0 ? 'text-[#0f172a]' : 'text-red-500'}`}>
-                    <HidableBalance amount={budget ? formatter.format(weeklyRemaining) : '—'} />
-                  </div>
-                  <div className="h-2 w-full rounded-full bg-[#F1F5F9] overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${weeklyPct > 90 ? 'bg-red-500' : weeklyPct > 70 ? 'bg-amber-400' : 'bg-blue-500'}`}
-                      style={{ width: `${weeklyPct}%` }}
-                    />
-                  </div>
-                  <p className="text-[12px] text-[#64748b] mt-2">
-                    {budget ? `Weekly limit: ${formatter.format(Math.round(budgetPerWeek))}` : <Link href="/budgets" className="text-blue-600 font-semibold hover:underline">Set budget →</Link>}
-                  </p>
+
+                  {budget ? (
+                    <div className="flex flex-col gap-4">
+                      {/* Needs Weekly Pace */}
+                      <div>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[12px] font-semibold text-gray-600">Needs Remaining</span>
+                          <span className={`text-[12px] font-bold ${needsRemainingThisWeek >= 0 ? 'text-[#0f172a]' : 'text-red-500'}`}>
+                            {formatter.format(needsRemainingThisWeek)}
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-[#F1F5F9] overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${needsPct > 90 ? 'bg-red-500' : needsPct > 70 ? 'bg-amber-400' : 'bg-blue-500'}`}
+                            style={{ width: `${needsPct}%` }}
+                          />
+                        </div>
+                        <div className="text-[10px] text-gray-400 mt-1 font-medium">Safe to spend: {formatter.format(budgetNeedsPerWeek)} / week</div>
+                      </div>
+                      
+                      {/* Wants Weekly Pace */}
+                      <div>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[12px] font-semibold text-gray-600">Wants Remaining</span>
+                          <span className={`text-[12px] font-bold ${wantsRemainingThisWeek >= 0 ? 'text-[#0f172a]' : 'text-red-500'}`}>
+                            {formatter.format(wantsRemainingThisWeek)}
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-[#F1F5F9] overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${wantsPct > 90 ? 'bg-red-500' : wantsPct > 70 ? 'bg-amber-400' : 'bg-purple-500'}`}
+                            style={{ width: `${wantsPct}%` }}
+                          />
+                        </div>
+                        <div className="text-[10px] text-gray-400 mt-1 font-medium">Safe to spend: {formatter.format(budgetWantsPerWeek)} / week</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-start gap-2">
+                       <span className="text-[22px] font-bold text-gray-300">—</span>
+                       <Link href="/budgets" className="text-[12px] text-blue-600 font-semibold hover:underline">Set budget →</Link>
+                    </div>
+                  )}
                 </div>
               )
             })()}
