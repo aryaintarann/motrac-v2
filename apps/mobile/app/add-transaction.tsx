@@ -1,6 +1,6 @@
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
-import { supabase } from '../../src/utils/supabase';
+import { supabase } from '../src/utils/supabase';
 import { Account } from '@motrac/shared';
 import { useRouter } from 'expo-router';
 
@@ -18,13 +18,13 @@ export default function AddTransaction() {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.from('accounts').select('*').order('name').then(({ data }) => {
+    supabase.from('accounts').select('*').order('name').then(({ data }: { data: any }) => {
       if (data) {
         setAccounts(data as Account[]);
         if (data.length > 0) setAccountId(data[0].id);
       }
     });
-    supabase.from('categories').select('*').order('name').then(({ data }) => {
+    supabase.from('categories').select('*').order('name').then(({ data }: { data: any }) => {
       if (data) {
         setCategories(data);
         if (data.length > 0) setCategoryId(data[0].id);
