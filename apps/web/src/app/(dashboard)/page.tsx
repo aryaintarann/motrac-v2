@@ -37,13 +37,26 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
   
   // Calculate Pacing and Month Totals
   const { data: budget } = await supabase.from('budgets').select('*').eq('month', currentMonthStr).single()
-  const { data: monthTxns } = await supabase.from('transactions').select('amount, type, category_id, date').gte('date', `${currentMonthStr}-01T00:00:00Z`)
+  const { data: monthTxns } = await supabase
+    .from('transactions')
+    .select('amount, type, category_id, date, categories(budget_type)')
+    .gte('date', `${currentMonthStr}-01T00:00:00Z`)
   
   const allTxns = monthTxns || []
   const monthIncome = allTxns.filter(t => t.type === 'income').reduce((sum, t) => sum + Number(t.amount), 0)
   const monthExpense = allTxns.filter(t => t.type === 'expense').reduce((sum, t) => sum + Number(t.amount), 0)
-  
-  const allowableSpend = budget ? Number(budget.needs_amount) + Number(budget.wants_amount) : 0
+
+  // Per-category spending
+  const spentNeeds = allTxns.filter(t => t.type === 'expense' && (t.categories as any)?.budget_type === 'needs').reduce((sum, t) => sum + Number(t.amount), 0)
+  const spentWants = allTxns.filter(t => t.type === 'expense' && (t.categories as any)?.budget_type === 'wants').reduce((sum, t) => sum + Number(t.amount), 0)
+  const spentSavings = allTxns.filter(t => t.type === 'expense' && (t.categories as any)?.budget_type === 'savings').reduce((sum, t) => sum + Number(t.amount), 0)
+
+  const budgetNeeds = budget ? Number(budget.needs_amount) : 0
+  const budgetWants = budget ? Number(budget.wants_amount) : 0
+  const budgetSavings = budget ? Number(budget.savings_amount) : 0
+  const budgetDebt = budget ? Number(budget.debt_amount ?? 0) : 0
+
+  const allowableSpend = budgetNeeds + budgetWants
   const remaining = allowableSpend - monthExpense
   const spentPercent = allowableSpend > 0 ? (monthExpense / allowableSpend) * 100 : 0
   
@@ -133,25 +146,50 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
               </p>
             </div>
 
-            {/* Card 3: Total Budget Remaining */}
-            <div className="col-span-1 xl:col-span-2 rounded-[20px] border border-[#E5E7EB] bg-white p-5 shadow-sm">
-              <div className="flex items-start justify-between mb-3">
+            {/* Card 3: Budget Remaining — per category */}
+            <div className="col-span-2 xl:col-span-2 rounded-[20px] border border-[#E5E7EB] bg-white p-5 shadow-sm">
+              <div className="flex items-start justify-between mb-4">
                 <p className="text-[13px] font-medium text-[#64748b]">Budget Remaining</p>
-                <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${remaining >= 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'}`}>
-                  {budget ? `${(100 - Math.min(spentPercent, 100)).toFixed(0)}%` : 'N/A'}
-                </span>
+                {budget && (
+                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${remaining >= 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'}`}>
+                    {(100 - Math.min(spentPercent, 100)).toFixed(0)}% left
+                  </span>
+                )}
               </div>
-              <div className={`text-[24px] font-bold tracking-[-0.02em] leading-none mb-3 ${remaining >= 0 ? 'text-[#0f172a]' : 'text-red-500'}`}>
-                <HidableBalance amount={budget ? formatter.format(remaining) : '—'} />
-              </div>
-              <div className="h-2 w-full rounded-full bg-[#F1F5F9] overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all ${spentPercent > 90 ? 'bg-red-500' : spentPercent > 70 ? 'bg-amber-400' : 'bg-emerald-500'}`}
-                  style={{ width: `${Math.min(spentPercent, 100)}%` }}
-                />
-              </div>
-              {!budget && (
-                <Link href="/budgets" className="text-[12px] text-blue-600 font-semibold mt-2 block hover:underline">Set budget →</Link>
+
+              {budget ? (
+                <div className="flex flex-col gap-3">
+                  {[
+                    { label: 'Needs', budget: budgetNeeds, spent: spentNeeds, color: 'bg-blue-500' },
+                    { label: 'Wants', budget: budgetWants, spent: spentWants, color: 'bg-purple-500' },
+                    { label: 'Savings', budget: budgetSavings, spent: spentSavings, color: 'bg-emerald-500' },
+                    ...(budgetDebt > 0 ? [{ label: 'Debt', budget: budgetDebt, spent: 0, color: 'bg-red-400' }] : [])
+                  ].map(({ label, budget: bgt, spent, color }) => {
+                    const pct = bgt > 0 ? Math.min((spent / bgt) * 100, 100) : 0
+                    const rem = bgt - spent
+                    return (
+                      <div key={label}>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[12px] font-semibold text-gray-600">{label}</span>
+                          <span className={`text-[12px] font-bold ${rem >= 0 ? 'text-gray-800' : 'text-red-500'}`}>
+                            {formatter.format(rem)}
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-[#F1F5F9] overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${pct > 90 ? 'bg-red-500' : pct > 70 ? 'bg-amber-400' : color}`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="flex flex-col items-start gap-2">
+                  <span className="text-[22px] font-bold text-gray-300">—</span>
+                  <Link href="/budgets" className="text-[12px] text-blue-600 font-semibold hover:underline">Set budget →</Link>
+                </div>
               )}
             </div>
 
