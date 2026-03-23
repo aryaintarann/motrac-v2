@@ -89,56 +89,59 @@ export function BudgetForm({ onSuccess }: { onSuccess?: () => void }) {
         )}
       </div>
 
-      {allocation && (
-        <div className="mt-2 rounded-xl border border-blue-100 bg-blue-50/50 p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-lg">✨</span>
-            <span className="text-sm font-bold text-[var(--primary)]">Gemini AI Recommendation</span>
+      {allocation && (() => {
+        const totalAllocated = allocation.needs + allocation.wants + allocation.savings + allocation.debt;
+        return (
+          <div className="mt-2 rounded-xl border border-blue-100 bg-blue-50/50 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-lg">✨</span>
+              <span className="text-sm font-bold text-[var(--primary)]">Gemini AI Recommendation</span>
+            </div>
+
+            <p className="text-[13px] text-gray-600 italic mb-4 leading-relaxed">
+              "{allocation.reason}"
+            </p>
+
+            <div className="space-y-3">
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-medium text-gray-700">Needs ({((allocation.needs / totalAllocated) * 100).toFixed(0)}%)</span>
+                <span className="font-semibold text-gray-900">{formatter.format(allocation.needs)}</span>
+              </div>
+              <div className="relative w-full h-2 bg-white rounded-full overflow-hidden shadow-inner flex">
+                <div className="h-full bg-blue-500" style={{ width: `${(allocation.needs / totalAllocated) * 100}%` }} />
+              </div>
+
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-medium text-gray-700">Wants ({((allocation.wants / totalAllocated) * 100).toFixed(0)}%)</span>
+                <span className="font-semibold text-gray-900">{formatter.format(allocation.wants)}</span>
+              </div>
+              <div className="relative w-full h-2 bg-white rounded-full overflow-hidden shadow-inner flex">
+                <div className="h-full bg-purple-500" style={{ width: `${(allocation.wants / totalAllocated) * 100}%` }} />
+              </div>
+
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-medium text-gray-700">Savings ({((allocation.savings / totalAllocated) * 100).toFixed(0)}%)</span>
+                <span className="font-semibold text-gray-900">{formatter.format(allocation.savings)}</span>
+              </div>
+              <div className="relative w-full h-2 bg-white rounded-full overflow-hidden shadow-inner flex">
+                <div className="h-full bg-green-500" style={{ width: `${(allocation.savings / totalAllocated) * 100}%` }} />
+              </div>
+
+              {allocation.debt > 0 && (
+                <>
+                  <div className="flex justify-between items-center text-sm mt-3 pt-3 border-t border-blue-100">
+                    <span className="font-medium text-red-600">Debt Reserve ({((allocation.debt / totalAllocated) * 100).toFixed(0)}%)</span>
+                    <span className="font-semibold text-red-600">{formatter.format(allocation.debt)}</span>
+                  </div>
+                  <div className="relative w-full h-2 bg-white rounded-full overflow-hidden shadow-inner flex">
+                    <div className="h-full bg-red-400" style={{ width: `${(allocation.debt / totalAllocated) * 100}%` }} />
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-
-          <p className="text-[13px] text-gray-600 italic mb-4 leading-relaxed">
-            "{allocation.reason}"
-          </p>
-
-          <div className="space-y-3">
-            <div className="flex justify-between items-center text-sm">
-              <span className="font-medium text-gray-700">Needs ({((allocation.needs / income) * 100).toFixed(0)}%)</span>
-              <span className="font-semibold text-gray-900">{formatter.format(allocation.needs)}</span>
-            </div>
-            <div className="relative w-full h-2 bg-white rounded-full overflow-hidden shadow-inner flex">
-              <div className="h-full bg-blue-500" style={{ width: `${(allocation.needs / income) * 100}%` }} />
-            </div>
-
-            <div className="flex justify-between items-center text-sm">
-              <span className="font-medium text-gray-700">Wants ({((allocation.wants / income) * 100).toFixed(0)}%)</span>
-              <span className="font-semibold text-gray-900">{formatter.format(allocation.wants)}</span>
-            </div>
-            <div className="relative w-full h-2 bg-white rounded-full overflow-hidden shadow-inner flex">
-              <div className="h-full bg-purple-500" style={{ width: `${(allocation.wants / income) * 100}%` }} />
-            </div>
-
-            <div className="flex justify-between items-center text-sm">
-              <span className="font-medium text-gray-700">Savings ({((allocation.savings / income) * 100).toFixed(0)}%)</span>
-              <span className="font-semibold text-gray-900">{formatter.format(allocation.savings)}</span>
-            </div>
-            <div className="relative w-full h-2 bg-white rounded-full overflow-hidden shadow-inner flex">
-              <div className="h-full bg-green-500" style={{ width: `${(allocation.savings / income) * 100}%` }} />
-            </div>
-
-            {allocation.debt > 0 && (
-              <>
-                <div className="flex justify-between items-center text-sm mt-3 pt-3 border-t border-blue-100">
-                  <span className="font-medium text-red-600">Debt Reserve ({((allocation.debt / income) * 100).toFixed(0)}%)</span>
-                  <span className="font-semibold text-red-600">{formatter.format(allocation.debt)}</span>
-                </div>
-                <div className="relative w-full h-2 bg-white rounded-full overflow-hidden shadow-inner flex">
-                  <div className="h-full bg-red-400" style={{ width: `${(allocation.debt / income) * 100}%` }} />
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+        );
+      })()}
 
       <button
         type="submit"

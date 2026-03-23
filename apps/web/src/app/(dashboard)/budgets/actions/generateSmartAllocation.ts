@@ -65,7 +65,47 @@ Respond ONLY with a valid JSON object matching this exact schema:
     }
 
     const allocation = JSON.parse(insightText)
-    return { success: true, allocation }
+
+    // Calculate Rollovers (Hybrid Strategy: leftover Needs -> Savings, leftover Wants -> Wants)
+    const today = new Date()
+    const prevMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+    const prevMonthStr = prevMonthDate.toISOString().slice(0, 7) // YYYY-MM
+    
+    const { data: prevBudget } = await supabase.from('budgets').select('*').eq('month', prevMonthStr).single()
+    const { data: prevTxns } = await supabase
+      .from('transactions')
+      .select('amount, type, categories(budget_type)')
+      .gte('date', `${prevMonthStr}-01T00:00:00Z`)
+      .lt('date', `${new Date().toISOString().slice(0, 7)}-01T00:00:00Z`)
+
+    let rolloverNeeds = 0
+    let rolloverWants = 0
+
+    if (prevBudget) {
+      const allPrevTxns = prevTxns || []
+      const spentNeeds = allPrevTxns.filter(t => t.type === 'expense' && (t.categories as any)?.budget_type === 'needs').reduce((sum, t) => sum + Number(t.amount), 0)
+      const spentWants = allPrevTxns.filter(t => t.type === 'expense' && (t.categories as any)?.budget_type === 'wants').reduce((sum, t) => sum + Number(t.amount), 0)
+
+      rolloverNeeds = Math.max(0, Number(prevBudget.needs_amount) - spentNeeds)
+      rolloverWants = Math.max(0, Number(prevBudget.wants_amount) - spentWants)
+
+      // Apply Hybrid Strategy
+      allocation.savings += rolloverNeeds
+      allocation.wants += rolloverWants
+
+      // Add explanation if there's rollover
+      if (rolloverNeeds > 0 || rolloverWants > 0) {
+        const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 })
+        let rolloverMsg = " Includes rollover from last month: "
+        const parts = []
+        if (rolloverNeeds > 0) parts.push(`saved ${formatter.format(rolloverNeeds)} from unspent Needs`)
+        if (rolloverWants > 0) parts.push(`${formatter.format(rolloverWants)} unspent Wants kept for this month`)
+        
+        allocation.reason += rolloverMsg + parts.join(' and ') + '.'
+      }
+    }
+
+    return { success: true, allocation, rollover: { needsToSavings: rolloverNeeds, wantsToWants: rolloverWants } }
     
   } catch (err: any) {
     console.error('AI Allocation Error:', err)
