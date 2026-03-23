@@ -1,3 +1,4 @@
+import '../global.css';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { supabase } from '../src/utils/supabase';
