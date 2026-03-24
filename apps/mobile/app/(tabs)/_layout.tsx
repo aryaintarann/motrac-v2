@@ -31,7 +31,7 @@ function CustomTabBar() {
                 <MaterialCommunityIcons
                   name={isActive ? tab.activeIcon : tab.icon}
                   size={24}
-                  color={isActive ? '#2563EB' : '#94A3B8'}
+                  color={isActive ? '#0947D5' : '#898B8E'}
                 />
               </View>
             </TouchableOpacity>
@@ -80,8 +80,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconWrapActive: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#E8EFFE',
     borderRadius: 24,
+    overflow: 'hidden',
   },
 });
 
