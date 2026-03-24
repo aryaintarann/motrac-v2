@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { supabase } from '../../src/utils/supabase';
 import { Account, Transaction } from '@motrac/shared';
 
@@ -155,24 +156,33 @@ export default function Dashboard() {
           </View>
         </View>
 
-        {/* Quick Actions */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-3 overflow-visible">
-          <TouchableOpacity onPress={() => router.push('/add-transaction')} className="bg-primary rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center border border-primary">
-            <Text className="text-primaryForeground font-semibold text-xs">+ Transaction</Text>
+        {/* Quick Actions Grid */}
+        <View className="flex-row flex-wrap justify-between mb-3">
+          <TouchableOpacity onPress={() => router.push('/add-transaction')} className="bg-card w-[31%] aspect-square rounded-[20px] items-center justify-center shadow-sm border border-border mb-3">
+            <MaterialCommunityIcons name="swap-horizontal" size={28} color="#2563EB" />
+            <Text className="text-foreground text-[13px] font-bold mt-2.5">Transfer</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/debts')} className="bg-card border border-border rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center">
-            <Text className="text-foreground font-semibold text-xs">💸 Debt</Text>
+          <TouchableOpacity onPress={() => router.push('/add-transaction')} className="bg-card w-[31%] aspect-square rounded-[20px] items-center justify-center shadow-sm border border-border mb-3">
+            <MaterialCommunityIcons name="atm" size={28} color="#2563EB" />
+            <Text className="text-foreground text-[13px] font-bold mt-2.5">Withdraw</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/accounts')} className="bg-card border border-border rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center">
-            <Text className="text-foreground font-semibold text-xs">🏦 Account</Text>
+          <TouchableOpacity onPress={() => router.push('/add-transaction')} className="bg-card w-[31%] aspect-square rounded-[20px] items-center justify-center shadow-sm border border-border mb-3">
+            <MaterialCommunityIcons name="cash-plus" size={28} color="#2563EB" />
+            <Text className="text-foreground text-[13px] font-bold mt-2.5">Deposit</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/reports')} className="bg-card border border-border rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center">
-            <Text className="text-foreground font-semibold text-xs">📊 Report</Text>
+          <TouchableOpacity onPress={() => router.push('/accounts')} className="bg-card w-[31%] aspect-square rounded-[20px] items-center justify-center shadow-sm border border-border mb-0">
+            <MaterialCommunityIcons name="credit-card-outline" size={28} color="#2563EB" />
+            <Text className="text-foreground text-[13px] font-bold mt-2.5">My Cards</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/budgets')} className="bg-card border border-border rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center">
-            <Text className="text-foreground font-semibold text-xs">🏷️ Category</Text>
+          <TouchableOpacity onPress={() => router.push('/reports')} className="bg-card w-[31%] aspect-square rounded-[20px] items-center justify-center shadow-sm border border-border mb-0">
+            <MaterialCommunityIcons name="chart-bar" size={28} color="#2563EB" />
+            <Text className="text-foreground text-[13px] font-bold mt-2.5">Analytics</Text>
           </TouchableOpacity>
-        </ScrollView>
+          <TouchableOpacity onPress={() => router.push('/(tabs)/budgets')} className="bg-card w-[31%] aspect-square rounded-[20px] items-center justify-center shadow-sm border border-border mb-0">
+            <MaterialCommunityIcons name="chart-line-variant" size={28} color="#2563EB" />
+            <Text className="text-foreground text-[13px] font-bold mt-2.5">Budget</Text>
+          </TouchableOpacity>
+        </View>
 
         {/* Income / Expense Card */}
         <View className="bg-card rounded-2xl border border-border p-3 shadow-sm mb-3">
