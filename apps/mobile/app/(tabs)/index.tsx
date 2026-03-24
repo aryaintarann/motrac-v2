@@ -143,15 +143,37 @@ export default function Dashboard() {
       <StatusBar style="dark" />
       
       {/* Header */}
-      <View className="flex-row items-center justify-between px-3 py-2 bg-background border-b border-border">
-        <View className="flex-row items-center">
-          <View className="h-8 w-8 rounded-lg bg-primary items-center justify-center">
-            <Text className="text-primaryForeground font-bold text-lg">M</Text>
+      <View className="flex-row items-center justify-between px-5 pt-4 pb-2">
+        <View className="flex-row items-center gap-3">
+          {/* Profile Avater & Badge */}
+          <TouchableOpacity onPress={() => router.push('/profile')} className="relative">
+            <View className="h-12 w-12 rounded-full overflow-hidden bg-slate-200 items-center justify-center border border-slate-100">
+              <Text className="text-xl font-bold text-slate-500">
+                {session?.user?.email ? session.user.email.charAt(0).toUpperCase() : 'U'}
+              </Text>
+            </View>
+            <View className="absolute -bottom-1.5 left-0 right-0 items-center">
+              <View className="bg-white px-2 py-0.5 rounded-full shadow-sm border border-slate-200">
+                <Text className="text-[10px] font-bold text-slate-800">Pro</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+          
+          {/* Greeting Text */}
+          <View className="ml-1">
+            <Text className="text-[19px] font-extrabold text-[#111827] mb-0.5 tracking-tight">
+              Hey! {session?.user?.user_metadata?.full_name?.split(' ')[0] || session?.user?.email?.split('@')[0]?.replace(/[^a-zA-Z]/g, ' ') || 'User'} 👋
+            </Text>
+            <Text className="text-[14px] text-[#A1A1AA] font-medium tracking-tight">
+              How are you Today?
+            </Text>
           </View>
-          <Text className="ml-2 text-xl font-bold text-foreground">Motrac</Text>
         </View>
-        <TouchableOpacity onPress={() => supabase.auth.signOut()} className="h-8 w-8 rounded-full bg-border items-center justify-center">
-            <Text className="text-xs">👋</Text>
+
+        {/* Notification Button */}
+        <TouchableOpacity className="w-11 h-11 bg-white rounded-full items-center justify-center shadow-sm border border-slate-100 relative">
+          <MaterialCommunityIcons name="bell-outline" size={24} color="#71717A" />
+          <View className="absolute top-[10px] right-[10px] w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
         </TouchableOpacity>
       </View>
 
