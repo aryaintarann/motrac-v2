@@ -290,34 +290,40 @@ export default function Dashboard() {
           )}
         </View>
 
-        {/* Recent Transactions List */}
-        <View className="bg-card rounded-2xl border border-border p-3 shadow-sm mb-3">
-          <View className="flex-row justify-between items-end mb-4">
-            <Text className="font-bold text-foreground text-lg">Recent Transactions</Text>
+        {/* Recent Transactions Section */}
+        <View className="mt-2 mb-4">
+          <View className="flex-row justify-between items-center mb-4 px-1">
+            <Text className="font-bold text-[#242A4A] text-[18px]">Transaction History</Text>
+            <TouchableOpacity onPress={() => router.push('/transactions')}>
+              <Text className="text-[#878DA8] text-[13px] font-semibold">View More</Text>
+            </TouchableOpacity>
           </View>
 
-          <View className="gap-2">
-            {transactions.length > 0 ? transactions.map((txn, idx) => {
+          <View className="gap-3">
+            {transactions.length > 0 ? transactions.map((txn) => {
               const isIncome = txn.type === 'income';
               const sign = isIncome ? '+' : (txn.type === 'expense' ? '-' : '');
-              const amountLabel = `${sign}${formatter.format(Number(txn.amount))}`;
-              const accountName = (txn as any).account?.name || 'Account';
+              const amountLabel = `${sign}${formatter.format(Number(txn.amount)).trim()}`;
+              
+              const dateObj = new Date(txn.date);
+              const dateStr = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+              const timeStr = dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).toLowerCase();
               
               return (
-                <View key={txn.id} className={`flex-row justify-between items-center py-2 ${idx !== 0 ? 'border-t border-border' : ''}`}>
-                  <View className="flex-row items-center gap-2">
-                    <View className="h-10 w-10 bg-background border border-border rounded-xl items-center justify-center">
-                      <Text className="text-lg">{isIncome ? '📥' : '📤'}</Text>
+                <TouchableOpacity key={txn.id} className="bg-card rounded-[24px] p-4 flex-row items-center justify-between shadow-sm border border-[#F3F4F6]">
+                  <View className="flex-row items-center gap-4">
+                    <View className="w-[50px] h-[50px] bg-[#F9FAFB] rounded-2xl items-center justify-center border border-[#F3F4F6]">
+                      <Text className="text-xl">{isIncome ? '📥' : '📤'}</Text>
                     </View>
                     <View>
-                      <Text className="font-bold text-foreground text-sm">{txn.notes || txn.description || "Transfer"}</Text>
-                      <Text className="text-muted text-[11px] mt-0.5">{new Date(txn.date).toLocaleDateString()} • {accountName}</Text>
+                      <Text className="font-bold text-[#4B5282] text-[16px] mb-1">{txn.notes || txn.description || "Transfer"}</Text>
+                      <Text className="text-[#AEB4CE] text-[12px] font-medium">{dateStr}    {timeStr}</Text>
                     </View>
                   </View>
-                  <Text className={`font-bold text-sm ${isIncome ? 'text-success' : 'text-foreground'}`}>
+                  <Text className={`font-bold text-[15px] ${isIncome ? 'text-success' : 'text-[#16182B]'}`}>
                     {amountLabel}
                   </Text>
-                </View>
+                </TouchableOpacity>
               );
             }) : (
               <Text className="text-center text-muted py-4 text-xs">No transactions found.</Text>
