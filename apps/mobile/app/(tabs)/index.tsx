@@ -58,12 +58,13 @@ export default function Dashboard() {
     }
 
     // 2. Fetch Recent Transactions
-    const { data: txnData } = await supabase
+    const { data: txnData, error: txnErr } = await supabase
       .from('transactions')
-      .select('*, account:accounts(name)')
+      .select('*')
       .order('date', { ascending: false })
       .limit(5);
     
+    if (txnErr) console.error("Recent Txn Error:", txnErr);
     if (txnData) {
       setTransactions(txnData as Transaction[]);
     }
@@ -315,6 +316,7 @@ export default function Dashboard() {
           <View className="gap-3">
             {transactions.length > 0 ? transactions.map((txn) => {
               const isIncome = txn.type === 'income';
+              const accountName = accounts.find(a => a.id === txn.account_id)?.name || 'Account';
               const sign = isIncome ? '+' : (txn.type === 'expense' ? '-' : '');
               const amountLabel = `${sign}${formatter.format(Number(txn.amount)).trim()}`;
               

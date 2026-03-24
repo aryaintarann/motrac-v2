@@ -7,15 +7,19 @@ import { StatusBar } from 'expo-status-bar';
 
 export default function TransactionsScreen() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [accounts, setAccounts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<'all' | 'income' | 'expense'>('all');
   const router = useRouter();
 
   const fetchTransactions = async () => {
+    const { data: accData } = await supabase.from('accounts').select('*');
+    if (accData) setAccounts(accData);
+
     let query = supabase
       .from('transactions')
-      .select('*, account:accounts(name)')
+      .select('*')
       .order('date', { ascending: false });
 
     if (filter !== 'all') {
@@ -88,7 +92,7 @@ export default function TransactionsScreen() {
                 const isIncome = txn.type === 'income';
                 const sign = isIncome ? '+' : (txn.type === 'expense' ? '-' : '');
                 const amountLabel = `${sign}${formatter.format(Number(txn.amount))}`;
-                const accountName = (txn as any).account?.name || 'Unknown';
+                const accountName = accounts.find(a => a.id === txn.account_id)?.name || 'Unknown';
                 
                 return (
                   <View key={txn.id} className={`flex-row justify-between items-center py-4 px-4 ${idx !== 0 ? 'border-t border-gray-50' : ''}`}>
