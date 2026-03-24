@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { supabase } from '../../src/utils/supabase';
 import { Account, Transaction } from '@motrac/shared';
@@ -40,11 +40,13 @@ export default function Dashboard() {
     }
   }, [])
 
-  useEffect(() => {
-    if (session) {
-      fetchData()
-    }
-  }, [session])
+  useFocusEffect(
+    useCallback(() => {
+      if (session) {
+        fetchData()
+      }
+    }, [session])
+  )
 
   async function fetchData() {
     // 1. Fetch Accounts

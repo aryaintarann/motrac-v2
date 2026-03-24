@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, RefreshControl, ActivityIndic
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../src/utils/supabase';
 import { Transaction } from '@motrac/shared';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 export default function TransactionsScreen() {
@@ -30,10 +30,11 @@ export default function TransactionsScreen() {
     setRefreshing(false);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    fetchTransactions();
-  }, [filter]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTransactions();
+    }, [filter])
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
