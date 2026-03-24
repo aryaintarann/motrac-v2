@@ -105,10 +105,6 @@ export default function ProfileScreen() {
           
           <Text className="text-xl font-extrabold text-[#111827] mb-1 capitalize">{name}</Text>
           <Text className="text-[14px] text-gray-500 font-medium">{email}</Text>
-          
-          <View className="mt-5 bg-blue-50 px-4 py-2 rounded-full">
-            <Text className="text-blue-700 font-bold text-[13px]">Pro Member</Text>
-          </View>
         </View>
 
         {/* Action Menu */}

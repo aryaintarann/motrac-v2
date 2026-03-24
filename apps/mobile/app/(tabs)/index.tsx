@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useFocusEffect } from 'expo-router';
@@ -171,6 +171,8 @@ export default function Dashboard() {
     );
   };
 
+  const avatarUrl = session?.user?.user_metadata?.avatar_url;
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar style="dark" />
@@ -181,14 +183,13 @@ export default function Dashboard() {
           {/* Profile Avater & Badge */}
           <TouchableOpacity onPress={() => router.push('/profile')} className="relative">
             <View className="h-12 w-12 rounded-full overflow-hidden bg-slate-200 items-center justify-center border border-slate-100">
-              <Text className="text-xl font-bold text-slate-500">
-                {session?.user?.email ? session.user.email.charAt(0).toUpperCase() : 'U'}
-              </Text>
-            </View>
-            <View className="absolute -bottom-1.5 left-0 right-0 items-center">
-              <View className="bg-white px-2 py-0.5 rounded-full shadow-sm border border-slate-200">
-                <Text className="text-[10px] font-bold text-slate-800">Pro</Text>
-              </View>
+              {avatarUrl ? (
+                <Image source={{ uri: avatarUrl }} className="w-full h-full" resizeMode="cover" />
+              ) : (
+                <Text className="text-xl font-bold text-slate-500">
+                  {session?.user?.email ? session.user.email.charAt(0).toUpperCase() : 'U'}
+                </Text>
+              )}
             </View>
           </TouchableOpacity>
           
@@ -232,28 +233,33 @@ export default function Dashboard() {
           <Text className="font-bold text-foreground text-lg mb-4">Quick Action</Text>
           <View className="flex-row flex-wrap justify-between">
             <TouchableOpacity onPress={() => router.push('/add-transaction')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-3">
-              <MaterialCommunityIcons name="swap-horizontal" size={28} color="#2563EB" />
-              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Transfer</Text>
+              <MaterialCommunityIcons name="plus-circle-outline" size={28} color="#10B981" />
+              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Transaction</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push('/add-transaction')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-3">
-              <MaterialCommunityIcons name="atm" size={28} color="#2563EB" />
-              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Withdraw</Text>
+            
+            <TouchableOpacity onPress={() => router.push('/(tabs)/transactions')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-3">
+              <MaterialCommunityIcons name="history" size={28} color="#3B82F6" />
+              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>History</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push('/add-transaction')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-3">
-              <MaterialCommunityIcons name="cash-plus" size={28} color="#2563EB" />
-              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Deposit</Text>
+
+            <TouchableOpacity onPress={() => router.push('/(tabs)/budgets')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-3">
+              <MaterialCommunityIcons name="wallet-outline" size={28} color="#8B5CF6" />
+              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Budgets</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push('/accounts')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
-              <MaterialCommunityIcons name="credit-card-outline" size={28} color="#2563EB" />
-              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>My Cards</Text>
+
+            <TouchableOpacity onPress={() => router.push('/debts')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
+              <MaterialCommunityIcons name="account-cash-outline" size={28} color="#EF4444" />
+              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>My Debts</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push('/reports')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
-              <MaterialCommunityIcons name="chart-bar" size={28} color="#2563EB" />
-              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Analytics</Text>
+
+            <TouchableOpacity onPress={() => router.push('/(tabs)/ai')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
+              <MaterialCommunityIcons name="robot-outline" size={28} color="#F59E0B" />
+              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Ask AI</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push('/(tabs)/budgets')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
-              <MaterialCommunityIcons name="chart-line-variant" size={28} color="#2563EB" />
-              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Budget</Text>
+
+            <TouchableOpacity onPress={() => router.push('/security')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
+              <MaterialCommunityIcons name="shield-lock-outline" size={28} color="#64748B" />
+              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Security</Text>
             </TouchableOpacity>
           </View>
         </View>
