@@ -28,6 +28,7 @@ export default function Dashboard() {
   
   const [hasBudget, setHasBudget] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -41,10 +42,42 @@ export default function Dashboard() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!session?.user) return;
+
+    fetchUnreadCount();
+
+    const channel = supabase.channel('realtime-mobile-notifications')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'notifications' },
+        () => {
+          fetchUnreadCount();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [session]);
+
+  const fetchUnreadCount = async () => {
+    if (!session?.user?.id) return;
+    const { count } = await supabase
+      .from('notifications')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', session.user.id)
+      .eq('is_read', false);
+      
+    setUnreadCount(count || 0);
+  };
+
   useFocusEffect(
     useCallback(() => {
       if (session) {
-        fetchData()
+        fetchData();
+        fetchUnreadCount();
       }
     }, [session])
   )
@@ -171,9 +204,11 @@ export default function Dashboard() {
         </View>
 
         {/* Notification Button */}
-        <TouchableOpacity className="w-11 h-11 bg-white rounded-full items-center justify-center shadow-sm border border-slate-100 relative">
+        <TouchableOpacity onPress={() => router.push('/notifications')} className="w-11 h-11 bg-white rounded-full items-center justify-center shadow-sm border border-slate-100 relative">
           <MaterialCommunityIcons name="bell-outline" size={24} color="#71717A" />
-          <View className="absolute top-[10px] right-[10px] w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
+          {unreadCount > 0 && (
+            <View className="absolute top-[8px] right-[8px] w-3 h-3 bg-red-500 rounded-full border-2 border-white items-center justify-center" />
+          )}
         </TouchableOpacity>
       </View>
 
