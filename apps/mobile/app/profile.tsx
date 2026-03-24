@@ -1,13 +1,16 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import { useState, useCallback } from 'react';
 import { supabase } from '../src/utils/supabase';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { decode } from 'base64-arraybuffer';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const [session, setSession] = useState<any>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -22,8 +25,50 @@ export default function ProfileScreen() {
     router.replace('/(auth)/login');
   };
 
+  const handlePickAvatar = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'], // Updated mapping parameter for V15
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.5,
+        base64: true
+      });
+
+      if (!result.canceled && result.assets[0].base64) {
+        setIsUploading(true);
+        const fileExt = result.assets[0].uri.split('.').pop() || 'jpeg';
+        const filePath = `${session?.user?.id}-${Math.random()}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(filePath, decode(result.assets[0].base64), { 
+            contentType: `image/${fileExt}`,
+            upsert: true
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+        
+        await supabase.auth.updateUser({
+          data: { avatar_url: data.publicUrl }
+        });
+        
+        // Refresh session
+        const newSession = await supabase.auth.getSession();
+        setSession(newSession.data.session);
+      }
+    } catch (error: any) {
+      alert(error.message || 'Error uploading image');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const email = session?.user?.email || 'Loading...';
   const name = session?.user?.user_metadata?.full_name || email.split('@')[0].replace(/[^a-zA-Z]/g, ' ') || 'User';
+  const avatarUrl = session?.user?.user_metadata?.avatar_url;
 
   return (
     <View className="flex-1 bg-[#F9FAFB]">
@@ -43,16 +88,20 @@ export default function ProfileScreen() {
         
         {/* Avatar Card */}
         <View className="bg-white rounded-[24px] p-6 items-center shadow-sm border border-gray-100 mb-6">
-          <View className="relative mb-4">
+          <TouchableOpacity onPress={handlePickAvatar} disabled={isUploading} className="relative mb-4">
             <View className="w-24 h-24 rounded-full bg-slate-200 items-center justify-center border-4 border-white shadow-sm overflow-hidden">
-               <Text className="text-4xl font-bold text-slate-500">
-                 {email !== 'Loading...' ? email.charAt(0).toUpperCase() : 'U'}
-               </Text>
+               {avatarUrl ? (
+                  <Image source={{ uri: avatarUrl }} className="w-full h-full" resizeMode="cover" />
+               ) : (
+                 <Text className="text-4xl font-bold text-slate-500">
+                   {email !== 'Loading...' ? email.charAt(0).toUpperCase() : 'U'}
+                 </Text>
+               )}
             </View>
-            <View className="absolute bottom-0 right-0 w-7 h-7 bg-blue-600 rounded-full items-center justify-center border-2 border-white">
-              <MaterialCommunityIcons name="pencil" size={12} color="white" />
+            <View className="absolute bottom-0 right-0 w-8 h-8 bg-blue-600 rounded-full items-center justify-center border-[3px] border-white">
+              {isUploading ? <ActivityIndicator size="small" color="white" /> : <MaterialCommunityIcons name="camera" size={14} color="white" />}
             </View>
-          </View>
+          </TouchableOpacity>
           
           <Text className="text-xl font-extrabold text-[#111827] mb-1 capitalize">{name}</Text>
           <Text className="text-[14px] text-gray-500 font-medium">{email}</Text>
@@ -65,7 +114,7 @@ export default function ProfileScreen() {
         {/* Action Menu */}
         <View className="bg-white rounded-[24px] shadow-sm border border-gray-100 overflow-hidden mb-6 py-2">
           
-          <TouchableOpacity className="flex-row items-center px-5 py-4 border-b border-gray-50">
+          <TouchableOpacity onPress={() => router.push('/personal-info')} className="flex-row items-center px-5 py-4 border-b border-gray-50">
             <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center mr-4">
               <MaterialCommunityIcons name="account-outline" size={22} color="#4B5563" />
             </View>
@@ -73,7 +122,7 @@ export default function ProfileScreen() {
             <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
           </TouchableOpacity>
 
-          <TouchableOpacity className="flex-row items-center px-5 py-4 border-b border-gray-50">
+          <TouchableOpacity onPress={() => router.push('/security')} className="flex-row items-center px-5 py-4 border-gray-50">
             <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center mr-4">
               <MaterialCommunityIcons name="shield-lock-outline" size={22} color="#4B5563" />
             </View>
@@ -81,13 +130,6 @@ export default function ProfileScreen() {
             <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
           </TouchableOpacity>
 
-          <TouchableOpacity className="flex-row items-center px-5 py-4">
-            <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center mr-4">
-              <MaterialCommunityIcons name="cog-outline" size={22} color="#4B5563" />
-            </View>
-            <Text className="flex-1 text-[16px] font-semibold text-[#374151]">Settings</Text>
-            <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
-          </TouchableOpacity>
         </View>
 
         {/* Logout Button */}
