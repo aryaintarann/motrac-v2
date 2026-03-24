@@ -1,27 +1,15 @@
 import { Tabs } from 'expo-router';
-import { View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 function TabIcon({ name, focused }: { name: IconName; focused: boolean }) {
   return (
-    <View
-      style={{
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: focused ? 'rgba(255,255,255,0.18)' : 'transparent',
-      }}
-    >
-      <MaterialCommunityIcons
-        name={name}
-        size={22}
-        color={focused ? '#FFFFFF' : 'rgba(255,255,255,0.45)'}
-      />
-    </View>
+    <MaterialCommunityIcons
+      name={name}
+      size={26}
+      color={focused ? '#FFFFFF' : 'rgba(255,255,255,0.4)'}
+    />
   );
 }
 
@@ -33,27 +21,35 @@ export default function TabsLayout() {
         tabBarShowLabel: false,
         tabBarStyle: {
           position: 'absolute',
-          bottom: 28,
-          left: 40,
-          right: 40,
-          height: 70,
-          borderRadius: 35,
+          bottom: 24,
+          left: 48,
+          right: 48,
+          height: 64,
+          borderRadius: 32,
           backgroundColor: '#1A1A2E',
           borderTopWidth: 0,
-          elevation: 24,
-          shadowColor: '#000000',
-          shadowOffset: { width: 0, height: 12 },
-          shadowOpacity: 0.4,
-          shadowRadius: 24,
+          elevation: 20,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 8 },
+          shadowOpacity: 0.3,
+          shadowRadius: 16,
+        },
+        tabBarIconStyle: {
+          width: 32,
+          height: 32,
         },
         tabBarItemStyle: {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          height: 70,
+          marginTop: 0,
+          marginBottom: 0,
           paddingTop: 0,
           paddingBottom: 0,
+          height: 64,
         },
+        tabBarActiveTintColor: '#FFFFFF',
+        tabBarInactiveTintColor: 'rgba(255,255,255,0.4)',
       }}
     >
       <Tabs.Screen
