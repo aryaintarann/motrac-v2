@@ -97,12 +97,6 @@ export default function TransactionsScreen() {
       {/* Header */}
       <View className="flex-row items-center justify-between px-5 pt-2 pb-4">
         <Text className="text-[24px] font-extrabold text-[#0f172a] tracking-tight">Transactions</Text>
-        <TouchableOpacity
-          onPress={() => router.push('/add-transaction')}
-          className="bg-[#0947D5] h-10 w-10 rounded-full items-center justify-center shadow-sm"
-        >
-          <MaterialCommunityIcons name="plus" size={22} color="white" />
-        </TouchableOpacity>
       </View>
 
       {/* Search Bar */}
@@ -124,14 +118,16 @@ export default function TransactionsScreen() {
         </View>
       </View>
 
-      {/* Dropdowns Row */}
-      <View className="flex-row items-center px-5 mb-4 gap-3">
-        {/* Month Dropdown */}
+      {/* Dropdowns Row — Month + Year only */}
+      <View className="flex-row items-center px-5 mb-3 gap-3">
+        {/* Month Dropdown - full name */}
         <TouchableOpacity
           onPress={() => setShowMonthPicker(true)}
           className="flex-1 flex-row items-center justify-between bg-white rounded-2xl px-4 h-12 border border-gray-100 shadow-sm"
         >
-          <Text className="text-[14px] font-bold text-gray-800">{MONTHS[selectedMonth]}</Text>
+          <Text className="text-[14px] font-bold text-gray-800" numberOfLines={1}>
+            {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })}
+          </Text>
           <MaterialCommunityIcons name="chevron-down" size={18} color="#94A3B8" />
         </TouchableOpacity>
 
@@ -143,19 +139,21 @@ export default function TransactionsScreen() {
           <Text className="text-[14px] font-bold text-gray-800">{selectedYear}</Text>
           <MaterialCommunityIcons name="chevron-down" size={18} color="#94A3B8" />
         </TouchableOpacity>
+      </View>
 
-        {/* Type filter */}
-        <View className="flex-row bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-12 items-center">
-          {(['all', 'income', 'expense'] as const).map(t => (
-            <TouchableOpacity
-              key={t}
-              onPress={() => setTypeFilter(t)}
-              className={`px-3 h-full items-center justify-center ${typeFilter === t ? 'bg-[#0947D5]' : ''}`}
-            >
-              <Text className={`text-[12px] font-bold capitalize ${typeFilter === t ? 'text-white' : 'text-gray-500'}`}>{t}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+      {/* Type filter row - below dropdowns */}
+      <View className="flex-row items-center px-5 mb-4 gap-2">
+        {(['all', 'income', 'expense'] as const).map(t => (
+          <TouchableOpacity
+            key={t}
+            onPress={() => setTypeFilter(t)}
+            className={`flex-1 py-2.5 rounded-xl items-center border ${
+              typeFilter === t ? 'bg-[#0947D5] border-[#0947D5]' : 'bg-white border-gray-100 shadow-sm'
+            }`}
+          >
+            <Text className={`text-[13px] font-bold capitalize ${typeFilter === t ? 'text-white' : 'text-gray-500'}`}>{t}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       {/* Month picker modal */}
@@ -270,6 +268,30 @@ export default function TransactionsScreen() {
           ))
         )}
       </ScrollView>
+
+      {/* FAB above floating navbar */}
+      <TouchableOpacity
+        onPress={() => router.push('/add-transaction')}
+        style={{
+          position: 'absolute',
+          bottom: 108,
+          right: 24,
+          width: 52,
+          height: 52,
+          borderRadius: 26,
+          backgroundColor: '#0947D5',
+          alignItems: 'center',
+          justifyContent: 'center',
+          shadowColor: '#0947D5',
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.4,
+          shadowRadius: 12,
+          elevation: 10,
+        }}
+      >
+        <MaterialCommunityIcons name="plus" size={26} color="white" />
+      </TouchableOpacity>
+
     </SafeAreaView>
   );
 }
