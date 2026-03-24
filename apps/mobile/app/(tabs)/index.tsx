@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useFocusEffect } from 'expo-router';
@@ -27,6 +27,7 @@ export default function Dashboard() {
   const [spentSavings, setSpentSavings] = useState(0);
   
   const [hasBudget, setHasBudget] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -94,6 +95,12 @@ export default function Dashboard() {
     setSpentSavings(allTxns.filter(t => t.type === 'expense' && (t.categories as any)?.budget_type === 'savings').reduce((sum, t) => sum + Number(t.amount), 0))
   }
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchData();
+    setRefreshing(false);
+  }, [session]);
+
   const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 });
   
   // Pacing Logic
@@ -147,7 +154,11 @@ export default function Dashboard() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView className="flex-1" contentContainerStyle={{ padding: 16, paddingBottom: 40 }}>
+      <ScrollView 
+        className="flex-1" 
+        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         
         {/* Total Balance Card */}
         <View className="bg-card rounded-2xl border border-border p-3 shadow-sm mb-3">
