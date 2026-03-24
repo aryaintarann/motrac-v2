@@ -5,11 +5,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: '#F5F7FA',
-        foreground: '#333333',
-        primary: '#1A6FD6',
-        accent: '#2196F3',
-        surface: '#ffffff',
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        card: 'var(--card)',
+        cardForeground: 'var(--card-foreground)',
+        primary: 'var(--primary)',
+        primaryForeground: 'var(--primary-foreground)',
+        muted: 'var(--muted)',
+        border: 'var(--border)',
+        success: 'var(--success)',
+        danger: 'var(--danger)',
+        warning: 'var(--warning)',
+        info: 'var(--info)',
       },
       spacing: {
         '1': '8px',
