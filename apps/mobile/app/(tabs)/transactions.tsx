@@ -1,6 +1,6 @@
 import {
   View, Text, ScrollView, TouchableOpacity, RefreshControl,
-  ActivityIndicator, TextInput
+  ActivityIndicator, TextInput, Modal, FlatList
 } from 'react-native';
 import { useState, useCallback, useMemo } from 'react';
 import { supabase } from '../../src/utils/supabase';
@@ -25,6 +25,8 @@ export default function TransactionsScreen() {
   const [selectedYear, setSelectedYear]   = useState(now.getFullYear());
 
   const years = Array.from({ length: 5 }, (_, i) => now.getFullYear() - i);
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
+  const [showYearPicker,  setShowYearPicker]  = useState(false);
 
   const formatter = new Intl.NumberFormat('id-ID', {
     style: 'currency', currency: 'IDR', maximumFractionDigits: 0
@@ -122,51 +124,33 @@ export default function TransactionsScreen() {
         </View>
       </View>
 
-      {/* Month Scroll */}
-      <View className="mb-3">
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, gap: 8 }}>
-          {MONTHS.map((m, idx) => {
-            const active = idx === selectedMonth;
-            return (
-              <TouchableOpacity
-                key={m}
-                onPress={() => setSelectedMonth(idx)}
-                className={`px-4 py-2 rounded-xl border ${active ? 'bg-[#0947D5] border-[#0947D5]' : 'bg-white border-gray-100 shadow-sm'}`}
-              >
-                <Text className={`text-[13px] font-bold ${active ? 'text-white' : 'text-gray-500'}`}>{m}</Text>
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-      </View>
+      {/* Dropdowns Row */}
+      <View className="flex-row items-center px-5 mb-4 gap-3">
+        {/* Month Dropdown */}
+        <TouchableOpacity
+          onPress={() => setShowMonthPicker(true)}
+          className="flex-1 flex-row items-center justify-between bg-white rounded-2xl px-4 h-12 border border-gray-100 shadow-sm"
+        >
+          <Text className="text-[14px] font-bold text-gray-800">{MONTHS[selectedMonth]}</Text>
+          <MaterialCommunityIcons name="chevron-down" size={18} color="#94A3B8" />
+        </TouchableOpacity>
 
-      {/* Year + Type Row */}
-      <View className="flex-row items-center justify-between px-5 mb-4 gap-3">
-        {/* Year pills */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View className="flex-row gap-2">
-            {years.map(y => {
-              const active = y === selectedYear;
-              return (
-                <TouchableOpacity
-                  key={y}
-                  onPress={() => setSelectedYear(y)}
-                  className={`px-4 py-2 rounded-xl border ${active ? 'bg-[#0947D5] border-[#0947D5]' : 'bg-white border-gray-100 shadow-sm'}`}
-                >
-                  <Text className={`text-[13px] font-bold ${active ? 'text-white' : 'text-gray-500'}`}>{y}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </ScrollView>
+        {/* Year Dropdown */}
+        <TouchableOpacity
+          onPress={() => setShowYearPicker(true)}
+          className="flex-row items-center justify-between bg-white rounded-2xl px-4 h-12 border border-gray-100 shadow-sm w-28"
+        >
+          <Text className="text-[14px] font-bold text-gray-800">{selectedYear}</Text>
+          <MaterialCommunityIcons name="chevron-down" size={18} color="#94A3B8" />
+        </TouchableOpacity>
 
         {/* Type filter */}
-        <View className="flex-row bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <View className="flex-row bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-12 items-center">
           {(['all', 'income', 'expense'] as const).map(t => (
             <TouchableOpacity
               key={t}
               onPress={() => setTypeFilter(t)}
-              className={`px-3 py-2 ${typeFilter === t ? 'bg-[#0947D5]' : ''}`}
+              className={`px-3 h-full items-center justify-center ${typeFilter === t ? 'bg-[#0947D5]' : ''}`}
             >
               <Text className={`text-[12px] font-bold capitalize ${typeFilter === t ? 'text-white' : 'text-gray-500'}`}>{t}</Text>
             </TouchableOpacity>
@@ -174,14 +158,64 @@ export default function TransactionsScreen() {
         </View>
       </View>
 
-      {/* Summary Row */}
-      <View className="flex-row gap-3 px-5 mb-4">
-        <View className="flex-1 bg-emerald-50 rounded-2xl px-4 py-3 border border-emerald-100">
-          <Text className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider mb-1">Income</Text>
+      {/* Month picker modal */}
+      <Modal visible={showMonthPicker} transparent animationType="fade">
+        <TouchableOpacity className="flex-1 bg-black/40 justify-center px-8" activeOpacity={1} onPress={() => setShowMonthPicker(false)}>
+          <View className="bg-white rounded-3xl overflow-hidden">
+            <Text className="text-[16px] font-bold text-gray-800 px-5 pt-5 pb-3">Select Month</Text>
+            {MONTHS.map((m, idx) => (
+              <TouchableOpacity
+                key={m}
+                onPress={() => { setSelectedMonth(idx); setShowMonthPicker(false); }}
+                className={`px-5 py-3.5 flex-row items-center justify-between ${idx === selectedMonth ? 'bg-blue-50' : ''}`}
+              >
+                <Text className={`text-[15px] font-semibold ${idx === selectedMonth ? 'text-[#0947D5]' : 'text-gray-700'}`}>{m}</Text>
+                {idx === selectedMonth && <MaterialCommunityIcons name="check" size={18} color="#0947D5" />}
+              </TouchableOpacity>
+            ))}
+            <View className="h-4" />
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
+      {/* Year picker modal */}
+      <Modal visible={showYearPicker} transparent animationType="fade">
+        <TouchableOpacity className="flex-1 bg-black/40 justify-center px-8" activeOpacity={1} onPress={() => setShowYearPicker(false)}>
+          <View className="bg-white rounded-3xl overflow-hidden">
+            <Text className="text-[16px] font-bold text-gray-800 px-5 pt-5 pb-3">Select Year</Text>
+            {years.map(y => (
+              <TouchableOpacity
+                key={y}
+                onPress={() => { setSelectedYear(y); setShowYearPicker(false); }}
+                className={`px-5 py-3.5 flex-row items-center justify-between ${y === selectedYear ? 'bg-blue-50' : ''}`}
+              >
+                <Text className={`text-[15px] font-semibold ${y === selectedYear ? 'text-[#0947D5]' : 'text-gray-700'}`}>{y}</Text>
+                {y === selectedYear && <MaterialCommunityIcons name="check" size={18} color="#0947D5" />}
+              </TouchableOpacity>
+            ))}
+            <View className="h-4" />
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
+      {/* Summary Cards stacked */}
+      <View className="flex-col gap-2 px-5 mb-4">
+        <View className="bg-emerald-50 rounded-2xl px-4 py-3 border border-emerald-100 flex-row items-center justify-between">
+          <View className="flex-row items-center gap-2">
+            <View className="w-8 h-8 bg-emerald-200 rounded-full items-center justify-center">
+              <MaterialCommunityIcons name="arrow-down" size={16} color="#065F46" />
+            </View>
+            <Text className="text-[13px] font-bold text-emerald-700">Income</Text>
+          </View>
           <Text className="font-extrabold text-[16px] text-emerald-800">{formatter.format(totalIncome).replace('Rp', '+Rp ')}</Text>
         </View>
-        <View className="flex-1 bg-red-50 rounded-2xl px-4 py-3 border border-red-100">
-          <Text className="text-[11px] font-bold text-red-700 uppercase tracking-wider mb-1">Expense</Text>
+        <View className="bg-red-50 rounded-2xl px-4 py-3 border border-red-100 flex-row items-center justify-between">
+          <View className="flex-row items-center gap-2">
+            <View className="w-8 h-8 bg-red-200 rounded-full items-center justify-center">
+              <MaterialCommunityIcons name="arrow-up" size={16} color="#7F1D1D" />
+            </View>
+            <Text className="text-[13px] font-bold text-red-700">Expense</Text>
+          </View>
           <Text className="font-extrabold text-[16px] text-red-800">{formatter.format(totalExpense).replace('Rp', '-Rp ')}</Text>
         </View>
       </View>
