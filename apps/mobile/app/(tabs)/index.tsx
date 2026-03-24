@@ -242,9 +242,9 @@ export default function Dashboard() {
               <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>History</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push('/(tabs)/budgets')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-3">
+            <TouchableOpacity onPress={() => router.push('/accounts')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-3">
               <MaterialCommunityIcons name="wallet-outline" size={28} color="#8B5CF6" />
-              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Budgets</Text>
+              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Accounts</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push('/debts')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
@@ -257,9 +257,9 @@ export default function Dashboard() {
               <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Ask AI</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.push('/security')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
-              <MaterialCommunityIcons name="shield-lock-outline" size={28} color="#64748B" />
-              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Security</Text>
+            <TouchableOpacity onPress={() => router.push('/categories')} className="bg-card w-[31%] h-24 rounded-[16px] flex-col items-center justify-center shadow-sm border border-border mb-0">
+              <MaterialCommunityIcons name="shape-outline" size={28} color="#64748B" />
+              <Text className="text-foreground text-[12px] font-bold mt-2 text-center" numberOfLines={1}>Categories</Text>
             </TouchableOpacity>
           </View>
         </View>
