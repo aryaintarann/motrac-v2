@@ -27,7 +27,8 @@ function CustomTabBar() {
               style={styles.item}
               activeOpacity={0.7}
             >
-              <View style={[styles.iconWrap, isActive && styles.iconWrapActive]}>
+              <View style={styles.iconWrap}>
+                {isActive && <View style={styles.activeCircle} />}
                 <MaterialCommunityIcons
                   name={isActive ? tab.activeIcon : tab.icon}
                   size={24}
@@ -75,14 +76,18 @@ const styles = StyleSheet.create({
   iconWrap: {
     width: 48,
     height: 48,
-    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
-  iconWrapActive: {
+  activeCircle: {
+    position: 'absolute',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: '#E8EFFE',
-    borderRadius: 24,
-    overflow: 'hidden',
+    top: 2,
+    left: 2,
   },
 });
 
