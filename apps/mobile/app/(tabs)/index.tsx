@@ -2,10 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'expo-router';
 import { supabase } from '../../src/utils/supabase';
 import { Account, Transaction } from '@motrac/shared';
 
 export default function Dashboard() {
+  const router = useRouter();
   const [session, setSession] = useState<any>(null);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -152,6 +154,25 @@ export default function Dashboard() {
             <Text className="text-muted font-semibold text-base ml-1">IDR</Text>
           </View>
         </View>
+
+        {/* Quick Actions */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-3 overflow-visible">
+          <TouchableOpacity onPress={() => router.push('/add-transaction')} className="bg-primary rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center border border-primary">
+            <Text className="text-primaryForeground font-semibold text-xs">+ Transaction</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/debts')} className="bg-card border border-border rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center">
+            <Text className="text-foreground font-semibold text-xs">💸 Debt</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/accounts')} className="bg-card border border-border rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center">
+            <Text className="text-foreground font-semibold text-xs">🏦 Account</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/reports')} className="bg-card border border-border rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center">
+            <Text className="text-foreground font-semibold text-xs">📊 Report</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/(tabs)/budgets')} className="bg-card border border-border rounded-xl px-3 py-2.5 mr-2 shadow-sm flex-row items-center">
+            <Text className="text-foreground font-semibold text-xs">🏷️ Category</Text>
+          </TouchableOpacity>
+        </ScrollView>
 
         {/* Income / Expense Card */}
         <View className="bg-card rounded-2xl border border-border p-3 shadow-sm mb-3">
