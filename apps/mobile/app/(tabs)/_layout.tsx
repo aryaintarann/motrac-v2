@@ -1,47 +1,34 @@
-import { Tabs } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
 type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
-const TAB_ICONS: Record<string, { icon: IconName; activeIcon: IconName }> = {
-  index:        { icon: 'home-variant-outline',  activeIcon: 'home-variant' },
-  transactions: { icon: 'swap-horizontal',        activeIcon: 'swap-horizontal' },
-  budgets:      { icon: 'chart-pie-outline',      activeIcon: 'chart-pie' },
-  ai:           { icon: 'lifebuoy',               activeIcon: 'lifebuoy' },
-};
+const TABS: { name: string; route: string; icon: IconName; activeIcon: IconName }[] = [
+  { name: 'index',        route: '/(tabs)/',             icon: 'home-variant-outline', activeIcon: 'home-variant' },
+  { name: 'transactions', route: '/(tabs)/transactions', icon: 'swap-horizontal',       activeIcon: 'swap-horizontal' },
+  { name: 'budgets',      route: '/(tabs)/budgets',      icon: 'chart-pie-outline',     activeIcon: 'chart-pie' },
+  { name: 'ai',           route: '/(tabs)/ai',           icon: 'lifebuoy',              activeIcon: 'lifebuoy' },
+];
 
-function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+function CustomTabBar({ state }: BottomTabBarProps) {
   return (
     <View style={styles.wrapper} pointerEvents="box-none">
       <View style={styles.pill}>
-        {state.routes.map((route, index) => {
+        {TABS.map((tab, index) => {
           const isFocused = state.index === index;
-          const icons = TAB_ICONS[route.name] ?? { icon: 'circle-outline', activeIcon: 'circle' };
-
-          const onPress = () => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
-
           return (
             <TouchableOpacity
-              key={route.key}
-              onPress={onPress}
+              key={tab.name}
+              onPress={() => router.push(tab.route as any)}
               style={styles.item}
               activeOpacity={0.7}
             >
               <View style={styles.iconWrap}>
                 {isFocused && <View style={styles.activeCircle} />}
                 <MaterialCommunityIcons
-                  name={isFocused ? icons.activeIcon : icons.icon}
+                  name={isFocused ? tab.activeIcon : tab.icon}
                   size={24}
                   color={isFocused ? '#0947D5' : '#898B8E'}
                 />
