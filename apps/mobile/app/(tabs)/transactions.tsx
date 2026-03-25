@@ -1,6 +1,6 @@
 import {
   View, Text, ScrollView, TouchableOpacity, RefreshControl,
-  ActivityIndicator, TextInput, Modal, FlatList
+  ActivityIndicator, TextInput, FlatList
 } from 'react-native';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { supabase } from '../../src/utils/supabase';
@@ -158,45 +158,53 @@ export default function TransactionsScreen() {
         ))}
       </View>
 
-      {/* Month picker modal */}
-      <Modal visible={showMonthPicker} transparent animationType="fade">
-        <TouchableOpacity className="flex-1 bg-black/40 justify-center px-8" activeOpacity={1} onPress={() => setShowMonthPicker(false)}>
-          <View className="bg-white rounded-3xl overflow-hidden">
-            <Text className="text-[16px] font-bold text-gray-800 px-5 pt-5 pb-3">Select Month</Text>
-            {MONTHS.map((m, idx) => (
-              <TouchableOpacity
-                key={m}
-                onPress={() => { setSelectedMonth(idx); setShowMonthPicker(false); }}
-                className={`px-5 py-3.5 flex-row items-center justify-between ${idx === selectedMonth ? 'bg-blue-50' : ''}`}
-              >
-                <Text className={`text-[15px] font-semibold ${idx === selectedMonth ? 'text-[#0947D5]' : 'text-gray-700'}`}>{m}</Text>
-                {idx === selectedMonth && <MaterialCommunityIcons name="check" size={18} color="#0947D5" />}
-              </TouchableOpacity>
-            ))}
-            <View className="h-4" />
-          </View>
-        </TouchableOpacity>
-      </Modal>
+      {/* Month picker overlay */}
+      {showMonthPicker && (
+        <View className="absolute inset-0 z-50">
+          <TouchableOpacity className="flex-1 bg-black/40 justify-center px-8" activeOpacity={1} onPress={() => setShowMonthPicker(false)}>
+            <View className="bg-white rounded-3xl overflow-hidden">
+              <Text className="text-[16px] font-bold text-gray-800 px-5 pt-5 pb-3">Select Month</Text>
+              <ScrollView style={{ maxHeight: 300 }}>
+                {MONTHS.map((m, idx) => (
+                  <TouchableOpacity
+                    key={m}
+                    onPress={() => { setSelectedMonth(idx); setShowMonthPicker(false); }}
+                    className={`px-5 py-3.5 flex-row items-center justify-between ${idx === selectedMonth ? 'bg-blue-50' : ''}`}
+                  >
+                    <Text className={`text-[15px] font-semibold ${idx === selectedMonth ? 'text-[#0947D5]' : 'text-gray-700'}`}>{m}</Text>
+                    {idx === selectedMonth && <MaterialCommunityIcons name="check" size={18} color="#0947D5" />}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+              <View className="h-4" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
 
-      {/* Year picker modal */}
-      <Modal visible={showYearPicker} transparent animationType="fade">
-        <TouchableOpacity className="flex-1 bg-black/40 justify-center px-8" activeOpacity={1} onPress={() => setShowYearPicker(false)}>
-          <View className="bg-white rounded-3xl overflow-hidden">
-            <Text className="text-[16px] font-bold text-gray-800 px-5 pt-5 pb-3">Select Year</Text>
-            {years.map(y => (
-              <TouchableOpacity
-                key={y}
-                onPress={() => { setSelectedYear(y); setShowYearPicker(false); }}
-                className={`px-5 py-3.5 flex-row items-center justify-between ${y === selectedYear ? 'bg-blue-50' : ''}`}
-              >
-                <Text className={`text-[15px] font-semibold ${y === selectedYear ? 'text-[#0947D5]' : 'text-gray-700'}`}>{y}</Text>
-                {y === selectedYear && <MaterialCommunityIcons name="check" size={18} color="#0947D5" />}
-              </TouchableOpacity>
-            ))}
-            <View className="h-4" />
-          </View>
-        </TouchableOpacity>
-      </Modal>
+      {/* Year picker overlay */}
+      {showYearPicker && (
+        <View className="absolute inset-0 z-50">
+          <TouchableOpacity className="flex-1 bg-black/40 justify-center px-8" activeOpacity={1} onPress={() => setShowYearPicker(false)}>
+            <View className="bg-white rounded-3xl overflow-hidden">
+              <Text className="text-[16px] font-bold text-gray-800 px-5 pt-5 pb-3">Select Year</Text>
+              <ScrollView style={{ maxHeight: 300 }}>
+                {years.map(y => (
+                  <TouchableOpacity
+                    key={y}
+                    onPress={() => { setSelectedYear(y); setShowYearPicker(false); }}
+                    className={`px-5 py-3.5 flex-row items-center justify-between ${y === selectedYear ? 'bg-blue-50' : ''}`}
+                  >
+                    <Text className={`text-[15px] font-semibold ${y === selectedYear ? 'text-[#0947D5]' : 'text-gray-700'}`}>{y}</Text>
+                    {y === selectedYear && <MaterialCommunityIcons name="check" size={18} color="#0947D5" />}
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+              <View className="h-4" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* Summary Cards stacked */}
       <View className="flex-col gap-2 px-5 mb-4">
