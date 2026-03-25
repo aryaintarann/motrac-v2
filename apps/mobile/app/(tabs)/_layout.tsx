@@ -1,7 +1,9 @@
-import { Tabs, router } from 'expo-router';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Tabs, router, Redirect } from 'expo-router';
+import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { useEffect, useState } from 'react';
+import { supabase } from '../../src/utils/supabase';
 
 type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
@@ -89,6 +91,36 @@ const styles = StyleSheet.create({
 });
 
 export default function TabsLayout() {
+  const [session, setSession] = useState<any>(undefined);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  // Still loading session
+  if (session === undefined) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F5F7FA' }}>
+        <ActivityIndicator size="large" color="#0947D5" />
+      </View>
+    );
+  }
+
+  // Not authenticated - redirect to login
+  if (!session) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
   return (
     <Tabs
       tabBar={(props) => <CustomTabBar {...props} />}

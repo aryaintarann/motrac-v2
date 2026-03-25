@@ -1,13 +1,14 @@
 import '../global.css';
-import { Stack, useRouter, useSegments } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { Stack, Redirect, useSegments, SplashScreen } from 'expo-router';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../src/utils/supabase';
+
+// Prevent the splash screen from auto-hiding until we're ready
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [session, setSession] = useState<any>(null);
   const [initialized, setInitialized] = useState(false);
-  const segments = useSegments();
-  const router = useRouter();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -24,20 +25,17 @@ export default function RootLayout() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!initialized) return;
-
-    const inAuthGroup = segments[0] === '(auth)';
-
-    if (!session && !inAuthGroup) {
-      router.replace('/(auth)/login');
-    } else if (session && inAuthGroup) {
-      router.replace('/(tabs)');
+  const onLayoutReady = useCallback(async () => {
+    if (initialized) {
+      await SplashScreen.hideAsync();
     }
-  }, [session, initialized, segments]);
+  }, [initialized]);
 
-  if (!initialized) return null;
+  useEffect(() => {
+    onLayoutReady();
+  }, [onLayoutReady]);
 
+  // Always render the Stack so NavigationContainer context is available
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -52,4 +50,42 @@ export default function RootLayout() {
       <Stack.Screen name="categories" options={{ headerShown: false }} />
     </Stack>
   );
+}
+
+/**
+ * Auth guard component - use this inside individual layouts or screens
+ * that need auth protection. We export it so child layouts can use it.
+ */
+export function useProtectedRoute() {
+  const [session, setSession] = useState<any>(null);
+  const [initialized, setInitialized] = useState(false);
+  const segments = useSegments();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setInitialized(true);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  if (!initialized) return { isLoading: true, redirect: null };
+
+  const inAuthGroup = segments[0] === '(auth)';
+
+  if (!session && !inAuthGroup) {
+    return { isLoading: false, redirect: '/(auth)/login' as const };
+  }
+  if (session && inAuthGroup) {
+    return { isLoading: false, redirect: '/(tabs)' as const };
+  }
+
+  return { isLoading: false, redirect: null };
 }
