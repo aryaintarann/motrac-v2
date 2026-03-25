@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { supabase } from '../../src/utils/supabase';
-import { useRouter, useFocusEffect } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -56,14 +56,7 @@ export default function TransactionsScreen() {
     setRefreshing(false);
   };
 
-  // Re-fetch when screen gains focus
-  useFocusEffect(useCallback(() => {
-    setLoading(true);
-    fetchTransactions();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []));
-
-  // Re-fetch when filters change (plain useEffect — no navigation context needed)
+  // Fetch on mount and whenever filters change
   useEffect(() => {
     setLoading(true);
     fetchTransactions();
