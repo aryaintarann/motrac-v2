@@ -33,9 +33,17 @@ export default function Dashboard() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
+      // Redirect to login if not authenticated
+      if (!session) {
+        router.replace('/(auth)/login');
+      }
     })
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
+      // Redirect to login if session is lost
+      if (!session) {
+        router.replace('/(auth)/login');
+      }
     })
     return () => {
       subscription.unsubscribe();
