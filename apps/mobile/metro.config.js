@@ -17,11 +17,20 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, "node_modules"),
 ];
 
-// 3. Deduplicate react & react-native to prevent dual-context bugs
-//    This ensures ALL packages use the same React instance
-config.resolver.extraNodeModules = {
-  react: path.resolve(monorepoRoot, "node_modules/react"),
-  "react-native": path.resolve(monorepoRoot, "node_modules/react-native"),
+// 3. FORCE deduplicate react & react-native using resolveRequest
+//    extraNodeModules is only a fallback - resolveRequest actually overrides
+const reactNativeModules = new Set(["react", "react-native", "react/jsx-runtime", "react/jsx-dev-runtime"]);
+
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  // Force react-related modules to resolve from monorepo root
+  if (reactNativeModules.has(moduleName)) {
+    return {
+      filePath: require.resolve(moduleName, { paths: [monorepoRoot] }),
+      type: "sourceFile",
+    };
+  }
+  // Everything else uses default resolution
+  return context.resolveRequest(context, moduleName, platform);
 };
 
 module.exports = withNativeWind(config, { input: "./global.css" });
