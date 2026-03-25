@@ -2,7 +2,7 @@ import {
   View, Text, ScrollView, TouchableOpacity, RefreshControl,
   ActivityIndicator, TextInput, Modal, FlatList
 } from 'react-native';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { supabase } from '../../src/utils/supabase';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -56,14 +56,24 @@ export default function TransactionsScreen() {
     setRefreshing(false);
   };
 
+  // Re-fetch when screen gains focus
   useFocusEffect(useCallback(() => {
     setLoading(true);
     fetchTransactions();
-  }, [selectedMonth, selectedYear, typeFilter]));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []));
+
+  // Re-fetch when filters change (plain useEffect — no navigation context needed)
+  useEffect(() => {
+    setLoading(true);
+    fetchTransactions();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedMonth, selectedYear, typeFilter]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchTransactions();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMonth, selectedYear, typeFilter]);
 
   const filtered = useMemo(() => {
