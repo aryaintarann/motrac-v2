@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { supabase } from '../../src/utils/supabase';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,7 +12,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 export default function TransactionsScreen() {
-  const router = useRouter();
   const now = new Date();
 
   const [transactions, setTransactions] = useState<any[]>([]);
