@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { createCategory } from '@/app/(dashboard)/categories/actions'
+import { createCategory } from '@/app/dashboard/categories/actions'
 import { useRouter } from 'next/navigation'
 
 export function AddCategoryModal({ parentId, parentName, parentType }: { parentId: string, parentName: string, parentType: string }) {

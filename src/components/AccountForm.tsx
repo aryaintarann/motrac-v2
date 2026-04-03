@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { createAccount } from '../app/(dashboard)/accounts/actions'
+import { createAccount } from '../app/dashboard/accounts/actions'
 
 export function AccountForm({ onSuccess }: { onSuccess?: () => void }) {
   const [loading, setLoading] = useState(false)

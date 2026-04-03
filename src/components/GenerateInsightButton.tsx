@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { generateInsights } from '@/app/(dashboard)/actions/generateInsights'
+import { generateInsights } from '@/app/dashboard/actions/generateInsights'
 
 export function GenerateInsightButton() {
   const [loading, setLoading] = useState(false)

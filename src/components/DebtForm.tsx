@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { createDebt } from '../app/(dashboard)/debts/actions'
+import { createDebt } from '../app/dashboard/debts/actions'
 
 export function DebtForm({ accounts, onSuccess }: { accounts: any[], onSuccess?: () => void }) {
   const [loading, setLoading] = useState(false)
