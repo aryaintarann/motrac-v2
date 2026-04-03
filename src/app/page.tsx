@@ -41,11 +41,15 @@ export default async function LandingPage() {
           .float, .fadeup, .fadeup-delay, .fadeup-delay2, .bento-card { animation: none !important; }
           .bento-card:hover { transform: none !important; }
         }
+        @media (min-width: 900px) {
+          .about-grid { grid-template-columns: 5fr 7fr; }
+        }
         @media (max-width: 900px) {
           .bento-grid { grid-template-columns: 1fr !important; }
           .bento-grid > div { grid-column: span 1 !important; }
           .nav-links { display: none !important; }
           .hero-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+          .about-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -360,36 +364,58 @@ export default async function LandingPage() {
             </h2>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '48px', alignItems: 'center' }}>
-            <div style={{ padding: '24px', background: '#FAFAFA', borderRadius: '24px', border: '1px solid #E5E7EB' }}>
-              <p style={{ fontSize: '18px', color: '#4B5563', lineHeight: 1.8, margin: '0 0 16px' }}>
-                Managing personal finances shouldn't require complex spreadsheets or expensive subscriptions. We realized that existing tools were either too complicated or lacked the essential features needed for genuine financial control.
-              </p>
-              <p style={{ fontSize: '18px', color: '#4B5563', lineHeight: 1.8, margin: 0 }}>
-                Motrac was born out of the need for a beautiful, simple, and powerful alternative. A tool that respects your privacy, simplifies your budgeting process, and gives you the smart insights you need—completely free of charge.
-              </p>
-            </div>
+          <div className="about-grid" style={{ display: 'grid', gap: '48px', alignItems: 'center' }}>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-               <div style={{ display: 'flex', gap: '16px' }}>
-                 <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(37,99,235,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            {/* Left side: Visual Showcase with Big M Logo */}
+            <div style={{ position: 'relative', height: '100%', minHeight: '340px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #F9FAFB, #EFF6FF)', borderRadius: '32px', border: '1px solid #E5E7EB', overflow: 'hidden' }}>
+              {/* Decorative glows */}
+              <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '60%', height: '60%', background: '#3B82F6', borderRadius: '50%', filter: 'blur(80px)', opacity: 0.15 }} />
+              <div style={{ position: 'absolute', bottom: '-10%', right: '-10%', width: '60%', height: '60%', background: '#8B5CF6', borderRadius: '50%', filter: 'blur(80px)', opacity: 0.15 }} />
+              
+              {/* Big M logo badge */}
+              <div className="float" style={{ position: 'relative', width: '160px', height: '160px', background: '#fff', borderRadius: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 24px 48px rgba(37,99,235,0.12)', border: '2px solid rgba(255,255,255,0.8)', zIndex: 10 }}>
+                <span style={{ fontSize: '80px', fontWeight: 900, background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1, letterSpacing: '-0.05em' }}>
+                  M
+                </span>
+              </div>
+
+              {/* Floating elements */}
+              <div className="float" style={{ position: 'absolute', top: '20%', left: '10%', background: '#fff', padding: '12px', borderRadius: '16px', boxShadow: '0 12px 24px rgba(0,0,0,0.06)', animationDelay: '0.4s' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div className="float" style={{ position: 'absolute', bottom: '20%', right: '10%', background: '#111827', color: '#fff', padding: '10px 16px', borderRadius: '12px', fontSize: '13px', fontWeight: 700, boxShadow: '0 12px 24px rgba(0,0,0,0.1)', animationDelay: '0.8s' }}>
+                For Everyone
+              </div>
+            </div>
+
+            {/* Right side: Text and values */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              <div style={{ padding: '32px', background: '#FAFAFA', borderRadius: '24px', border: '1px solid #E5E7EB' }}>
+                <p style={{ fontSize: '18px', color: '#4B5563', lineHeight: 1.8, margin: '0 0 16px' }}>
+                  Managing personal finances shouldn't require complex spreadsheets or expensive subscriptions. We realized that existing tools were either too complicated or lacked the essential features needed for genuine financial control.
+                </p>
+                <p style={{ fontSize: '18px', color: '#4B5563', lineHeight: 1.8, margin: 0 }}>
+                  Motrac was born out of the need for a beautiful, simple, and powerful alternative. A tool that respects your privacy, simplifies your budgeting process, and gives you the smart insights you need.
+                </p>
+              </div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
+                 <div style={{ padding: '24px', background: '#fff', borderRadius: '20px', border: '1px solid #EFF6FF', boxShadow: '0 8px 16px rgba(37,99,235,0.04)' }}>
+                   <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'rgba(37,99,235,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                   </div>
+                   <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>Privacy First</h3>
+                   <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Your data belongs to you, always encrypted.</p>
                  </div>
-                 <div>
-                   <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>Privacy First</h3>
-                   <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Your data belongs to you. We employ industry-leading encryption and never sell your personal information.</p>
+                 
+                 <div style={{ padding: '24px', background: '#fff', borderRadius: '20px', border: '1px solid #F3E8FF', boxShadow: '0 8px 16px rgba(124,58,237,0.04)' }}>
+                   <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'rgba(124,58,237,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2.5" strokeLinecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                   </div>
+                   <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>Lightning Fast</h3>
+                   <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Record transactions in mere seconds.</p>
                  </div>
-               </div>
-               
-               <div style={{ display: 'flex', gap: '16px' }}>
-                 <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(124,58,237,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                 </div>
-                 <div>
-                   <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>Built for Speed</h3>
-                   <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Recording a transaction takes seconds. Every interaction is optimized to save your valuable time.</p>
-                 </div>
-               </div>
+              </div>
             </div>
           </div>
         </div>
