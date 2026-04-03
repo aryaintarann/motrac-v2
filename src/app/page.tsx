@@ -203,12 +203,13 @@ export default async function LandingPage() {
       <section id="features" style={{ padding: '100px 24px 120px', background: '#F9FAFB' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <div style={{ display: 'inline-block', fontSize: '12px', fontWeight: 700, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px', background: 'rgba(124,58,237,0.12)', borderRadius: '9999px', padding: '6px 16px', border: '1px solid rgba(124,58,237,0.3)' }}>
+            <div style={{ display: 'inline-block', fontSize: '13px', fontWeight: 800, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '16px' }}>
               Everything You Need
+              <div style={{ height: '3px', width: '40px', background: '#7C3AED', margin: '8px auto 0', borderRadius: '2px' }} />
             </div>
             <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#111827', margin: 0 }}>
               Built for how you<br />
-              <span className="gradient-text">actually live.</span>
+              <span style={{ color: '#2563EB' }}>actually live.</span>
             </h2>
           </div>
 
@@ -266,6 +267,29 @@ export default async function LandingPage() {
               <div style={{ display: 'flex', gap: '12px' }}>
                 <div style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '12px', padding: '12px 16px', fontSize: '13px', fontWeight: 700, color: '#10B981' }}>+Rp 1.2M owed to you</div>
                 <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', padding: '12px 16px', fontSize: '13px', fontWeight: 700, color: '#EF4444' }}>-Rp 800K you owe</div>
+              </div>
+            </div>
+
+            {/* Card 5 — Medium, spans 5 columns */}
+            <div className="bento-card" style={{ gridColumn: 'span 5', background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.15)', borderRadius: '24px', padding: '40px', minHeight: '240px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
+              </div>
+              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#111827', margin: '0 0 12px' }}>Categories</h3>
+              <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.7, margin: 0 }}>Organize spending with custom main and sub-categories. Know exactly where your money goes.</p>
+            </div>
+
+            {/* Card 6 — Medium, spans 7 columns */}
+            <div className="bento-card" style={{ gridColumn: 'span 7', background: '#fff', border: '1px solid #E5E7EB', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', minHeight: '240px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(14,165,233,0.08)', border: '1px solid rgba(14,165,233,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" strokeWidth="2" strokeLinecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+              </div>
+              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#111827', margin: '0 0 12px' }}>Detailed Reports</h3>
+              <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.7, margin: '0 0 28px', maxWidth: '360px' }}>Beautiful, interactive charts that give you a crystal-clear picture of your financial health over time.</p>
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '40px' }}>
+                {[20, 35, 25, 50, 40, 65, 80].map((h, i) => (
+                  <div key={i} style={{ width: '24px', height: `${h}%`, background: '#BAE6FD', borderRadius: '4px 4px 0 0' }} />
+                ))}
               </div>
             </div>
 
