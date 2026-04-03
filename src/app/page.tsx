@@ -45,6 +45,7 @@ export default async function LandingPage() {
           .bento-grid { grid-template-columns: 1fr !important; }
           .bento-grid > div { grid-column: span 1 !important; }
           .nav-links { display: none !important; }
+          .hero-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -71,60 +72,131 @@ export default async function LandingPage() {
       </header>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', padding: '120px 24px 160px', textAlign: 'center', background: '#fff' }}>
-        {/* Ambient orbs */}
-        <div style={{ position: 'absolute', top: '-200px', left: '50%', transform: 'translateX(-60%)', width: '700px', height: '700px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', top: '-100px', right: '5%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+      <section style={{ position: 'relative', overflow: 'hidden', background: '#fff', borderBottom: '1px solid #F3F4F6' }}>
+        {/* Background grid pattern */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(#E5E7EB 1px, transparent 1px)', backgroundSize: '24px 24px', pointerEvents: 'none', opacity: 0.6 }} />
+        {/* Blue glow */}
+        <div style={{ position: 'absolute', top: '-160px', left: '10%', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
 
-        <div style={{ maxWidth: '860px', margin: '0 auto', position: 'relative' }}>
-          {/* Main Headline */}
-          <h1 className="fadeup" style={{ fontSize: 'clamp(52px, 8vw, 88px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.04em', margin: '0 0 24px', color: '#111827' }}>
-            Your{' '}
-            <span className="gradient-text">
-              Money.
-            </span>
-            <br />
-            Your Rules.
-          </h1>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 24px', position: 'relative', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
 
-          <p className="fadeup-delay" style={{ fontSize: '18px', lineHeight: 1.7, color: '#6B7280', maxWidth: '560px', margin: '0 auto 48px' }}>
-            Track every rupiah, plan smarter budgets, and get AI-powered insights — all in one beautiful, private dashboard.
-          </p>
+          {/* ── LEFT: Copy ── */}
+          <div>
+            {/* Eyebrow */}
+            <div className="fadeup" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '9999px', padding: '6px 14px', marginBottom: '32px', fontSize: '13px', fontWeight: 700, color: '#2563EB' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+              Personal Finance, Simplified
+            </div>
 
-          {/* CTAs */}
-          <div className="fadeup-delay2" style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/signup" style={{ background: '#2563EB', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '16px 32px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 24px rgba(37,99,235,0.25)' }}>
-              Start for free →
-            </Link>
-            <a href="#features" style={{ background: '#F3F4F6', border: '1px solid #E5E7EB', color: '#374151', fontSize: '16px', fontWeight: 600, padding: '16px 32px', borderRadius: '9999px', textDecoration: 'none' }}>
-              See features
-            </a>
+            {/* Headline */}
+            <h1 className="fadeup" style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.04em', margin: '0 0 24px', color: '#111827' }}>
+              One app to rule{' '}
+              <span className="gradient-text">all your money.</span>
+            </h1>
+
+            <p className="fadeup-delay" style={{ fontSize: '18px', lineHeight: 1.75, color: '#6B7280', margin: '0 0 40px', maxWidth: '460px' }}>
+              Track accounts, control budgets, monitor debts, and get AI-driven insights — all in one beautifully simple dashboard.
+            </p>
+
+            {/* CTAs */}
+            <div className="fadeup-delay" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '48px' }}>
+              <Link href="/signup" style={{ background: '#2563EB', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '14px 28px', borderRadius: '12px', textDecoration: 'none', boxShadow: '0 4px 16px rgba(37,99,235,0.3)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                Get started free
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </Link>
+              <a href="#features" style={{ background: '#fff', border: '1.5px solid #E5E7EB', color: '#374151', fontSize: '16px', fontWeight: 600, padding: '14px 28px', borderRadius: '12px', textDecoration: 'none' }}>
+                See how it works
+              </a>
+            </div>
+
+            {/* Social proof / stats */}
+            <div className="fadeup-delay2" style={{ display: 'flex', gap: '32px', paddingTop: '32px', borderTop: '1px solid #F3F4F6' }}>
+              {[['500+', 'Active Users'], ['Rp 2.4B+', 'Tracked'], ['4.9★', 'Rating']].map(([val, label]) => (
+                <div key={label}>
+                  <div style={{ fontSize: '22px', fontWeight: 900, color: '#111827', letterSpacing: '-0.02em' }}>{val}</div>
+                  <div style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: 600, marginTop: '2px' }}>{label}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Floating Dashboard Preview Card */}
-        <div className="float" style={{ marginTop: '80px', display: 'flex', justifyContent: 'center' }}>
-          <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '24px', padding: '28px', maxWidth: '480px', width: '100%', boxShadow: '0 24px 64px rgba(37,99,235,0.1), 0 4px 16px rgba(0,0,0,0.06)', textAlign: 'left' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-              <div>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Net Worth</div>
-                <div style={{ fontSize: '36px', fontWeight: 900, color: '#111827', letterSpacing: '-0.03em' }}>Rp 48.5M</div>
+          {/* ── RIGHT: Dashboard Mockup ── */}
+          <div className="fadeup-delay" style={{ position: 'relative' }}>
+            {/* Floating badges */}
+            <div className="float" style={{ position: 'absolute', top: '-16px', right: '-8px', background: '#fff', border: '1px solid #E5E7EB', borderRadius: '14px', padding: '10px 16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', fontSize: '13px', fontWeight: 700, color: '#10B981', display: 'flex', alignItems: 'center', gap: '6px', zIndex: 2 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+              +Rp 3.2M this month
+            </div>
+            <div style={{ position: 'absolute', bottom: '32px', left: '-16px', background: '#fff', border: '1px solid #E5E7EB', borderRadius: '14px', padding: '10px 16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', fontSize: '13px', fontWeight: 700, color: '#2563EB', display: 'flex', alignItems: 'center', gap: '6px', zIndex: 2 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              Budget: 68% used
+            </div>
+
+            {/* Main dashboard card */}
+            <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 32px 80px rgba(37,99,235,0.1), 0 4px 16px rgba(0,0,0,0.05)' }}>
+              {/* Card header */}
+              <div style={{ padding: '20px 24px', borderBottom: '1px solid #F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#FAFAFA' }}>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FCA5A5' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FCD34D' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#6EE7B7' }} />
+                </div>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#9CA3AF' }}>motrac.app/dashboard</div>
+                <div style={{ width: '48px' }} />
               </div>
-              <div style={{ background: 'rgba(37,99,235,0.1)', border: '1px solid rgba(37,99,235,0.2)', borderRadius: '12px', padding: '8px 14px', fontSize: '13px', fontWeight: 700, color: '#2563EB' }}>+12.4%</div>
-            </div>
-            {/* Mini chart bars */}
-            <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-end', height: '56px', marginBottom: '20px' }}>
-              {[40,65,45,80,55,90,70,100,60,85,75,95].map((h, i) => (
-                <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: '4px 4px 0 0', background: i === 11 ? 'linear-gradient(180deg, #2563EB, #7C3AED)' : '#F3F4F6' }} />
-              ))}
-            </div>
-            {/* Account pills */}
-            <div style={{ display: 'flex', gap: '8px' }}>
-              {[['💳 BCA', '#2563EB'], ['🏦 Mandiri', '#7C3AED'], ['💰 Cash', '#10B981']].map(([label, color]) => (
-                <div key={String(label)} style={{ background: `${color}15`, border: `1px solid ${color}30`, borderRadius: '9999px', padding: '5px 12px', fontSize: '12px', fontWeight: 600, color: String(color) }}>{String(label)}</div>
-              ))}
+
+              <div style={{ padding: '24px' }}>
+                {/* Net worth */}
+                <div style={{ marginBottom: '24px' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Total Net Worth</div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+                    <div style={{ fontSize: '40px', fontWeight: 900, color: '#111827', letterSpacing: '-0.03em' }}>Rp 48.5M</div>
+                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#10B981', background: '#D1FAE5', borderRadius: '8px', padding: '3px 8px' }}>↑ 12.4%</span>
+                  </div>
+                </div>
+
+                {/* Mini chart */}
+                <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '64px', marginBottom: '20px', padding: '4px 0' }}>
+                  {[30,50,38,70,45,85,60,95,55,80,70,100].map((h, i) => (
+                    <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: '4px 4px 0 0', background: i >= 9 ? '#2563EB' : i >= 6 ? '#93C5FD' : '#EFF6FF', transition: 'height 0.3s ease' }} />
+                  ))}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#D1D5DB', marginBottom: '20px', fontWeight: 600 }}>
+                  {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map(m => <span key={m}>{m.slice(0,1)}</span>)}
+                </div>
+
+                {/* Account rows */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+                  {[
+                    ['💳', 'BCA Debit', 'Rp 18.2M', '#2563EB'],
+                    ['🏦', 'Mandiri', 'Rp 22.1M', '#7C3AED'],
+                    ['💰', 'Cash', 'Rp 8.2M', '#10B981'],
+                  ].map(([icon, name, balance, color]) => (
+                    <div key={String(name)} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', background: '#F9FAFB', borderRadius: '12px' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>{icon}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>{name}</div>
+                        <div style={{ fontSize: '11px', color: '#9CA3AF', fontWeight: 500 }}>Main Account</div>
+                      </div>
+                      <div style={{ fontSize: '14px', fontWeight: 800, color: '#111827' }}>{balance}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Budget progress */}
+                <div style={{ padding: '12px', background: '#FFF7ED', borderRadius: '12px', border: '1px solid #FED7AA' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 700, marginBottom: '6px' }}>
+                    <span style={{ color: '#B45309' }}>Monthly Budget</span>
+                    <span style={{ color: '#F97316' }}>Rp 3.4M / 5M</span>
+                  </div>
+                  <div style={{ height: '6px', borderRadius: '9999px', background: '#FDBA74', overflow: 'hidden' }}>
+                    <div style={{ width: '68%', height: '100%', borderRadius: '9999px', background: '#F97316' }} />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
         </div>
       </section>
 
