@@ -434,9 +434,9 @@ export default async function LandingPage() {
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
           <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#111827' }}>MOTRAC</span>
           <div style={{ display: 'flex', gap: '24px', fontSize: '14px', fontWeight: 500, color: '#9CA3AF' }}>
-            <a href="#" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Privacy</a>
-            <a href="#" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Terms</a>
-            <a href="#" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Support</a>
+            <Link href="/privacy" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Privacy</Link>
+            <Link href="/terms" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Terms</Link>
+            <Link href="/support" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Support</Link>
           </div>
           <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} Motrac. All rights reserved.</p>
         </div>
