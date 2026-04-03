@@ -48,15 +48,15 @@ export default async function DashboardLayout({
       
         {/* Mobile Bottom Navigation */}
         <nav className="flex justify-around border-t border-gray-200 bg-[var(--surface)] px-2 py-3 lg:hidden pt-4 pb-6 print:hidden">
-          <Link href="/" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80">Home</Link>
-          <Link href="/accounts" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">Accounts</Link>
+          <Link href="/dashboard" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80">Home</Link>
+          <Link href="/dashboard/accounts" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">Accounts</Link>
           <div className="relative -mt-6">
-            <Link href="/transactions" className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary)] text-white shadow-lg shadow-blue-200 hover:opacity-90 hover:-translate-y-1 transition-all">
+            <Link href="/dashboard/transactions" className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary)] text-white shadow-lg shadow-blue-200 hover:opacity-90 hover:-translate-y-1 transition-all">
               +
             </Link>
           </div>
-          <Link href="/budgets" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">Budgets</Link>
-          <Link href="/reports" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">Reports</Link>
+          <Link href="/dashboard/budgets" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">Budgets</Link>
+          <Link href="/dashboard/reports" className="flex flex-col items-center gap-1 text-[var(--foreground)] text-xs font-medium opacity-80 hover:text-[var(--primary)]">Reports</Link>
         </nav>
       </div>
     </div>

@@ -95,18 +95,18 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                 </div>
               </div>
               <div className="flex gap-2 flex-wrap mt-4">
-                <Link href="/transactions" className="rounded-lg bg-[#2563EB] px-3.5 py-2 text-[13px] font-semibold text-white hover:bg-blue-700 flex items-center gap-1.5 transition-colors">
+                <Link href="/dashboard/transactions" className="rounded-lg bg-[#2563EB] px-3.5 py-2 text-[13px] font-semibold text-white hover:bg-blue-700 flex items-center gap-1.5 transition-colors">
                   + Transaction
                 </Link>
-                <Link href="/debts" className="rounded-lg border border-[#E5E7EB] bg-white px-3.5 py-2 text-[13px] font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors">
+                <Link href="/dashboard/debts" className="rounded-lg border border-[#E5E7EB] bg-white px-3.5 py-2 text-[13px] font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                   Debt
                 </Link>
-                <Link href="/accounts" className="rounded-lg border border-[#E5E7EB] bg-white px-3.5 py-2 text-[13px] font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors">
+                <Link href="/dashboard/accounts" className="rounded-lg border border-[#E5E7EB] bg-white px-3.5 py-2 text-[13px] font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="2"/></svg>
                   Accounts
                 </Link>
-                <Link href="/reports" className="rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-[#475569] shadow-sm transition-colors hover:bg-gray-50">
+                <Link href="/dashboard/reports" className="rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-[#475569] shadow-sm transition-colors hover:bg-gray-50">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
                 </Link>
               </div>
@@ -188,7 +188,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
               ) : (
                 <div className="flex flex-col items-start gap-2">
                   <span className="text-[22px] font-bold text-gray-300">—</span>
-                  <Link href="/budgets" className="text-[12px] text-blue-600 font-semibold hover:underline">Set budget →</Link>
+                  <Link href="/dashboard/budgets" className="text-[12px] text-blue-600 font-semibold hover:underline">Set budget →</Link>
                 </div>
               )}
             </div>
@@ -263,7 +263,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                   ) : (
                     <div className="flex flex-col items-start gap-2">
                        <span className="text-[22px] font-bold text-gray-300">—</span>
-                       <Link href="/budgets" className="text-[12px] text-blue-600 font-semibold hover:underline">Set budget →</Link>
+                       <Link href="/dashboard/budgets" className="text-[12px] text-blue-600 font-semibold hover:underline">Set budget →</Link>
                     </div>
                   )}
                 </div>
@@ -329,7 +329,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                 <h3 className="font-bold text-[#0f172a] text-[18px]">My Accounts</h3>
                 <p className="text-[13px] text-[#64748b] mt-1.5">Connected balances</p>
               </div>
-              <Link href="/accounts" className="flex items-center gap-1.5 rounded-xl border border-[#E5E7EB] px-3 py-1.5 text-[13px] font-semibold text-[#475569] hover:bg-gray-50 shadow-sm transition-colors">
+              <Link href="/dashboard/accounts" className="flex items-center gap-1.5 rounded-xl border border-[#E5E7EB] px-3 py-1.5 text-[13px] font-semibold text-[#475569] hover:bg-gray-50 shadow-sm transition-colors">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
                 Add
               </Link>
@@ -369,7 +369,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
              <div className="relative z-10 w-full sm:w-4/5">
                <div className="text-[13px] font-medium text-[#93C5FD] mb-2 tracking-wide">Financial planning</div>
                <h3 className="text-[24px] font-bold tracking-tight leading-[1.15] mb-3 pr-8">Plan, budget and<br />forecast.</h3>
-               <Link href="/reports" className="inline-block rounded-lg bg-[#111827] hover:bg-black px-5 py-2.5 text-[14px] font-semibold transition-colors shadow-sm mt-4">
+               <Link href="/dashboard/reports" className="inline-block rounded-lg bg-[#111827] hover:bg-black px-5 py-2.5 text-[14px] font-semibold transition-colors shadow-sm mt-4">
                  Get Report
                </Link>
              </div>
