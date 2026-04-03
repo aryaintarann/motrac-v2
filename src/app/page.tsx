@@ -82,24 +82,24 @@ export default async function LandingPage() {
 
           {/* ── LEFT: Copy ── */}
           <div>
-            {/* Eyebrow */}
-            <div className="fadeup" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '9999px', padding: '6px 14px', marginBottom: '32px', fontSize: '13px', fontWeight: 700, color: '#2563EB' }}>
+            {/* Eyebrow badge */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '9999px', padding: '6px 14px', marginBottom: '32px', fontSize: '13px', fontWeight: 700, color: '#2563EB' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
               Personal Finance, Simplified
             </div>
 
             {/* Headline */}
-            <h1 className="fadeup" style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.04em', margin: '0 0 24px', color: '#111827' }}>
+            <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.04em', margin: '0 0 24px', color: '#111827' }}>
               One app to rule{' '}
               <span className="gradient-text">all your money.</span>
             </h1>
 
-            <p className="fadeup-delay" style={{ fontSize: '18px', lineHeight: 1.75, color: '#6B7280', margin: '0 0 40px', maxWidth: '460px' }}>
+            <p style={{ fontSize: '18px', lineHeight: 1.75, color: '#6B7280', margin: '0 0 40px', maxWidth: '460px' }}>
               Track accounts, control budgets, monitor debts, and get AI-driven insights — all in one beautifully simple dashboard.
             </p>
 
             {/* CTAs */}
-            <div className="fadeup-delay" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '48px' }}>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '48px' }}>
               <Link href="/signup" style={{ background: '#2563EB', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '14px 28px', borderRadius: '12px', textDecoration: 'none', boxShadow: '0 4px 16px rgba(37,99,235,0.3)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 Get started free
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -109,10 +109,10 @@ export default async function LandingPage() {
               </a>
             </div>
 
-            {/* Social proof / stats */}
-            <div className="fadeup-delay2" style={{ display: 'flex', gap: '32px', paddingTop: '32px', borderTop: '1px solid #F3F4F6' }}>
+            {/* Stats */}
+            <div style={{ display: 'flex', gap: '32px', paddingTop: '32px', borderTop: '1px solid #F3F4F6' }}>
               {[['500+', 'Active Users'], ['Rp 2.4B+', 'Tracked'], ['4.9★', 'Rating']].map(([val, label]) => (
-                <div key={label}>
+                <div key={String(label)}>
                   <div style={{ fontSize: '22px', fontWeight: 900, color: '#111827', letterSpacing: '-0.02em' }}>{val}</div>
                   <div style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: 600, marginTop: '2px' }}>{label}</div>
                 </div>
@@ -121,75 +121,75 @@ export default async function LandingPage() {
           </div>
 
           {/* ── RIGHT: Dashboard Mockup ── */}
-          <div className="fadeup-delay" style={{ position: 'relative' }}>
-            {/* Floating badges */}
-            <div className="float" style={{ position: 'absolute', top: '-16px', right: '-8px', background: '#fff', border: '1px solid #E5E7EB', borderRadius: '14px', padding: '10px 16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', fontSize: '13px', fontWeight: 700, color: '#10B981', display: 'flex', alignItems: 'center', gap: '6px', zIndex: 2 }}>
+          <div style={{ position: 'relative', paddingTop: '24px', paddingBottom: '24px' }}>
+            {/* Floating badge top */}
+            <div className="float" style={{ position: 'absolute', top: '0px', right: '0px', background: '#fff', border: '1px solid #D1FAE5', borderRadius: '14px', padding: '10px 16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', fontSize: '13px', fontWeight: 700, color: '#10B981', display: 'flex', alignItems: 'center', gap: '6px', zIndex: 10 }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
               +Rp 3.2M this month
             </div>
-            <div style={{ position: 'absolute', bottom: '32px', left: '-16px', background: '#fff', border: '1px solid #E5E7EB', borderRadius: '14px', padding: '10px 16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', fontSize: '13px', fontWeight: 700, color: '#2563EB', display: 'flex', alignItems: 'center', gap: '6px', zIndex: 2 }}>
+            {/* Floating badge bottom */}
+            <div style={{ position: 'absolute', bottom: '0px', left: '0px', background: '#fff', border: '1px solid #BFDBFE', borderRadius: '14px', padding: '10px 16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', fontSize: '13px', fontWeight: 700, color: '#2563EB', display: 'flex', alignItems: 'center', gap: '6px', zIndex: 10 }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
               Budget: 68% used
             </div>
 
             {/* Main dashboard card */}
-            <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 32px 80px rgba(37,99,235,0.1), 0 4px 16px rgba(0,0,0,0.05)' }}>
-              {/* Card header */}
-              <div style={{ padding: '20px 24px', borderBottom: '1px solid #F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#FAFAFA' }}>
+            <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 20px 60px rgba(37,99,235,0.12), 0 4px 16px rgba(0,0,0,0.05)' }}>
+              {/* Browser bar */}
+              <div style={{ padding: '14px 20px', borderBottom: '1px solid #F3F4F6', background: '#FAFAFA', display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <div style={{ display: 'flex', gap: '6px' }}>
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FCA5A5' }} />
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FCD34D' }} />
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#6EE7B7' }} />
                 </div>
-                <div style={{ fontSize: '13px', fontWeight: 600, color: '#9CA3AF' }}>motrac.app/dashboard</div>
-                <div style={{ width: '48px' }} />
+                <div style={{ flex: 1, background: '#F3F4F6', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', color: '#9CA3AF', fontWeight: 500 }}>motrac.app/dashboard</div>
               </div>
 
-              <div style={{ padding: '24px' }}>
+              {/* Dashboard content */}
+              <div style={{ padding: '20px' }}>
                 {/* Net worth */}
-                <div style={{ marginBottom: '24px' }}>
+                <div style={{ marginBottom: '16px' }}>
                   <div style={{ fontSize: '11px', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Total Net Worth</div>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
-                    <div style={{ fontSize: '40px', fontWeight: 900, color: '#111827', letterSpacing: '-0.03em' }}>Rp 48.5M</div>
-                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#10B981', background: '#D1FAE5', borderRadius: '8px', padding: '3px 8px' }}>↑ 12.4%</span>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                    <div style={{ fontSize: '34px', fontWeight: 900, color: '#111827', letterSpacing: '-0.03em' }}>Rp 48.5M</div>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#10B981', background: '#D1FAE5', borderRadius: '6px', padding: '2px 8px' }}>↑ 12.4%</span>
                   </div>
                 </div>
 
-                {/* Mini chart */}
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '64px', marginBottom: '20px', padding: '4px 0' }}>
+                {/* Bar chart */}
+                <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '56px', marginBottom: '4px' }}>
                   {[30,50,38,70,45,85,60,95,55,80,70,100].map((h, i) => (
-                    <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: '4px 4px 0 0', background: i >= 9 ? '#2563EB' : i >= 6 ? '#93C5FD' : '#EFF6FF', transition: 'height 0.3s ease' }} />
+                    <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: '3px 3px 0 0', background: i >= 9 ? '#2563EB' : i >= 6 ? '#93C5FD' : '#EFF6FF' }} />
                   ))}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#D1D5DB', marginBottom: '20px', fontWeight: 600 }}>
-                  {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map(m => <span key={m}>{m.slice(0,1)}</span>)}
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#D1D5DB', marginBottom: '16px', fontWeight: 600 }}>
+                  {['J','F','M','A','M','J','J','A','S','O','N','D'].map((m, i) => <span key={i}>{m}</span>)}
                 </div>
 
-                {/* Account rows */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+                {/* Accounts */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
                   {[
                     ['💳', 'BCA Debit', 'Rp 18.2M', '#2563EB'],
                     ['🏦', 'Mandiri', 'Rp 22.1M', '#7C3AED'],
                     ['💰', 'Cash', 'Rp 8.2M', '#10B981'],
-                  ].map(([icon, name, balance, color]) => (
-                    <div key={String(name)} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', background: '#F9FAFB', borderRadius: '12px' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>{icon}</div>
+                  ].map(([icon, name, bal, color]) => (
+                    <div key={String(name)} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 10px', background: '#F9FAFB', borderRadius: '10px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: `${color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>{icon}</div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>{name}</div>
-                        <div style={{ fontSize: '11px', color: '#9CA3AF', fontWeight: 500 }}>Main Account</div>
+                        <div style={{ fontSize: '12px', fontWeight: 700, color: '#111827' }}>{name}</div>
+                        <div style={{ fontSize: '10px', color: '#9CA3AF' }}>Main Account</div>
                       </div>
-                      <div style={{ fontSize: '14px', fontWeight: 800, color: '#111827' }}>{balance}</div>
+                      <div style={{ fontSize: '13px', fontWeight: 800, color: '#111827' }}>{bal}</div>
                     </div>
                   ))}
                 </div>
 
-                {/* Budget progress */}
-                <div style={{ padding: '12px', background: '#FFF7ED', borderRadius: '12px', border: '1px solid #FED7AA' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 700, marginBottom: '6px' }}>
-                    <span style={{ color: '#B45309' }}>Monthly Budget</span>
-                    <span style={{ color: '#F97316' }}>Rp 3.4M / 5M</span>
+                {/* Budget */}
+                <div style={{ padding: '10px 12px', background: '#FFF7ED', borderRadius: '10px', border: '1px solid #FED7AA' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700, marginBottom: '6px', color: '#92400E' }}>
+                    <span>Monthly Budget</span><span style={{ color: '#F97316' }}>68% · Rp 3.4M / 5M</span>
                   </div>
-                  <div style={{ height: '6px', borderRadius: '9999px', background: '#FDBA74', overflow: 'hidden' }}>
+                  <div style={{ height: '5px', borderRadius: '9999px', background: '#FDBA74', overflow: 'hidden' }}>
                     <div style={{ width: '68%', height: '100%', borderRadius: '9999px', background: '#F97316' }} />
                   </div>
                 </div>
