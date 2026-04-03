@@ -17,7 +17,7 @@ export async function generateInsights() {
 
   // 1. Get current month budget
   const currentMonthStr = new Date().toISOString().slice(0, 7) // YYYY-MM
-  const { data: budget } = await supabase.from('budgets').select('*').eq('user_id', user.id).eq('month', currentMonthStr).single()
+  const { data: budget } = await supabase.from('budgets').select('*').eq('user_id', user.id).like('month', `${currentMonthStr}%`).limit(1).maybeSingle()
 
   if (!budget) {
     throw new Error('Please set up your budget for this month first before generating insights.')

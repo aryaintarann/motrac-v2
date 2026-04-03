@@ -17,7 +17,7 @@ export default async function BudgetsPage() {
   
   const budgets = rawBudgets || []
   const currentMonth = new Date().toISOString().slice(0, 7)
-  const currentBudget = budgets.find(b => b.month === currentMonth)
+  const currentBudget = budgets.find(b => b.month.startsWith(currentMonth))
   const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 })
 
   return (

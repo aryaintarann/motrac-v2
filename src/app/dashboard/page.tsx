@@ -36,7 +36,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
   const currentMonthStr = new Date().toISOString().slice(0, 7)
   
   // Calculate Pacing and Month Totals
-  const { data: budget } = await supabase.from('budgets').select('*').eq('month', currentMonthStr).single()
+  const { data: budget } = await supabase.from('budgets').select('*').like('month', `${currentMonthStr}%`).limit(1).maybeSingle()
   const { data: monthTxns } = await supabase
     .from('transactions')
     .select('amount, type, category_id, date, categories(budget_type)')

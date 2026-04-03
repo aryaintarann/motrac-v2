@@ -83,7 +83,7 @@ Respond ONLY with a valid JSON object matching this exact schema:
     const prevMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1)
     const prevMonthStr = prevMonthDate.toISOString().slice(0, 7) // YYYY-MM
     
-    const { data: prevBudget } = await supabase.from('budgets').select('*').eq('month', prevMonthStr).single()
+    const { data: prevBudget } = await supabase.from('budgets').select('*').like('month', `${prevMonthStr}%`).limit(1).maybeSingle()
     const { data: prevTxns } = await supabase
       .from('transactions')
       .select('amount, type, categories(budget_type)')
