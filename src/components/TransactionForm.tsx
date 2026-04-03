@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createTransaction } from '../app/(dashboard)/transactions/actions'
+import { createTransaction } from '../app/dashboard/transactions/actions'
 
 export function TransactionForm({ accounts, categories, onSuccess }: { accounts: any[], categories: any[], onSuccess?: () => void }) {
   const [loading, setLoading] = useState(false)
