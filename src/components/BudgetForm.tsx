@@ -95,7 +95,7 @@ export function BudgetForm({ onSuccess }: { onSuccess?: () => void }) {
           <div className="mt-2 rounded-xl border border-blue-100 bg-blue-50/50 p-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg">✨</span>
-              <span className="text-sm font-bold text-[var(--primary)]">Gemini AI Recommendation</span>
+              <span className="text-sm font-bold text-[var(--primary)]">AI Recommendation</span>
             </div>
 
             <p className="text-[13px] text-gray-600 italic mb-4 leading-relaxed">

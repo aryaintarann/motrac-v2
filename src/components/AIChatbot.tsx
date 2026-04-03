@@ -70,7 +70,6 @@ export function AIChatbot() {
       <div className="flex items-center gap-3 p-5 border-b border-gray-100 bg-gray-50/50">
         <div>
           <h2 className="font-bold text-gray-900 text-[16px]">Motrac AI Chat</h2>
-          <p className="text-[12px] text-gray-500 font-medium tracking-wide">Powered by Gemini</p>
         </div>
       </div>
 
