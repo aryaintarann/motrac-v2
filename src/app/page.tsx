@@ -46,7 +46,7 @@ export default async function LandingPage() {
       <header style={{ position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(24px)', background: 'rgba(250,250,250,0.85)', borderBottom: '1px solid #E5E7EB' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {/* Logo */}
-          <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>MOTRAC</span>
+          <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', backgroundImage: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>MOTRAC</span>
 
           {/* Nav Links */}
           <nav className="nav-links" style={{ display: 'flex', gap: '32px', fontSize: '15px', fontWeight: 500 }}>
@@ -74,7 +74,7 @@ export default async function LandingPage() {
           {/* Main Headline */}
           <h1 className="fadeup" style={{ fontSize: 'clamp(52px, 8vw, 88px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.04em', margin: '0 0 24px', color: '#111827' }}>
             Your{' '}
-            <span style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <span style={{ backgroundImage: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Money.
             </span>
             <br />
@@ -131,7 +131,7 @@ export default async function LandingPage() {
             </div>
             <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#111827', margin: 0 }}>
               Built for how you<br />
-              <span style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>actually live.</span>
+              <span style={{ backgroundImage: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>actually live.</span>
             </h2>
           </div>
 
@@ -215,7 +215,7 @@ export default async function LandingPage() {
       {/* ── FOOTER ── */}
       <footer style={{ borderTop: '1px solid #E5E7EB', padding: '40px 24px', background: '#FAFAFA' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
-          <span style={{ fontWeight: 900, fontSize: '17px', letterSpacing: '0.08em', background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>MOTRAC</span>
+          <span style={{ fontWeight: 900, fontSize: '17px', letterSpacing: '0.08em', backgroundImage: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>MOTRAC</span>
           <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} Motrac. All rights reserved.</p>
           <div style={{ display: 'flex', gap: '24px', fontSize: '14px', fontWeight: 500, color: '#9CA3AF' }}>
             <a href="#" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Privacy</a>
