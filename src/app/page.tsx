@@ -58,7 +58,7 @@ export default async function LandingPage() {
           {/* Nav Links */}
           <nav className="nav-links" style={{ display: 'flex', gap: '32px', fontSize: '15px', fontWeight: 500 }}>
             <a href="#features" className="nav-link">Features</a>
-            <a href="#how-it-works" className="nav-link">Pricing</a>
+            <a href="#pricing" className="nav-link">Pricing</a>
             <a href="#features" className="nav-link">About</a>
           </nav>
 
@@ -293,6 +293,56 @@ export default async function LandingPage() {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRICING ── */}
+      <section id="pricing" style={{ padding: '100px 24px', background: '#FAFAFA' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ display: 'inline-block', fontSize: '13px', fontWeight: 800, color: '#10B981', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '16px' }}>
+            Simple Pricing
+            <div style={{ height: '3px', width: '40px', background: '#10B981', margin: '8px auto 0', borderRadius: '2px' }} />
+          </div>
+          <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#111827', margin: '0 0 20px' }}>
+            Ready for your financial growth.<br />
+            <span style={{ color: '#2563EB' }}>100% Free.</span>
+          </h2>
+          <p style={{ fontSize: '18px', color: '#6B7280', maxWidth: '560px', margin: '0 auto 64px', lineHeight: 1.7 }}>
+            Motrac is currently entirely free to use. Enjoy full access to smart accounts, custom budgets, debt tracking, and AI advisor without paying a single cent.
+          </p>
+
+          <div style={{ maxWidth: '400px', margin: '0 auto', background: '#fff', border: '1px solid #E5E7EB', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.04)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #10B981, #34D399)' }} />
+            
+            <div style={{ marginBottom: '32px' }}>
+              <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>Early Adopter</h3>
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '48px', fontWeight: 900, color: '#111827', letterSpacing: '-0.04em' }}>Rp 0</span>
+                <span style={{ fontSize: '16px', color: '#6B7280', fontWeight: 600 }}>/mo</span>
+              </div>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left', marginBottom: '40px' }}>
+              {[
+                'Unlimited Smart Accounts',
+                'Custom Budgets & Limits',
+                'Advanced Debt Tracking',
+                'Full AI Advisor Access',
+                'Export Data anytime'
+              ].map((feat) => (
+                <div key={feat} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <span style={{ fontSize: '15px', color: '#4B5563', fontWeight: 600 }}>{feat}</span>
+                </div>
+              ))}
+            </div>
+            
+            <Link href="/signup" style={{ display: 'block', width: '100%', background: '#111827', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '16px 0', borderRadius: '12px', textDecoration: 'none', transition: 'transform 0.2s', boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}>
+              Get Started for Free
+            </Link>
           </div>
         </div>
       </section>
