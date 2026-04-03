@@ -90,7 +90,7 @@ export default async function LandingPage() {
             {/* Headline */}
             <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.04em', margin: '0 0 24px', color: '#111827' }}>
               One app to rule{' '}
-              <span className="gradient-text">all your money.</span>
+              <span style={{ color: '#2563EB' }}>all your money.</span>
             </h1>
 
             <p style={{ fontSize: '18px', lineHeight: 1.75, color: '#6B7280', margin: '0 0 40px', maxWidth: '460px' }}>
