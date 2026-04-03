@@ -41,11 +41,11 @@ export default async function LandingPage() {
           .float, .fadeup, .fadeup-delay, .fadeup-delay2, .bento-card { animation: none !important; }
           .bento-card:hover { transform: none !important; }
         }
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           .bento-grid { grid-template-columns: 1fr !important; }
           .bento-grid > div { grid-column: span 1 !important; }
           .nav-links { display: none !important; }
-          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
         }
       `}</style>
 
@@ -72,13 +72,13 @@ export default async function LandingPage() {
       </header>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', background: '#fff', borderBottom: '1px solid #F3F4F6' }}>
+      <section style={{ position: 'relative', background: '#fff', borderBottom: '1px solid #F3F4F6' }}>
         {/* Background grid pattern */}
         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(#E5E7EB 1px, transparent 1px)', backgroundSize: '24px 24px', pointerEvents: 'none', opacity: 0.6 }} />
         {/* Blue glow */}
         <div style={{ position: 'absolute', top: '-160px', left: '10%', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
 
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 24px', position: 'relative', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
+        <div className="hero-grid" style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 24px', position: 'relative', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
 
           {/* ── LEFT: Copy ── */}
           <div>
