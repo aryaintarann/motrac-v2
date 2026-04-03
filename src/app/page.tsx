@@ -52,7 +52,7 @@ export default async function LandingPage() {
       <header style={{ position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(24px)', background: 'rgba(250,250,250,0.85)', borderBottom: '1px solid #E5E7EB' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {/* Logo */}
-          <span className="gradient-text" style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em' }}>MOTRAC</span>
+          <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#111827' }}>MOTRAC</span>
 
           {/* Nav Links */}
           <nav className="nav-links" style={{ display: 'flex', gap: '32px', fontSize: '15px', fontWeight: 500 }}>
@@ -63,7 +63,7 @@ export default async function LandingPage() {
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             <Link href="/login" style={{ fontSize: '14px', fontWeight: 600, color: '#6B7280', textDecoration: 'none' }}>Log in</Link>
-            <Link href="/signup" style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', color: '#fff', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(37,99,235,0.3)' }}>
+            <Link href="/signup" style={{ background: '#2563EB', color: '#fff', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(37,99,235,0.25)' }}>
               Get Started
             </Link>
           </div>
@@ -93,7 +93,7 @@ export default async function LandingPage() {
 
           {/* CTAs */}
           <div className="fadeup-delay2" style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/signup" style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '16px 32px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 24px rgba(37,99,235,0.35)' }}>
+            <Link href="/signup" style={{ background: '#2563EB', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '16px 32px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 24px rgba(37,99,235,0.25)' }}>
               Start for free →
             </Link>
             <a href="#features" style={{ background: '#F3F4F6', border: '1px solid #E5E7EB', color: '#374151', fontSize: '16px', fontWeight: 600, padding: '16px 32px', borderRadius: '9999px', textDecoration: 'none' }}>
@@ -212,7 +212,7 @@ export default async function LandingPage() {
           <p style={{ fontSize: '17px', color: '#6B7280', marginBottom: '40px', lineHeight: 1.7 }}>
             Join the smart generation managing their money with Motrac. Free. Private. Powerful.
           </p>
-          <Link href="/signup" style={{ display: 'inline-block', background: 'linear-gradient(135deg, #2563EB, #7C3AED)', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '18px 40px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 20px rgba(37,99,235,0.35)' }}>
+          <Link href="/signup" style={{ display: 'inline-block', background: '#2563EB', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '18px 40px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 20px rgba(37,99,235,0.25)' }}>
             Create free account
           </Link>
         </div>
