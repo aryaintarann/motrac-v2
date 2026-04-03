@@ -1,16 +1,18 @@
 import Link from 'next/link'
-import { createClient } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation'
+import { LoginButton } from '@/components/LoginButton'
+import { SignupButton } from '@/components/SignupButton'
+import { HashNavigationHandler } from '@/components/HashNavigationHandler'
+import { AuthRedirectHandler } from '@/components/AuthRedirectHandler'
+import { BrowserNavigationHandler } from '@/components/BrowserNavigationHandler'
 
 export const metadata = {
   title: 'Motrac | Your Money. Your Rules.',
   description: 'Track every expense, plan your budget, and let AI guide you to your financial goals. Free forever.',
 }
 
-export default async function LandingPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (user) redirect('/dashboard')
+export default function LandingPage() {
+  // Remove server-side redirect to allow hash fragments to work
+  // Client-side will handle authenticated user redirect
 
   return (
     <div
@@ -62,21 +64,24 @@ export default async function LandingPage() {
           {/* Nav Links */}
           <nav className="nav-links" style={{ display: 'flex', gap: '32px', fontSize: '15px', fontWeight: 500 }}>
             <a href="#features" className="nav-link">Features</a>
+            <a href="#mobile" className="nav-link">Mobile</a>
             <a href="#pricing" className="nav-link">Pricing</a>
             <a href="#about" className="nav-link">About</a>
           </nav>
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <Link href="/login" style={{ fontSize: '14px', fontWeight: 600, color: '#6B7280', textDecoration: 'none' }}>Log in</Link>
-            <Link href="/signup" style={{ background: '#2563EB', color: '#fff', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(37,99,235,0.25)' }}>
+            <LoginButton style={{ fontSize: '14px', fontWeight: 600, color: '#6B7280', textDecoration: 'none' }}>
+              Log in
+            </LoginButton>
+            <SignupButton style={{ background: '#2563EB', color: '#fff', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(37,99,235,0.25)' }}>
               Get Started
-            </Link>
+            </SignupButton>
           </div>
         </div>
       </header>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', background: '#fff', borderBottom: '1px solid #F3F4F6' }}>
+      <section id="hero-section" style={{ position: 'relative', background: '#fff', borderBottom: '1px solid #F3F4F6' }}>
         {/* Background grid pattern */}
         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(#E5E7EB 1px, transparent 1px)', backgroundSize: '24px 24px', pointerEvents: 'none', opacity: 0.6 }} />
         {/* Blue glow */}
@@ -301,6 +306,155 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* ── MOBILE APP ── */}
+      <section id="mobile" style={{ padding: '100px 24px 120px', background: '#fff', position: 'relative', overflow: 'hidden' }}>
+        {/* Background gradient orbs */}
+        <div style={{ position: 'absolute', top: '20%', left: '10%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.08), transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '10%', right: '15%', width: '350px', height: '350px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+        
+        <div style={{ maxWidth: '1100px', margin: '0 auto', position: 'relative' }}>
+          {/* Section header */}
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <div style={{ display: 'inline-block', fontSize: '13px', fontWeight: 800, color: '#10B981', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '16px' }}>
+              Download Now
+              <div style={{ height: '3px', width: '40px', background: '#10B981', margin: '8px auto 0', borderRadius: '2px' }} />
+            </div>
+            <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#111827', margin: '0 0 20px' }}>
+              Motrac in<br />
+              <span style={{ color: '#2563EB' }}>your pocket.</span>
+            </h2>
+            <p style={{ fontSize: '18px', color: '#6B7280', maxWidth: '600px', margin: '0 auto', lineHeight: 1.7 }}>
+              Download the Motrac app and enjoy a more convenient financial management experience, anytime and anywhere.
+            </p>
+          </div>
+
+          {/* Mobile app showcase grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginBottom: '56px' }}>
+            
+            {/* iOS Card */}
+            <div style={{ background: 'linear-gradient(135deg, #F9FAFB, #FFFFFF)', border: '1px solid #E5E7EB', borderRadius: '24px', padding: '40px', textAlign: 'center', position: 'relative', overflow: 'hidden', transition: 'transform 0.3s ease, box-shadow 0.3s ease' }} className="bento-card">
+              <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '160px', height: '160px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.06), transparent 70%)', pointerEvents: 'none' }} />
+              
+              <div style={{ width: '64px', height: '64px', borderRadius: '18px', background: 'linear-gradient(135deg, #000000, #333333)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', position: 'relative', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                </svg>
+              </div>
+              
+              <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#111827', margin: '0 0 12px' }}>iOS App</h3>
+              <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: 1.7, marginBottom: '24px' }}>
+                Download from App Store
+              </p>
+              
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#F3F4F6', borderRadius: '9999px', padding: '8px 20px', fontSize: '13px', fontWeight: 700, color: '#6B7280', marginBottom: '20px' }}>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#F59E0B' }} />
+                Coming Soon
+              </div>
+
+              <button disabled style={{ display: 'block', width: '100%', background: '#9CA3AF', color: '#fff', fontSize: '15px', fontWeight: 700, padding: '14px 24px', borderRadius: '12px', border: 'none', cursor: 'not-allowed', opacity: 0.6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                  </svg>
+                  <span>Download from App Store</span>
+                </div>
+              </button>
+            </div>
+
+            {/* Android Card */}
+            <div style={{ background: 'linear-gradient(135deg, #F9FAFB, #FFFFFF)', border: '1px solid #E5E7EB', borderRadius: '24px', padding: '40px', textAlign: 'center', position: 'relative', overflow: 'hidden', transition: 'transform 0.3s ease, box-shadow 0.3s ease' }} className="bento-card">
+              <div style={{ position: 'absolute', top: '-40px', left: '-40px', width: '160px', height: '160px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(16,185,129,0.06), transparent 70%)', pointerEvents: 'none' }} />
+              
+              <div style={{ width: '64px', height: '64px', borderRadius: '18px', background: 'linear-gradient(135deg, #3DDC84, #2FC574)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', position: 'relative', boxShadow: '0 8px 24px rgba(61,220,132,0.3)' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                  <path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24a11.5 11.5 0 0 0-8.94 0L5.65 5.67c-.19-.28-.54-.37-.83-.22-.3.16-.42.54-.26.85l1.84 3.18C4.1 11.36 2.5 14.15 2.5 17.3h19c0-3.15-1.6-5.94-3.9-7.82zM7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/>
+                </svg>
+              </div>
+              
+              <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#111827', margin: '0 0 12px' }}>Android App</h3>
+              <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: 1.7, marginBottom: '24px' }}>
+                Download APK file
+              </p>
+              
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(16,185,129,0.1)', borderRadius: '9999px', padding: '8px 20px', fontSize: '13px', fontWeight: 700, color: '#10B981', marginBottom: '20px' }}>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', animation: 'pulse-glow 2s ease-in-out infinite' }} />
+                Available Now
+              </div>
+
+              <Link href="/download/android" style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #3DDC84, #2FC574)', color: '#fff', fontSize: '15px', fontWeight: 700, padding: '14px 24px', borderRadius: '12px', textDecoration: 'none', boxShadow: '0 4px 20px rgba(61,220,132,0.3)', transition: 'transform 0.2s, box-shadow 0.2s' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  <span>Download APK</span>
+                </div>
+              </Link>
+            </div>
+
+          </div>
+
+          {/* Features of mobile app */}
+          <div style={{ background: 'linear-gradient(135deg, #EFF6FF, #F9FAFB)', border: '1px solid #E5E7EB', borderRadius: '24px', padding: '48px', position: 'relative' }}>
+            <h3 style={{ fontSize: '28px', fontWeight: 800, color: '#111827', margin: '0 0 32px', textAlign: 'center' }}>
+              Same Features, Better Experience
+            </h3>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '32px' }}>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(37,99,235,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                  </svg>
+                </div>
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#111827', margin: '0 0 8px' }}>Real-time Sync</h4>
+                <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Your data is always up-to-date on all devices</p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(124,58,237,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                  </svg>
+                </div>
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#111827', margin: '0 0 8px' }}>Fast & Lightweight</h4>
+                <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Record transactions in seconds</p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                  </svg>
+                </div>
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#111827', margin: '0 0 8px' }}>Scan & Capture</h4>
+                <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Photo receipts for automatic tracking</p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                  </svg>
+                </div>
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#111827', margin: '0 0 8px' }}>Smart Notifications</h4>
+                <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Budget and debt payment reminders</p>
+              </div>
+
+            </div>
+          </div>
+
+
+
+        </div>
+      </section>
+
       {/* ── PRICING ── */}
       <section id="pricing" style={{ padding: '100px 24px', background: '#FAFAFA' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', textAlign: 'center' }}>
@@ -441,6 +595,9 @@ export default async function LandingPage() {
           <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} Motrac. All rights reserved.</p>
         </div>
       </footer>
+      <HashNavigationHandler />
+      <AuthRedirectHandler />
+      <BrowserNavigationHandler />
     </div>
   )
 }

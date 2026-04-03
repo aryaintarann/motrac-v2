@@ -14,13 +14,19 @@ export async function GET(request: Request) {
     if (!error) {
       const forwardedHost = request.headers.get('x-forwarded-host') // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === 'development'
+      
+      // If next parameter contains hash fragments, use redirect page
+      const finalRedirectUrl = next.includes('#') 
+        ? `/auth/redirect?next=${encodeURIComponent(next)}`
+        : next
+      
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${next}`)
+        return NextResponse.redirect(`${origin}${finalRedirectUrl}`)
       } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`)
+        return NextResponse.redirect(`https://${forwardedHost}${finalRedirectUrl}`)
       } else {
-        return NextResponse.redirect(`${origin}${next}`)
+        return NextResponse.redirect(`${origin}${finalRedirectUrl}`)
       }
     }
   }

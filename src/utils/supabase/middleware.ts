@@ -55,11 +55,23 @@ export async function updateSession(request: NextRequest) {
         return NextResponse.redirect(url)
       }
     } else {
+      // For login/signup pages with 'next' parameter, let client-side handle redirect
+      // Only redirect to dashboard if no 'next' parameter
       if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) {
-        const url = request.nextUrl.clone()
-        url.pathname = '/dashboard'
-        return NextResponse.redirect(url)
+        const nextParam = request.nextUrl.searchParams.get('next')
+        
+        // If no 'next' parameter, redirect to dashboard
+        if (!nextParam) {
+          const url = request.nextUrl.clone()
+          url.pathname = '/dashboard'
+          return NextResponse.redirect(url)
+        }
+        
+        // If there is a 'next' parameter, let the page load and client-side will handle redirect
       }
+      
+      // Don't auto-redirect authenticated users on home page - let client-side handle it
+      // This allows hash fragments to work properly
     }
   }
 

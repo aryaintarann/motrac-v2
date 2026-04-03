@@ -10,6 +10,7 @@ export async function signup(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const fullName = formData.get('full_name') as string
+  const next = formData.get('next') as string | null
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -20,15 +21,25 @@ export async function signup(formData: FormData) {
   })
 
   if (error) {
-    redirect(`/signup?error=${encodeURIComponent(error.message)}`)
+    const redirectUrl = next 
+      ? `/signup?error=${encodeURIComponent(error.message)}&next=${encodeURIComponent(next)}`
+      : `/signup?error=${encodeURIComponent(error.message)}`
+    redirect(redirectUrl)
   }
 
   // Sign the user in immediately after signup
   const { error: loginError } = await supabase.auth.signInWithPassword({ email, password })
   if (loginError) {
-    redirect(`/signup?error=${encodeURIComponent(loginError.message)}`)
+    const redirectUrl = next 
+      ? `/signup?error=${encodeURIComponent(loginError.message)}&next=${encodeURIComponent(next)}`
+      : `/signup?error=${encodeURIComponent(loginError.message)}`
+    redirect(redirectUrl)
   }
 
+  console.log('Signup success - Next param:', next)
+  
   revalidatePath('/dashboard', 'layout')
+  
+  // Always redirect to dashboard after successful signup
   redirect('/dashboard')
 }

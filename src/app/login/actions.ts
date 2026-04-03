@@ -16,10 +16,19 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.error('Login error:', error.message)
-    redirect(`/login?error=${encodeURIComponent(error.message)}`)
+    const next = formData.get('next') as string | null
+    const redirectUrl = next 
+      ? `/login?error=${encodeURIComponent(error.message)}&next=${encodeURIComponent(next)}`
+      : `/login?error=${encodeURIComponent(error.message)}`
+    redirect(redirectUrl)
   }
 
+  const next = formData.get('next') as string | null
+  
   revalidatePath('/dashboard', 'layout')
+  
+  // Always redirect to dashboard after successful login
+  // Don't preserve hash fragments - user should go to dashboard
   redirect('/dashboard')
 }
 

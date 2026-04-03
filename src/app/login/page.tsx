@@ -2,6 +2,7 @@ import { login } from './actions'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { LoginRedirectHandler } from '@/components/LoginRedirectHandler'
 
 export const metadata = {
   title: 'Sign In | Motrac',
@@ -9,17 +10,21 @@ export const metadata = {
 }
 
 export default async function LoginPage(props: {
-  searchParams: Promise<{ error?: string }>
+  searchParams: Promise<{ error?: string; next?: string }>
 }) {
   const searchParams = await props.searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (user) {
+  
+  // Note: Middleware handles redirecting logged-in users
+  // This check is just for safety in case middleware doesn't run
+  if (user && !searchParams?.next) {
     redirect('/dashboard')
   }
 
   return (
     <div className="flex min-h-screen w-full bg-slate-50">
+      <LoginRedirectHandler />
       {/* Left Panel — Branding */}
       <div className="hidden lg:flex lg:w-[55%] relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 flex-col items-start justify-between p-12 overflow-hidden">
         {/* Decorative blobs */}
@@ -82,14 +87,18 @@ export default async function LoginPage(props: {
 
           {/* Google OAuth Button */}
           <form className="mb-6">
+            {searchParams?.next && (
+              <input type="hidden" name="next" value={searchParams.next} />
+            )}
             <button
-              formAction={async () => {
+              formAction={async (formData: FormData) => {
                 "use server"
+                const next = formData.get('next') as string | null
                 const supabase = await createClient()
                 const { data, error } = await supabase.auth.signInWithOAuth({
                   provider: 'google',
                   options: {
-                    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/auth/callback`
+                    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
                   }
                 })
                 if (data.url) redirect(data.url)
@@ -115,6 +124,9 @@ export default async function LoginPage(props: {
 
           {/* Email/Password Form */}
           <form className="flex flex-col gap-4">
+            {searchParams?.next && (
+              <input type="hidden" name="next" value={searchParams.next} />
+            )}
             <div className="flex flex-col gap-1.5">
               <label className="text-[13px] font-semibold text-gray-700" htmlFor="email">
                 Email address
