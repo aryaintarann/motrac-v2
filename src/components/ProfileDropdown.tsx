@@ -48,7 +48,7 @@ export function ProfileDropdown({ user }: { user: any }) {
           
           <div className="p-1.5">
             <Link 
-              href="/profile"
+              href="/dashboard/profile"
               onClick={() => setIsOpen(false)}
               className="group flex w-full items-center rounded-[10px] px-3 py-2 text-[14px] font-semibold text-[#475569] hover:bg-blue-50 hover:text-blue-600 transition-colors"
             >
