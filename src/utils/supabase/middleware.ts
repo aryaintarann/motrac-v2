@@ -32,12 +32,13 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/signup') &&
-    !request.nextUrl.pathname.startsWith('/auth')
-  ) {
+  // Public routes that don't require authentication
+  const publicRoutes = ['/', '/login', '/signup', '/auth']
+  const isPublicRoute = publicRoutes.some(route =>
+    route === '/' ? request.nextUrl.pathname === '/' : request.nextUrl.pathname.startsWith(route)
+  )
+
+  if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
@@ -54,9 +55,9 @@ export async function updateSession(request: NextRequest) {
         return NextResponse.redirect(url)
       }
     } else {
-      if (request.nextUrl.pathname.startsWith('/login')) {
+      if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) {
         const url = request.nextUrl.clone()
-        url.pathname = '/'
+        url.pathname = '/dashboard'
         return NextResponse.redirect(url)
       }
     }
