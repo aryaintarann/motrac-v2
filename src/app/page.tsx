@@ -3,163 +3,239 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
 export const metadata = {
-  title: 'Motrac | Take Control of Your Finances',
-  description: 'Track every expense, plan your budget, and let AI guide you to your financial goals.',
+  title: 'Motrac | Your Money. Your Rules.',
+  description: 'Track every expense, plan your budget, and let AI guide you to your financial goals. Free forever.',
 }
 
 export default async function LandingPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-
-  // If user is already logged in, they probably just went to the root domain. Move them to dashboard.
-  if (user) {
-    redirect('/dashboard')
-  }
+  if (user) redirect('/dashboard')
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--background)] text-[var(--foreground)] selection:bg-[var(--primary)] selection:text-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 flex h-20 items-center justify-between border-b border-[#E5E7EB]/50 bg-white/80 px-6 backdrop-blur-lg sm:px-10">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[var(--primary)] text-xl font-black text-white shadow-sm shrink-0">
-            M
-          </div>
-          <span className="text-[22px] font-black tracking-[0.05em] text-[var(--primary)] whitespace-nowrap">
-            MOTRAC
-          </span>
-        </div>
-        
-        <nav className="hidden md:flex items-center gap-8 text-[15px] font-semibold text-gray-600">
-          <a href="#features" className="hover:text-[var(--primary)] transition-colors">Features</a>
-          <a href="#how-it-works" className="hover:text-[var(--primary)] transition-colors">How it works</a>
-          <a href="#pricing" className="hover:text-[var(--primary)] transition-colors">Pricing</a>
-        </nav>
+    <div
+      className="flex min-h-screen flex-col"
+      style={{ background: '#09090B', color: '#f9f5f8', fontFamily: "'Manrope', 'Inter', sans-serif" }}
+    >
+      {/* Google Fonts */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap');
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        @keyframes pulse-glow { 0%,100%{opacity:0.5} 50%{opacity:1} }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+        .float { animation: float 6s ease-in-out infinite; }
+        .fadeup { animation: fadeInUp 0.7s ease forwards; }
+        .fadeup-delay { animation: fadeInUp 0.7s ease 0.2s forwards; opacity: 0; }
+        .fadeup-delay2 { animation: fadeInUp 0.7s ease 0.4s forwards; opacity: 0; }
+        .bento-card { transition: transform 0.3s ease, background 0.3s ease; }
+        .bento-card:hover { transform: scale(1.02); background: rgba(255,255,255,0.08) !important; }
+        .nav-link { color: #A1A1AA; text-decoration: none; transition: color 0.2s; }
+        .nav-link:hover { color: #fff; }
+        @media (prefers-reduced-motion: reduce) {
+          .float, .fadeup, .fadeup-delay, .fadeup-delay2, .bento-card { animation: none !important; }
+          .bento-card:hover { transform: none !important; }
+        }
+        @media (max-width: 768px) {
+          .bento-grid { grid-template-columns: 1fr !important; }
+          .bento-grid > div { grid-column: span 1 !important; }
+          .nav-links { display: none !important; }
+        }
+      `}</style>
 
-        <div className="flex items-center gap-4">
-          <Link href="/login" className="hidden sm:block text-[15px] font-semibold text-gray-600 hover:text-[var(--primary)] transition-colors">
-            Log in
-          </Link>
-          <Link href="/signup" className="rounded-xl bg-[var(--primary)] px-5 py-2.5 text-[14px] font-bold text-white shadow-[0_4px_14px_0_rgba(26,111,214,0.39)] hover:bg-[#155ab0] hover:shadow-[0_6px_20px_rgba(26,111,214,0.23)] hover:-translate-y-0.5 transition-all">
-            Get Started
-          </Link>
+      {/* ── NAVBAR ── */}
+      <header style={{ position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(24px)', background: 'rgba(9,9,11,0.75)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #2563EB, #7C3AED)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '18px', color: '#fff' }}>M</div>
+            <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#fff' }}>MOTRAC</span>
+          </div>
+
+          {/* Nav Links */}
+          <nav className="nav-links" style={{ display: 'flex', gap: '32px', fontSize: '15px', fontWeight: 500, color: '#A1A1AA' }}>
+            <a href="#features" className="nav-link">Features</a>
+            <a href="#how-it-works" className="nav-link">Pricing</a>
+            <a href="#features" className="nav-link">About</a>
+          </nav>
+
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <Link href="/login" style={{ fontSize: '14px', fontWeight: 600, color: '#A1A1AA', textDecoration: 'none' }}>Log in</Link>
+            <Link href="/signup" style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', color: '#fff', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 0 20px rgba(37,99,235,0.4)' }}>
+              Get Started
+            </Link>
+          </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <main className="flex-1">
-        <section className="relative overflow-hidden bg-white pt-24 pb-32 sm:pt-32 sm:pb-40">
-          {/* Background decorations */}
-          <div className="absolute top-1/4 left-1/2 -z-10 w-[800px] -translate-x-1/2 -translate-y-1/2 opacity-30">
-            <div className="aspect-[1/1] w-full rounded-full bg-gradient-to-tr from-[#1A6FD6] to-[#2196F3] blur-[120px]"></div>
+      {/* ── HERO ── */}
+      <section style={{ position: 'relative', overflow: 'hidden', padding: '120px 24px 160px', textAlign: 'center' }}>
+        {/* Ambient orbs */}
+        <div style={{ position: 'absolute', top: '-200px', left: '50%', transform: 'translateX(-60%)', width: '700px', height: '700px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '-100px', right: '5%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: '860px', margin: '0 auto', position: 'relative' }}>
+          {/* Pill badge */}
+          <div className="fadeup" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(37,99,235,0.3)', borderRadius: '9999px', padding: '6px 16px', marginBottom: '32px', fontSize: '13px', fontWeight: 700, color: '#90abff', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#2563EB', display: 'inline-block', animation: 'pulse-glow 2s ease-in-out infinite' }} />
+            Now in Public Beta
           </div>
-          
-          <div className="container mx-auto px-6 text-center">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 mb-8">
-              <span className="flex h-2 w-2 rounded-full bg-blue-600"></span>
-              <span className="text-[13px] font-bold text-blue-700 uppercase tracking-widest">Motrac 2.0 is here</span>
-            </div>
-            
-            <h1 className="mx-auto max-w-4xl text-[50px] font-bold leading-[1.1] tracking-tight text-gray-900 sm:text-[64px] lg:text-[76px]">
-              Take Control of <br className="hidden sm:block" /> Your Finances.
-            </h1>
-            
-            <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed text-gray-500 sm:text-[20px]">
-              Track every expense, plan your budget, and let AI guide you to your financial goals. Motrac brings clarity to your personal wealth in one beautiful dashboard.
-            </p>
-            
-            <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/signup" className="w-full sm:w-auto rounded-2xl bg-[var(--primary)] px-8 py-4 text-[16px] font-bold text-white shadow-[0_4px_14px_0_rgba(26,111,214,0.39)] hover:bg-[#155ab0] hover:shadow-[0_6px_20px_rgba(26,111,214,0.23)] hover:-translate-y-0.5 transition-all">
-                Start for free
-              </Link>
-              <Link href="#features" className="w-full sm:w-auto rounded-2xl border border-gray-200 bg-white px-8 py-4 text-[16px] font-bold text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all">
-                Explore features
-              </Link>
-            </div>
-          </div>
-        </section>
 
-        {/* Features Section */}
-        <section id="features" className="bg-[var(--background)] py-24 sm:py-32">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="mb-16 text-center">
-              <h2 className="text-[32px] font-bold tracking-tight text-gray-900 sm:text-[40px]">
-                Everything you need to grow your wealth.
-              </h2>
-              <p className="mt-4 text-[18px] text-gray-500">
-                Powerful tools wrapped in a stunning, easy-to-use interface.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-              
-              {/* Feature 1 */}
-              <div className="group relative rounded-[24px] border border-[#E5E7EB] bg-white p-8 shadow-sm transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1">
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-[14px] bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-100">
-                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                </div>
-                <h3 className="mb-3 text-[18px] font-bold text-gray-900">Accounts Tracking</h3>
-                <p className="text-[15px] leading-relaxed text-gray-500">
-                  Visualize all your cash, bank accounts, and e-wallets in one unified dashboard.
-                </p>
-              </div>
-
-              {/* Feature 2 */}
-              <div className="group relative rounded-[24px] border border-[#E5E7EB] bg-white p-8 shadow-sm transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1">
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-[14px] bg-purple-50 text-purple-600 transition-colors group-hover:bg-purple-100">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg>
-                </div>
-                <h3 className="mb-3 text-[18px] font-bold text-gray-900">Smart Budgets</h3>
-                <p className="text-[15px] leading-relaxed text-gray-500">
-                  Set limits to your spending. Track your weekly and monthly paces gracefully.
-                </p>
-              </div>
-
-              {/* Feature 3 */}
-              <div className="group relative rounded-[24px] border border-[#E5E7EB] bg-white p-8 shadow-sm transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1">
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-[14px] bg-red-50 text-red-600 transition-colors group-hover:bg-red-100">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>
-                </div>
-                <h3 className="mb-3 text-[18px] font-bold text-gray-900">Debt Management</h3>
-                <p className="text-[15px] leading-relaxed text-gray-500">
-                  Keep a close eye on who owes you and whom you owe. Never forget a payment.
-                </p>
-              </div>
-
-              {/* Feature 4 */}
-              <div className="group relative rounded-[24px] border border-[#E5E7EB] bg-white p-8 shadow-sm transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1">
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-[14px] bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-100">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                </div>
-                <h3 className="mb-3 text-[18px] font-bold text-gray-900">AI Advisor</h3>
-                <p className="text-[15px] leading-relaxed text-gray-500">
-                  Get personalized, AI-driven insights on your spending habit and save more effectively.
-                </p>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-[#E5E7EB] bg-white py-12">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-6 px-6 md:flex-row lg:px-8">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-[var(--primary)] text-[14px] font-black text-white">
-              M
-            </div>
-            <span className="text-[18px] font-black tracking-[0.05em] text-gray-900">
-              MOTRAC
+          {/* Main Headline */}
+          <h1 className="fadeup" style={{ fontSize: 'clamp(52px, 8vw, 88px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.04em', margin: '0 0 24px', color: '#fff' }}>
+            Your{' '}
+            <span style={{ background: 'linear-gradient(135deg, #60A5FA, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              Money.
             </span>
-          </div>
-          <p className="text-[14px] text-gray-500">
-            © {new Date().getFullYear()} Motrac. All rights reserved.
+            <br />
+            Your Rules.
+          </h1>
+
+          <p className="fadeup-delay" style={{ fontSize: '18px', lineHeight: 1.7, color: '#A1A1AA', maxWidth: '560px', margin: '0 auto 48px' }}>
+            Track every rupiah, plan smarter budgets, and get AI-powered insights — all in one beautiful, private dashboard.
           </p>
-          <div className="flex divide-x divide-gray-300 text-[14px] font-medium text-gray-500">
-             <Link href="#" className="px-4 hover:text-gray-900 transition-colors">Privacy</Link>
-             <Link href="#" className="px-4 hover:text-gray-900 transition-colors">Terms</Link>
-             <Link href="#" className="px-4 hover:text-gray-900 transition-colors">Support</Link>
+
+          {/* CTAs */}
+          <div className="fadeup-delay2" style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/signup" style={{ background: 'linear-gradient(135deg, #2563EB, #7C3AED)', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '16px 32px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 0 40px rgba(37,99,235,0.35)', transition: 'box-shadow 0.3s, transform 0.2s' }}>
+              Start for free →
+            </Link>
+            <a href="#features" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', fontSize: '16px', fontWeight: 600, padding: '16px 32px', borderRadius: '9999px', textDecoration: 'none', backdropFilter: 'blur(16px)' }}>
+              See features
+            </a>
+          </div>
+        </div>
+
+        {/* Floating Dashboard Preview Card */}
+        <div className="float" style={{ marginTop: '80px', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(32px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '24px', padding: '28px', maxWidth: '480px', width: '100%', boxShadow: '0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)', textAlign: 'left' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <div>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: '#A1A1AA', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Net Worth</div>
+                <div style={{ fontSize: '36px', fontWeight: 900, color: '#fff', letterSpacing: '-0.03em' }}>Rp 48.5M</div>
+              </div>
+              <div style={{ background: 'rgba(37,99,235,0.2)', border: '1px solid rgba(37,99,235,0.3)', borderRadius: '12px', padding: '8px 14px', fontSize: '13px', fontWeight: 700, color: '#90abff' }}>+12.4%</div>
+            </div>
+            {/* Mini chart bars */}
+            <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-end', height: '56px', marginBottom: '20px' }}>
+              {[40,65,45,80,55,90,70,100,60,85,75,95].map((h, i) => (
+                <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: '4px 4px 0 0', background: i === 11 ? 'linear-gradient(180deg, #2563EB, #7C3AED)' : 'rgba(255,255,255,0.08)', transition: 'height 0.3s ease' }} />
+              ))}
+            </div>
+            {/* Account pills */}
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {[['💳 BCA', '#2563EB'], ['🏦 Mandiri', '#7C3AED'], ['💰 Cash', '#10B981']].map(([label, color]) => (
+                <div key={String(label)} style={{ background: `${color}22`, border: `1px solid ${color}44`, borderRadius: '9999px', padding: '5px 12px', fontSize: '12px', fontWeight: 600, color: '#fff' }}>{String(label)}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FEATURES BENTO GRID ── */}
+      <section id="features" style={{ padding: '100px 24px 120px', background: '#0D0D10' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <div style={{ display: 'inline-block', fontSize: '12px', fontWeight: 700, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px', background: 'rgba(124,58,237,0.12)', borderRadius: '9999px', padding: '6px 16px', border: '1px solid rgba(124,58,237,0.3)' }}>
+              Everything You Need
+            </div>
+            <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#fff', margin: 0 }}>
+              Built for how you<br />
+              <span style={{ background: 'linear-gradient(135deg, #60A5FA, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>actually live.</span>
+            </h2>
+          </div>
+
+          {/* Bento grid */}
+          <div className="bento-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gridTemplateRows: 'auto', gap: '16px' }}>
+
+            {/* Card 1 — Large, spans 7 columns */}
+            <div className="bento-card" style={{ gridColumn: 'span 7', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', minHeight: '280px' }}>
+              <div style={{ position: 'absolute', top: '-60px', right: '-60px', width: '240px', height: '240px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.2), transparent 70%)', pointerEvents: 'none' }} />
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #2563EB22, #2563EB44)', border: '1px solid rgba(37,99,235,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#90abff" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#fff', margin: '0 0 12px' }}>Smart Accounts</h3>
+              <p style={{ fontSize: '15px', color: '#A1A1AA', lineHeight: 1.7, margin: 0, maxWidth: '320px' }}>Track all your cash, bank accounts, e-wallets, and investments in one unified, real-time view.</p>
+              <div style={{ marginTop: '32px', display: 'flex', gap: '8px' }}>
+                {['Cash', 'BCA', 'GoPay', 'OVO'].map(tag => (
+                  <span key={tag} style={{ background: 'rgba(255,255,255,0.07)', borderRadius: '9999px', padding: '5px 12px', fontSize: '12px', color: '#A1A1AA', fontWeight: 600 }}>{tag}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Card 2 — Small, spans 5 columns */}
+            <div className="bento-card" style={{ gridColumn: 'span 5', background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', minHeight: '280px' }}>
+              <div style={{ position: 'absolute', bottom: '-40px', left: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,58,237,0.25), transparent 70%)', pointerEvents: 'none' }} />
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #7C3AED22, #7C3AED44)', border: '1px solid rgba(124,58,237,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#af88ff" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </div>
+              <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#fff', margin: '0 0 12px' }}>Budget Control</h3>
+              <p style={{ fontSize: '15px', color: '#A1A1AA', lineHeight: 1.7, margin: 0 }}>Set weekly & monthly limits. Visual progress bars keep you on track — effortlessly.</p>
+              {/* Progress bar mock */}
+              <div style={{ marginTop: '28px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#A1A1AA', marginBottom: '8px' }}>
+                  <span>Monthly Spend</span><span style={{ color: '#af88ff', fontWeight: 700 }}>68%</span>
+                </div>
+                <div style={{ height: '6px', borderRadius: '9999px', background: 'rgba(255,255,255,0.1)' }}>
+                  <div style={{ width: '68%', height: '100%', borderRadius: '9999px', background: 'linear-gradient(90deg, #7C3AED, #af88ff)' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3 — Medium, spans 5 columns */}
+            <div className="bento-card" style={{ gridColumn: 'span 5', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', minHeight: '240px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
+              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#fff', margin: '0 0 12px' }}>AI Advisor</h3>
+              <p style={{ fontSize: '14px', color: '#A1A1AA', lineHeight: 1.7, margin: 0 }}>Personalized, AI-driven insights on your spending habits — save smarter, not harder.</p>
+            </div>
+
+            {/* Card 4 — Medium, spans 7 columns */}
+            <div className="bento-card" style={{ gridColumn: 'span 7', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', minHeight: '240px' }}>
+              <div style={{ position: 'absolute', top: '-30px', right: '-30px', width: '180px', height: '180px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(239,68,68,0.15), transparent 70%)', pointerEvents: 'none' }} />
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#fff', margin: '0 0 12px' }}>Debt Tracker</h3>
+              <p style={{ fontSize: '14px', color: '#A1A1AA', lineHeight: 1.7, margin: '0 0 28px', maxWidth: '360px' }}>Know exactly who owes you and what you owe. Never lose track of a payment again.</p>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <div style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: '12px', padding: '12px 16px', fontSize: '13px', fontWeight: 700, color: '#10B981' }}>+Rp 1.2M owed to you</div>
+                <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: '12px', padding: '12px 16px', fontSize: '13px', fontWeight: 700, color: '#f87171' }}>-Rp 800K you owe</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA STRIP ── */}
+      <section style={{ padding: '100px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'relative', maxWidth: '600px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#fff', margin: '0 0 20px' }}>
+            Ready to take control?
+          </h2>
+          <p style={{ fontSize: '17px', color: '#A1A1AA', marginBottom: '40px', lineHeight: 1.7 }}>
+            Join the smart generation managing their money with Motrac. Free. Private. Powerful.
+          </p>
+          <Link href="/signup" style={{ display: 'inline-block', background: 'linear-gradient(135deg, #2563EB, #7C3AED)', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '18px 40px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 0 40px rgba(37,99,235,0.4)' }}>
+            Create free account
+          </Link>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '40px 24px', background: '#09090B' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #2563EB, #7C3AED)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '16px', color: '#fff' }}>M</div>
+            <span style={{ fontWeight: 900, fontSize: '17px', letterSpacing: '0.08em', color: '#fff' }}>MOTRAC</span>
+          </div>
+          <p style={{ fontSize: '14px', color: '#52525B', margin: 0 }}>© {new Date().getFullYear()} Motrac. All rights reserved.</p>
+          <div style={{ display: 'flex', gap: '24px', fontSize: '14px', fontWeight: 500, color: '#52525B' }}>
+            <a href="#" style={{ color: '#52525B', textDecoration: 'none' }}>Privacy</a>
+            <a href="#" style={{ color: '#52525B', textDecoration: 'none' }}>Terms</a>
+            <a href="#" style={{ color: '#52525B', textDecoration: 'none' }}>Support</a>
           </div>
         </div>
       </footer>
