@@ -59,7 +59,7 @@ export default async function LandingPage() {
           <nav className="nav-links" style={{ display: 'flex', gap: '32px', fontSize: '15px', fontWeight: 500 }}>
             <a href="#features" className="nav-link">Features</a>
             <a href="#pricing" className="nav-link">Pricing</a>
-            <a href="#features" className="nav-link">About</a>
+            <a href="#about" className="nav-link">About</a>
           </nav>
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -343,6 +343,54 @@ export default async function LandingPage() {
             <Link href="/signup" style={{ display: 'block', width: '100%', background: '#111827', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '16px 0', borderRadius: '12px', textDecoration: 'none', transition: 'transform 0.2s', boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}>
               Get Started for Free
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ABOUT SECTION ── */}
+      <section id="about" style={{ padding: '100px 24px', background: '#fff' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <div style={{ display: 'inline-block', fontSize: '13px', fontWeight: 800, color: '#F59E0B', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '16px' }}>
+              Our Story
+              <div style={{ height: '3px', width: '40px', background: '#F59E0B', margin: '8px auto 0', borderRadius: '2px' }} />
+            </div>
+            <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#111827', margin: '0 0 20px' }}>
+              Why we built <span style={{ color: '#2563EB' }}>Motrac.</span>
+            </h2>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '48px', alignItems: 'center' }}>
+            <div style={{ padding: '24px', background: '#FAFAFA', borderRadius: '24px', border: '1px solid #E5E7EB' }}>
+              <p style={{ fontSize: '18px', color: '#4B5563', lineHeight: 1.8, margin: '0 0 16px' }}>
+                Managing personal finances shouldn't require complex spreadsheets or expensive subscriptions. We realized that existing tools were either too complicated or lacked the essential features needed for genuine financial control.
+              </p>
+              <p style={{ fontSize: '18px', color: '#4B5563', lineHeight: 1.8, margin: 0 }}>
+                Motrac was born out of the need for a beautiful, simple, and powerful alternative. A tool that respects your privacy, simplifies your budgeting process, and gives you the smart insights you need—completely free of charge.
+              </p>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+               <div style={{ display: 'flex', gap: '16px' }}>
+                 <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(37,99,235,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                 </div>
+                 <div>
+                   <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>Privacy First</h3>
+                   <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Your data belongs to you. We employ industry-leading encryption and never sell your personal information.</p>
+                 </div>
+               </div>
+               
+               <div style={{ display: 'flex', gap: '16px' }}>
+                 <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(124,58,237,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                 </div>
+                 <div>
+                   <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>Built for Speed</h3>
+                   <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>Recording a transaction takes seconds. Every interaction is optimized to save your valuable time.</p>
+                 </div>
+               </div>
+            </div>
           </div>
         </div>
       </section>
