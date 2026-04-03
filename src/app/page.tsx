@@ -82,11 +82,10 @@ export default async function LandingPage() {
 
           {/* ── LEFT: Copy ── */}
           <div>
-            {/* Eyebrow badge */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '9999px', padding: '6px 14px', marginBottom: '32px', fontSize: '13px', fontWeight: 700, color: '#2563EB' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+            {/* Eyebrow text */}
+            <p style={{ marginBottom: '24px', fontSize: '14px', fontWeight: 800, color: '#2563EB', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               Personal Finance, Simplified
-            </div>
+            </p>
 
             {/* Headline */}
             <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.04em', margin: '0 0 24px', color: '#111827' }}>
