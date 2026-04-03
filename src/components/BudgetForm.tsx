@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { upsertBudget } from '../app/(dashboard)/budgets/actions'
-import { generateSmartAllocation } from '../app/(dashboard)/budgets/actions/generateSmartAllocation'
+import { upsertBudget } from '../app/dashboard/budgets/actions'
+import { generateSmartAllocation } from '../app/dashboard/budgets/actions/generateSmartAllocation'
 
 type Allocation = {
   needs: number,
