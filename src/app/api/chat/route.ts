@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { rateLimit, aiRateLimiter } from '@/lib/rate-limit'
 
 export async function POST(req: Request) {
   try {
@@ -14,6 +15,18 @@ export async function POST(req: Request) {
 
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // SECURITY: Rate limiting for AI endpoint
+    const { success, remaining } = await rateLimit(user.id, aiRateLimiter)
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { 
+          status: 429,
+          headers: { 'X-RateLimit-Remaining': '0' }
+        }
+      )
     }
 
     const body = await req.json()
@@ -58,14 +71,19 @@ Analyze their spending, debts, and budget to give tailored, actionable advice wi
       parts: [{ text: msg.content }]
     }))
     
-    // Prepend system prompt to the first user message or as a separate system instruction if supported
-    // For simplicity with gemini-2.5-flash via REST, we use systemInstruction field
+    // SECURITY: Use API key in header instead of URL
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+    }
     
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`
+    const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
     
     const aiResponse = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-goog-api-key': process.env.GEMINI_API_KEY
+      },
       body: JSON.stringify({
         systemInstruction: {
           parts: [{ text: systemPrompt }]

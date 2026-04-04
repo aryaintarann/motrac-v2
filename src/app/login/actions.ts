@@ -3,23 +3,23 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
+import { validateFormData, loginSchema, signupSchema } from '@/lib/validations'
 
 export async function login(formData: FormData) {
   const supabase = await createClient()
 
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
+  // SECURITY: Validate input with Zod schema
+  const validatedData = validateFormData(loginSchema, formData)
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error } = await supabase.auth.signInWithPassword(validatedData)
 
   if (error) {
-    console.error('Login error:', error.message)
     const next = formData.get('next') as string | null
+    // SECURITY: Use generic error message to prevent user enumeration
+    const errorMessage = 'Invalid email or password'
     const redirectUrl = next 
-      ? `/login?error=${encodeURIComponent(error.message)}&next=${encodeURIComponent(next)}`
-      : `/login?error=${encodeURIComponent(error.message)}`
+      ? `/login?error=${encodeURIComponent(errorMessage)}&next=${encodeURIComponent(next)}`
+      : `/login?error=${encodeURIComponent(errorMessage)}`
     redirect(redirectUrl)
   }
 
@@ -28,23 +28,23 @@ export async function login(formData: FormData) {
   revalidatePath('/dashboard', 'layout')
   
   // Always redirect to dashboard after successful login
-  // Don't preserve hash fragments - user should go to dashboard
   redirect('/dashboard')
 }
 
 export async function signup(formData: FormData) {
   const supabase = await createClient()
 
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
+  // SECURITY: Validate input with strong password requirements
+  const validatedData = validateFormData(signupSchema, formData)
 
-  const { error } = await supabase.auth.signUp(data)
+  const { error } = await supabase.auth.signUp({
+    email: validatedData.email,
+    password: validatedData.password,
+  })
 
   if (error) {
-    console.error('Signup error:', error.message)
-    redirect(`/login?error=${encodeURIComponent(error.message)}`)
+    // SECURITY: Use generic error message
+    redirect(`/login?error=${encodeURIComponent('Registration failed. Please try again.')}`)
   }
 
   revalidatePath('/dashboard', 'layout')

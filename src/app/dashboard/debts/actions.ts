@@ -48,13 +48,27 @@ export async function createDebt(formData: FormData) {
       date: new Date().toISOString()
     })
 
-    const { data: accountData } = await supabase.from('accounts').select('balance').eq('id', account_id).single()
-    if (accountData) {
-      let newBalance = Number(accountData.balance)
-      if (txnType === 'income') newBalance += principal
-      else newBalance -= principal
-      await supabase.from('accounts').update({ balance: newBalance }).eq('id', account_id)
+    // SECURITY: Verify account belongs to current user
+    const { data: accountData } = await supabase
+      .from('accounts')
+      .select('balance, user_id')
+      .eq('id', account_id)
+      .eq('user_id', user.id)
+      .single()
+    
+    if (!accountData) {
+      throw new Error('Unauthorized: Account not found or does not belong to you')
     }
+    
+    let newBalance = Number(accountData.balance)
+    if (txnType === 'income') newBalance += principal
+    else newBalance -= principal
+    
+    await supabase
+      .from('accounts')
+      .update({ balance: newBalance })
+      .eq('id', account_id)
+      .eq('user_id', user.id)
   }
 
   revalidatePath('/debts')
@@ -72,12 +86,24 @@ export async function markDebtPaid(formData: FormData) {
 
   const debt_id = formData.get('debt_id') as string
 
-  // Fetch the debt first to know how to balance the account
-  const { data: debt } = await supabase.from('debts').select('*').eq('id', debt_id).single()
-  if (!debt) return
+  // SECURITY: Fetch the debt and verify it belongs to current user
+  const { data: debt } = await supabase
+    .from('debts')
+    .select('*')
+    .eq('id', debt_id)
+    .eq('user_id', user.id)
+    .single()
+  
+  if (!debt) {
+    throw new Error('Unauthorized: Debt not found or does not belong to you')
+  }
 
   // Delete the debt
-  await supabase.from('debts').delete().eq('id', debt_id)
+  await supabase
+    .from('debts')
+    .delete()
+    .eq('id', debt_id)
+    .eq('user_id', user.id)
 
   // Auto-adjust balance and log transaction if account_id is provided
   if (debt.account_id) {
@@ -96,13 +122,27 @@ export async function markDebtPaid(formData: FormData) {
       date: new Date().toISOString()
     })
 
-    const { data: accountData } = await supabase.from('accounts').select('balance').eq('id', debt.account_id).single()
-    if (accountData) {
-      let newBalance = Number(accountData.balance)
-      if (txnType === 'income') newBalance += Number(debt.principal)
-      else newBalance -= Number(debt.principal)
-      await supabase.from('accounts').update({ balance: newBalance }).eq('id', debt.account_id)
+    // SECURITY: Verify account belongs to current user
+    const { data: accountData } = await supabase
+      .from('accounts')
+      .select('balance, user_id')
+      .eq('id', debt.account_id)
+      .eq('user_id', user.id)
+      .single()
+    
+    if (!accountData) {
+      throw new Error('Unauthorized: Account not found or does not belong to you')
     }
+    
+    let newBalance = Number(accountData.balance)
+    if (txnType === 'income') newBalance += Number(debt.principal)
+    else newBalance -= Number(debt.principal)
+    
+    await supabase
+      .from('accounts')
+      .update({ balance: newBalance })
+      .eq('id', debt.account_id)
+      .eq('user_id', user.id)
   }
 
   revalidatePath('/debts')

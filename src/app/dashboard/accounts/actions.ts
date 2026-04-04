@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { sanitizeString } from '@/lib/validations'
 
 export async function createAccount(formData: FormData) {
   const supabase = await createClient()
@@ -11,24 +12,41 @@ export async function createAccount(formData: FormData) {
     throw new Error('Not authenticated')
   }
 
-  const name = formData.get('name') as string
+  // SECURITY: Validate and sanitize inputs
+  const name = sanitizeString(formData.get('name') as string)
   const type = formData.get('type') as string
-  const balance = formData.get('balance') as string
+  const balance = Number(formData.get('balance'))
   const icon = formData.get('icon') as string
   const color = formData.get('color') as string
+
+  // Validation
+  if (!name || name.length < 1 || name.length > 100) {
+    throw new Error('Invalid account name')
+  }
+  
+  if (!['cash', 'bank', 'e-wallet'].includes(type)) {
+    throw new Error('Invalid account type')
+  }
+  
+  if (isNaN(balance) || balance < 0 || balance > 999999999.99) {
+    throw new Error('Invalid balance amount')
+  }
+  
+  // Validate color format (hex color)
+  const colorRegex = /^#[0-9A-Fa-f]{6}$/
+  const safeColor = colorRegex.test(color) ? color : '#1A6FD6'
 
   const { error } = await supabase.from('accounts').insert({
     user_id: user.id,
     name,
     type,
-    balance: Number(balance),
+    balance,
     icon: icon || '🏦',
-    color: color || '#1A6FD6',
+    color: safeColor,
     include_in_net_worth: true,
   })
 
   if (error) {
-    console.error('Error creating account:', error)
     throw new Error('Failed to create account')
   }
 

@@ -1,8 +1,21 @@
 'use server'
 
 import { createClient } from '@supabase/supabase-js'
+import { createClient as createServerClient } from '@/utils/supabase/server'
 
 export async function deleteAccountServerAction(userId: string) {
+  // CRITICAL SECURITY: Verify the current user owns the account being deleted
+  const supabase = await createServerClient()
+  const { data: { user: currentUser }, error: authError } = await supabase.auth.getUser()
+  
+  if (authError || !currentUser) {
+    return { success: false, error: "Unauthorized: You must be logged in" }
+  }
+  
+  if (currentUser.id !== userId) {
+    return { success: false, error: "Unauthorized: You can only delete your own account" }
+  }
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   
@@ -22,8 +35,7 @@ export async function deleteAccountServerAction(userId: string) {
   const { data, error } = await supabaseAdmin.auth.admin.deleteUser(userId)
   
   if (error) {
-    console.error("Failed to delete user", error)
-    return { success: false, error: error.message }
+    return { success: false, error: "Failed to delete account. Please try again." }
   }
 
   return { success: true }

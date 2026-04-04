@@ -75,10 +75,18 @@ Format: Raw text (you can use 1 or 2 relevant emojis, avoid heavy markdown heade
   `
 
   // 4. Call Gemini Flash via REST API
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`
+  // SECURITY: Use API key in header instead of URL
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error('Server configuration error: Missing API key')
+  }
+  
+  const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
   const aiResponse = await fetch(apiUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'x-goog-api-key': process.env.GEMINI_API_KEY
+    },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
@@ -86,8 +94,7 @@ Format: Raw text (you can use 1 or 2 relevant emojis, avoid heavy markdown heade
   })
 
   if (!aiResponse.ok) {
-    const errText = await aiResponse.text()
-    throw new Error('Failed to reach Gemini: ' + errText)
+    throw new Error('Failed to generate insights')
   }
 
   const data = await aiResponse.json()

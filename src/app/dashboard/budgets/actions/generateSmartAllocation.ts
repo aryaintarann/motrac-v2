@@ -38,12 +38,20 @@ Respond ONLY with a valid JSON object matching this exact schema:
 }
 `
 
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`
+  // SECURITY: Use API key in header instead of URL
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error('Server configuration error: Missing API key')
+  }
+
+  const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
   
   try {
     const aiResponse = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-goog-api-key': process.env.GEMINI_API_KEY
+      },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { 

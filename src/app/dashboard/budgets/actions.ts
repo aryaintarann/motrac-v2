@@ -17,18 +17,26 @@ export async function upsertBudget(formData: FormData) {
   const savings_amount = Number(formData.get('savings_amount'))
   const debt_amount = Number(formData.get('debt_amount')) || 0
 
-  // Upsert using month and user_id? 
-  // Wait, Supabase upsert requires a unique constraint. We don't have a unique constraint on (user_id, month).
-  // Easiest is to check if it exists, then update or insert.
-  const { data: existing } = await supabase.from('budgets').select('id').like('month', `${month}%`).limit(1).maybeSingle()
+  // SECURITY: Check if budget exists for current user, then update or insert
+  const { data: existing } = await supabase
+    .from('budgets')
+    .select('id')
+    .eq('user_id', user.id)
+    .like('month', `${month}%`)
+    .limit(1)
+    .maybeSingle()
 
   if (existing) {
-    await supabase.from('budgets').update({
-      needs_amount,
-      wants_amount,
-      savings_amount,
-      debt_amount
-    }).eq('id', existing.id)
+    await supabase
+      .from('budgets')
+      .update({
+        needs_amount,
+        wants_amount,
+        savings_amount,
+        debt_amount
+      })
+      .eq('id', existing.id)
+      .eq('user_id', user.id)
   } else {
     await supabase.from('budgets').insert({
       user_id: user.id,

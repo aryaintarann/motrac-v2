@@ -160,8 +160,23 @@ export function SecurityForm({ user }: { user: any }) {
     if (error) return alert("Failed to fetch transactions.")
     if (!data || data.length === 0) return alert("No transactions found.")
 
+    // SECURITY: Escape CSV values to prevent formula injection
+    const escapeCSVValue = (value: any): string => {
+      const stringValue = String(value ?? '')
+      
+      // Prevent formula injection by escaping dangerous characters
+      if (stringValue.startsWith('=') || 
+          stringValue.startsWith('+') || 
+          stringValue.startsWith('-') || 
+          stringValue.startsWith('@')) {
+        return `"'${stringValue.replace(/"/g, '""')}"`
+      }
+      
+      return `"${stringValue.replace(/"/g, '""')}"`
+    }
+
     const headers = Object.keys(data[0]).join(',')
-    const rows = data.map(obj => Object.values(obj).map(v => `"${v}"`).join(','))
+    const rows = data.map(obj => Object.values(obj).map(escapeCSVValue).join(','))
     const csvContent = "data:text/csv;charset=utf-8," + [headers, ...rows].join('\n')
 
     const encodedUri = encodeURI(csvContent)

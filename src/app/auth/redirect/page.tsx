@@ -9,11 +9,29 @@ function RedirectComponent() {
   useEffect(() => {
     const next = searchParams.get('next')
     
-    if (next) {
-      // Use window.location.href for proper hash fragment handling
+    // SECURITY: Validate redirect URL to prevent open redirect attacks
+    const isValidRedirect = (url: string | null): boolean => {
+      if (!url) return false
+      
+      // Must start with / for relative URLs
+      if (!url.startsWith('/')) return false
+      
+      // Prevent protocol-relative URLs (//evil.com)
+      if (url.startsWith('//')) return false
+      
+      // Prevent URLs with protocols
+      if (url.includes('://')) return false
+      
+      // Prevent javascript: URLs
+      if (url.toLowerCase().includes('javascript:')) return false
+      
+      return true
+    }
+    
+    if (next && isValidRedirect(next)) {
       window.location.href = next
     } else {
-      // Fallback to dashboard
+      // Fallback to dashboard for invalid redirects
       window.location.href = '/dashboard'
     }
   }, [searchParams])

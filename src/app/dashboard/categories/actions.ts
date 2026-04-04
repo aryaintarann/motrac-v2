@@ -18,6 +18,20 @@ export async function createCategory(formData: FormData) {
 
   if (!name) throw new Error('Name is required')
 
+  // SECURITY: If parent_id is provided, verify it belongs to current user
+  if (parent_id) {
+    const { data: parent } = await supabase
+      .from('categories')
+      .select('id')
+      .eq('id', parent_id)
+      .eq('user_id', user.id)
+      .single()
+    
+    if (!parent) {
+      throw new Error('Unauthorized: Parent category not found or does not belong to you')
+    }
+  }
+
   const { error } = await supabase.from('categories').insert({
     user_id: user.id,
     name,
@@ -28,7 +42,7 @@ export async function createCategory(formData: FormData) {
   })
 
   if (error) {
-    throw new Error('Failed to create sub-category: ' + error.message)
+    throw new Error('Failed to create sub-category')
   }
 
   revalidatePath('/categories')
