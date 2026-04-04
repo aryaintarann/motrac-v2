@@ -37,8 +37,8 @@ export default async function DashboardLayout({
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 pt-6 lg:pt-8 print:p-0 print:overflow-visible">
           <header className="mb-8 flex items-center justify-between lg:hidden print:hidden">
             <div className="flex items-center">
-              <div className="h-8 w-8 rounded-md text-white bg-blue-600 text-center font-bold leading-8">M</div>
-              <h1 className="ml-3 text-xl font-black text-blue-600 tracking-[0.05em]">MOTRAC</h1>
+              <div className="h-8 w-8 rounded-md text-white bg-blue-600 text-center font-bold leading-8">D</div>
+              <h1 className="ml-3 text-xl font-black text-blue-600 tracking-[0.05em]">DANAROUTE</h1>
             </div>
             <div className="h-8 w-8 rounded-full bg-gray-200" />
           </header>

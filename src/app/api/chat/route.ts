@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
     const recentBudget = budgets?.[0] || null;
 
-    const systemPrompt = `You are Motrac AI, an expert, friendly, and concise financial advisor. Always format your responses clearly using Markdown.
+    const systemPrompt = `You are DANAROUTE AI, an expert, friendly, and concise financial advisor. Always format your responses clearly using Markdown.
 Here is the user's current financial context (DO NOT mention these exact records unless asked, just use them to provide accurate answers):
 - ACCOUNTS: ${JSON.stringify(accounts || [])}
 - ACTIVE DEBTS: ${JSON.stringify(debts || [])}

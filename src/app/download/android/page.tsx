@@ -11,7 +11,7 @@ export default function AndroidDownloadPage() {
     setShowAlert(true)
     setTimeout(() => setShowAlert(false), 5000)
     // TODO: Replace with actual APK download link
-    // window.location.href = '/path/to/motrac.apk'
+    // window.location.href = '/path/to/DANAROUTE.apk'
   }
 
   return (
@@ -53,7 +53,7 @@ export default function AndroidDownloadPage() {
         </div>
 
         <h1 style={{ fontSize: '32px', fontWeight: 900, color: '#111827', marginBottom: '16px', letterSpacing: '-0.02em' }}>
-          Download Motrac untuk Android
+          Download DANAROUTE untuk Android
         </h1>
         
         <p style={{ fontSize: '16px', color: '#6B7280', lineHeight: 1.7, marginBottom: '32px' }}>
@@ -173,7 +173,7 @@ export default function AndroidDownloadPage() {
 
       {/* Bottom note */}
       <p style={{ fontSize: '13px', color: '#9CA3AF', marginTop: '32px', textAlign: 'center', maxWidth: '500px' }}>
-        Aplikasi ini belum tersedia di Google Play Store. Download dan install file APK secara manual untuk menggunakan aplikasi Motrac.
+        Aplikasi ini belum tersedia di Google Play Store. Download dan install file APK secara manual untuk menggunakan aplikasi DANAROUTE.
       </p>
     </div>
   )

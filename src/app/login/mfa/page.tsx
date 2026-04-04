@@ -68,7 +68,7 @@ export default function MFAPage() {
           </div>
           <h1 className="text-[24px] font-bold text-gray-900 tracking-[-0.02em]">Two-Factor Verification</h1>
           <p className="mt-2 text-[14px] text-gray-500 leading-relaxed px-4">
-            Enter the 6-digit code from your authenticator app to access your Motrac account.
+            Enter the 6-digit code from your authenticator app to access your DANAROUTE account.
           </p>
         </div>
 

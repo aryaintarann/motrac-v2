@@ -18,7 +18,7 @@ export function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'model',
-      content: "Hello! I'm your Motrac AI Financial Advisor. How can I help you achieve your financial goals today?"
+      content: "Hello! I'm your DANAROUTE AI Financial Advisor. How can I help you achieve your financial goals today?"
     }
   ])
   const [input, setInput] = useState('')
@@ -69,7 +69,7 @@ export function AIChatbot() {
       {/* Header */}
       <div className="flex items-center gap-3 p-5 border-b border-gray-100 bg-gray-50/50">
         <div>
-          <h2 className="font-bold text-gray-900 text-[16px]">Motrac AI Chat</h2>
+          <h2 className="font-bold text-gray-900 text-[16px]">DANAROUTE AI Chat</h2>
         </div>
       </div>
 

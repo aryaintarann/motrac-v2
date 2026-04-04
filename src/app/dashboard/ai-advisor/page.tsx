@@ -1,9 +1,12 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { AIChatbot } from '@/components/AIChatbot'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  title: 'AI Advisor | Motrac',
+export const metadata: Metadata = {
+  title: 'AI Financial Advisor',
+  description: 'Dapatkan saran keuangan personal dari AI advisor DanaRoute. Analisis pengeluaran, rekomendasi budgeting, dan tips menghemat uang.',
+  robots: { index: false, follow: false }, // Dashboard pages should not be indexed
 }
 
 export default async function AIAdvisorPage() {

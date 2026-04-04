@@ -4,10 +4,25 @@ import { SignupButton } from '@/components/SignupButton'
 import { HashNavigationHandler } from '@/components/HashNavigationHandler'
 import { AuthRedirectHandler } from '@/components/AuthRedirectHandler'
 import { BrowserNavigationHandler } from '@/components/BrowserNavigationHandler'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  title: 'Motrac | Your Money. Your Rules.',
-  description: 'Track every expense, plan your budget, and let AI guide you to your financial goals. Free forever.',
+export const metadata: Metadata = {
+  title: 'DanaRoute - Aplikasi Kelola Keuangan Pribadi Gratis dengan AI',
+  description: 'DanaRoute adalah aplikasi keuangan pribadi gratis dengan AI advisor, budgeting 50/30/20, tracking pengeluaran otomatis, dan laporan keuangan lengkap. Mulai kelola uangmu sekarang!',
+  keywords: ['aplikasi keuangan gratis', 'money tracker indonesia', 'budget planner', 'catat pengeluaran', 'AI financial advisor'],
+  openGraph: {
+    title: 'DanaRoute - Aplikasi Kelola Keuangan Pribadi Gratis dengan AI',
+    description: 'Kelola keuangan dengan mudah! AI advisor, budgeting pintar, tracking otomatis. 100% Gratis!',
+    url: 'https://danaroute.com',
+    type: 'website',
+  },
+  twitter: {
+    title: 'DanaRoute - Aplikasi Kelola Keuangan Pribadi Gratis dengan AI',
+    description: 'Kelola keuangan dengan mudah! AI advisor, budgeting pintar, tracking otomatis. 100% Gratis!',
+  },
+  alternates: {
+    canonical: 'https://danaroute.com',
+  },
 }
 
 export default function LandingPage() {
@@ -59,7 +74,7 @@ export default function LandingPage() {
       <header style={{ position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(24px)', background: 'rgba(250,250,250,0.85)', borderBottom: '1px solid #E5E7EB' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {/* Logo */}
-          <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#111827' }}>MOTRAC</span>
+          <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#111827' }}>DANAROUTE</span>
 
           {/* Nav Links */}
           <nav className="nav-links" style={{ display: 'flex', gap: '32px', fontSize: '15px', fontWeight: 500 }}>
@@ -150,7 +165,7 @@ export default function LandingPage() {
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FCD34D' }} />
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#6EE7B7' }} />
                 </div>
-                <div style={{ flex: 1, background: '#F3F4F6', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', color: '#9CA3AF', fontWeight: 500 }}>motrac.app/dashboard</div>
+                <div style={{ flex: 1, background: '#F3F4F6', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', color: '#9CA3AF', fontWeight: 500 }}>DANAROUTE.app/dashboard</div>
               </div>
 
               {/* Dashboard content */}
@@ -320,11 +335,11 @@ export default function LandingPage() {
               <div style={{ height: '3px', width: '40px', background: '#10B981', margin: '8px auto 0', borderRadius: '2px' }} />
             </div>
             <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#111827', margin: '0 0 20px' }}>
-              Motrac in<br />
+              DANAROUTE in<br />
               <span style={{ color: '#2563EB' }}>your pocket.</span>
             </h2>
             <p style={{ fontSize: '18px', color: '#6B7280', maxWidth: '600px', margin: '0 auto', lineHeight: 1.7 }}>
-              Download the Motrac app and enjoy a more convenient financial management experience, anytime and anywhere.
+              Download the DANAROUTE app and enjoy a more convenient financial management experience, anytime and anywhere.
             </p>
           </div>
 
@@ -467,7 +482,7 @@ export default function LandingPage() {
             <span style={{ color: '#2563EB' }}>100% Free.</span>
           </h2>
           <p style={{ fontSize: '18px', color: '#6B7280', maxWidth: '560px', margin: '0 auto 64px', lineHeight: 1.7 }}>
-            Motrac is currently entirely free to use. Enjoy full access to smart accounts, custom budgets, debt tracking, and AI advisor without paying a single cent.
+            DANAROUTE is currently entirely free to use. Enjoy full access to smart accounts, custom budgets, debt tracking, and AI advisor without paying a single cent.
           </p>
 
           <div style={{ maxWidth: '400px', margin: '0 auto', background: '#fff', border: '1px solid #E5E7EB', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.04)' }}>
@@ -514,7 +529,7 @@ export default function LandingPage() {
               <div style={{ height: '3px', width: '40px', background: '#F59E0B', margin: '8px auto 0', borderRadius: '2px' }} />
             </div>
             <h2 style={{ fontSize: 'clamp(32px,5vw,52px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#111827', margin: '0 0 20px' }}>
-              Why we built <span style={{ color: '#2563EB' }}>Motrac.</span>
+              Why we built <span style={{ color: '#2563EB' }}>DANAROUTE.</span>
             </h2>
           </div>
           
@@ -526,10 +541,10 @@ export default function LandingPage() {
               <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '60%', height: '60%', background: '#3B82F6', borderRadius: '50%', filter: 'blur(80px)', opacity: 0.15 }} />
               <div style={{ position: 'absolute', bottom: '-10%', right: '-10%', width: '60%', height: '60%', background: '#8B5CF6', borderRadius: '50%', filter: 'blur(80px)', opacity: 0.15 }} />
               
-              {/* Big M logo */}
+              {/* Big D logo */}
               <div className="float" style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontSize: '200px', fontWeight: 900, background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1, letterSpacing: '-0.05em' }}>
-                  M
+                  D
                 </span>
               </div>
             </div>
@@ -541,7 +556,7 @@ export default function LandingPage() {
                   Managing personal finances shouldn't require complex spreadsheets or expensive subscriptions. We realized that existing tools were either too complicated or lacked the essential features needed for genuine financial control.
                 </p>
                 <p style={{ fontSize: '18px', color: '#4B5563', lineHeight: 1.8, margin: 0 }}>
-                  Motrac was born out of the need for a beautiful, simple, and powerful alternative. A tool that respects your privacy, simplifies your budgeting process, and gives you the smart insights you need.
+                  DANAROUTE was born out of the need for a beautiful, simple, and powerful alternative. A tool that respects your privacy, simplifies your budgeting process, and gives you the smart insights you need.
                 </p>
               </div>
               
@@ -575,7 +590,7 @@ export default function LandingPage() {
             Ready to take control?
           </h2>
           <p style={{ fontSize: '17px', color: '#6B7280', marginBottom: '40px', lineHeight: 1.7 }}>
-            Join the smart generation managing their money with Motrac. Free. Private. Powerful.
+            Join the smart generation managing their money with DANAROUTE. Free. Private. Powerful.
           </p>
           <Link href="/signup" style={{ display: 'inline-block', background: '#2563EB', color: '#fff', fontSize: '16px', fontWeight: 700, padding: '18px 40px', borderRadius: '9999px', textDecoration: 'none', boxShadow: '0 4px 20px rgba(37,99,235,0.25)' }}>
             Create free account
@@ -586,13 +601,13 @@ export default function LandingPage() {
       {/* ── FOOTER ── */}
       <footer style={{ borderTop: '1px solid #E5E7EB', padding: '64px 24px', background: '#FAFAFA' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
-          <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#111827' }}>MOTRAC</span>
+          <span style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#111827' }}>DANAROUTE</span>
           <div style={{ display: 'flex', gap: '24px', fontSize: '14px', fontWeight: 500, color: '#9CA3AF' }}>
             <Link href="/privacy" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Privacy</Link>
             <Link href="/terms" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Terms</Link>
             <Link href="/support" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Support</Link>
           </div>
-          <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} Motrac. All rights reserved.</p>
+          <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} DANAROUTE. All rights reserved.</p>
         </div>
       </footer>
       <HashNavigationHandler />

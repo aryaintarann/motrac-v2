@@ -3,10 +3,24 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { LoginRedirectHandler } from '@/components/LoginRedirectHandler'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  title: 'Create Account | Motrac',
-  description: 'Create your free Motrac account and start managing your finances intelligently.',
+export const metadata: Metadata = {
+  title: 'Daftar Gratis di DanaRoute',
+  description: 'Buat akun DanaRoute gratis sekarang! Mulai kelola keuangan dengan AI advisor, budgeting 50/30/20, dan tracking otomatis.',
+  keywords: ['daftar danaroute', 'buat akun aplikasi keuangan', 'sign up money tracker'],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: 'Daftar Gratis di DanaRoute',
+    description: 'Buat akun gratis dan mulai kelola keuanganmu dengan cerdas!',
+    url: 'https://danaroute.com/signup',
+  },
+  alternates: {
+    canonical: 'https://danaroute.com/signup',
+  },
 }
 
 export default async function SignUpPage(props: {
@@ -34,9 +48,9 @@ export default async function SignUpPage(props: {
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-white font-black text-[#2563EB] text-xl shadow-sm shrink-0">
-            M
+            D
           </div>
-          <span className="text-[22px] font-black tracking-[0.05em] text-white whitespace-nowrap">MOTRAC</span>
+          <span className="text-[22px] font-black tracking-[0.05em] text-white whitespace-nowrap">DANAROUTE</span>
         </div>
 
         {/* Hero Content */}
@@ -65,9 +79,9 @@ export default async function SignUpPage(props: {
         {/* Mobile Logo */}
         <div className="flex lg:hidden items-center gap-2.5 mb-10">
           <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#2563EB] font-black text-white text-xl shadow-sm shrink-0">
-            M
+            D
           </div>
-          <span className="text-[22px] font-black tracking-[0.05em] text-[#2563EB] whitespace-nowrap">MOTRAC</span>
+          <span className="text-[22px] font-black tracking-[0.05em] text-[#2563EB] whitespace-nowrap">DANAROUTE</span>
         </div>
 
         <div className="w-full max-w-[400px]">
@@ -180,7 +194,7 @@ export default async function SignUpPage(props: {
           </form>
 
           <p className="text-center text-[13px] text-gray-400 mt-8">
-            By signing up, you agree to Motrac's{' '}
+            By signing up, you agree to DANAROUTE's{' '}
             <span className="text-blue-600 font-medium cursor-pointer hover:underline">Terms of Service</span>
             {' '}and{' '}
             <span className="text-blue-600 font-medium cursor-pointer hover:underline">Privacy Policy</span>.

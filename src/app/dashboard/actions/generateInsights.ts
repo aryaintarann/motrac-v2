@@ -62,7 +62,7 @@ export async function generateInsights() {
   const frm = (num: any) => `Rp ${(parseFloat(num) / 1000).toFixed(0)}k`
 
   const prompt = `
-You are Motrac's expert AI Financial Advisor. The user is using the 50/30/20 budgeting rule.
+You are DANAROUTE's expert AI Financial Advisor. The user is using the 50/30/20 budgeting rule.
 Here is the user's data for this month (${currentMonthStr}):
 - Needs: Budget ${frm(budget.needs_amount)} | Spent ${frm(needsSpent)}
 - Wants: Budget ${frm(budget.wants_amount)} | Spent ${frm(wantsSpent)}

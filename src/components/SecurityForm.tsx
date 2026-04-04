@@ -107,7 +107,7 @@ export function SecurityForm({ user }: { user: any }) {
 
     const { data, error } = await supabase.auth.mfa.enroll({
       factorType: 'totp',
-      friendlyName: `Motrac Auth ${new Date().toISOString().split('T')[0]}`
+      friendlyName: `DANAROUTE Auth ${new Date().toISOString().split('T')[0]}`
     })
 
     if (error) {
@@ -182,7 +182,7 @@ export function SecurityForm({ user }: { user: any }) {
     const encodedUri = encodeURI(csvContent)
     const link = document.createElement("a")
     link.setAttribute("href", encodedUri)
-    link.setAttribute("download", "motrac_transactions.csv")
+    link.setAttribute("download", "DANAROUTE_transactions.csv")
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)

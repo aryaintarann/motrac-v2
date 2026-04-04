@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { AddCategoryModal } from '@/components/AddCategoryModal'
 
 export const metadata = {
-  title: 'Categories | Motrac',
+  title: 'Categories | DANAROUTE',
 }
 
 export default async function CategoriesPage() {

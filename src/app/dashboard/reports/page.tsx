@@ -63,7 +63,7 @@ export default async function ReportsPage() {
 
       {/* Print Only Header */}
       <div className="hidden print:block mb-8 pb-4 border-b border-gray-200">
-        <h1 className="text-[32px] font-bold text-gray-900 tracking-tight">Motrac Financial Report</h1>
+        <h1 className="text-[32px] font-bold text-gray-900 tracking-tight">DANAROUTE Financial Report</h1>
         <p className="text-gray-500 mt-1">Summary for {currentMonthStr}</p>
       </div>
 

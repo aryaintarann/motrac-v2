@@ -1,5 +1,12 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Bantuan & FAQ',
+  description: 'Temukan jawaban pertanyaan umum tentang DanaRoute - cara menggunakan aplikasi, keamanan data, dan fitur-fitur lainnya.',
+  robots: { index: false, follow: false },
+}
 
 export default async function HelpPage() {
   const supabase = await createClient()
@@ -19,7 +26,7 @@ export default async function HelpPage() {
       a: "Yes! For this Web Demo version, your data is securely stored on your personal Supabase instance with Row Level Security (RLS) enabled. Only your authenticated user can read or modify your financial logs."
     },
     {
-      q: "Can I use Motrac on my phone?",
+      q: "Can I use DANAROUTE on my phone?",
       a: "A dedicated mobile experience built with React Native and Expo is currently in development! It will allow for native offline support and push notifications."
     },
     {
@@ -32,7 +39,7 @@ export default async function HelpPage() {
     <div className="mx-auto max-w-[900px]">
       <div className="mb-8">
         <h1 className="text-[26px] font-bold text-gray-900 tracking-[-0.02em]">Help & Support</h1>
-        <p className="text-[14px] text-gray-500 mt-1">Need help managing your finances on Motrac? We've got you covered.</p>
+        <p className="text-[14px] text-gray-500 mt-1">Need help managing your finances on DANAROUTE? We've got you covered.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-12">
@@ -65,7 +72,7 @@ export default async function HelpPage() {
               Our support team is here for you. We aim to respond to all inquiries within 24 hours.
             </p>
             <a 
-              href="mailto:support@motrac.app" 
+              href="mailto:support@DANAROUTE.app" 
               className="w-full rounded-lg bg-[#2563EB] px-4 py-2.5 text-[14px] font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
             >
               Contact Support

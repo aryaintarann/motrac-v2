@@ -1,13 +1,13 @@
 import Link from 'next/link'
 
-export const metadata = { title: 'Support | Motrac' }
+export const metadata = { title: 'Support | DANAROUTE' }
 
 export default function SupportPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#FAFAFA] text-[#111827]" style={{ fontFamily: "'Manrope', 'Inter', sans-serif" }}>
       <header style={{ position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(24px)', background: 'rgba(250,250,250,0.85)', borderBottom: '1px solid #E5E7EB' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 24px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#111827', textDecoration: 'none' }}>MOTRAC</Link>
+          <Link href="/" style={{ fontWeight: 900, fontSize: '20px', letterSpacing: '0.08em', color: '#111827', textDecoration: 'none' }}>DANAROUTE</Link>
           <Link href="/signup" style={{ background: '#2563EB', color: '#fff', fontSize: '14px', fontWeight: 700, padding: '8px 16px', borderRadius: '9999px', textDecoration: 'none' }}>Get Started</Link>
         </div>
       </header>
@@ -27,8 +27,8 @@ export default function SupportPage() {
             <p style={{ fontSize: '15px', color: '#4B5563', lineHeight: 1.7, marginBottom: '20px' }}>
               For general inquiries, account assistance, multi-factor authentication resets, or technical issues, please email our support desk. We aim to respond within 24 hours.
             </p>
-            <a href="mailto:support@motrac.app" style={{ display: 'inline-block', background: '#FAFAFA', border: '1px solid #E5E7EB', color: '#111827', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '8px', textDecoration: 'none' }}>
-              support@motrac.app
+            <a href="mailto:support@DANAROUTE.app" style={{ display: 'inline-block', background: '#FAFAFA', border: '1px solid #E5E7EB', color: '#111827', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '8px', textDecoration: 'none' }}>
+              support@DANAROUTE.app
             </a>
           </div>
 
@@ -48,7 +48,7 @@ export default function SupportPage() {
       </main>
 
       <footer style={{ borderTop: '1px solid #E5E7EB', padding: '40px 24px', background: '#FAFAFA', textAlign: 'center' }}>
-        <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} Motrac. All rights reserved.</p>
+        <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} DANAROUTE. All rights reserved.</p>
       </footer>
     </div>
   )

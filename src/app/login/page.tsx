@@ -3,10 +3,23 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { LoginRedirectHandler } from '@/components/LoginRedirectHandler'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  title: 'Sign In | Motrac',
-  description: 'Sign in to your Motrac account to manage your finances intelligently.',
+export const metadata: Metadata = {
+  title: 'Masuk ke Akun DanaRoute',
+  description: 'Masuk ke akun DanaRoute untuk mengelola keuangan pribadimu dengan AI advisor dan fitur budgeting pintar.',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: 'Masuk ke DanaRoute',
+    description: 'Masuk dan kelola keuanganmu dengan AI advisor.',
+    url: 'https://danaroute.com/login',
+  },
+  alternates: {
+    canonical: 'https://danaroute.com/login',
+  },
 }
 
 export default async function LoginPage(props: {
@@ -35,9 +48,9 @@ export default async function LoginPage(props: {
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-white font-black text-[#2563EB] text-xl shadow-sm shrink-0">
-            M
+            D
           </div>
-          <span className="text-[22px] font-black tracking-[0.05em] text-white whitespace-nowrap">MOTRAC</span>
+          <span className="text-[22px] font-black tracking-[0.05em] text-white whitespace-nowrap">DANAROUTE</span>
         </div>
 
         {/* Hero Content */}
@@ -67,9 +80,9 @@ export default async function LoginPage(props: {
         {/* Mobile Logo */}
         <div className="flex lg:hidden items-center gap-2.5 mb-10">
           <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#2563EB] font-black text-white text-xl shadow-sm shrink-0">
-            M
+            D
           </div>
-          <span className="text-[22px] font-black tracking-[0.05em] text-[#2563EB] whitespace-nowrap">MOTRAC</span>
+          <span className="text-[22px] font-black tracking-[0.05em] text-[#2563EB] whitespace-nowrap">DANAROUTE</span>
         </div>
 
         <div className="w-full max-w-[400px]">
@@ -174,7 +187,7 @@ export default async function LoginPage(props: {
           </Link>
 
           <p className="text-center text-[13px] text-gray-400 mt-8">
-            By continuing, you agree to Motrac's{' '}
+            By continuing, you agree to DANAROUTE's{' '}
             <span className="text-blue-600 font-medium cursor-pointer hover:underline">Terms of Service</span>
             {' '}and{' '}
             <span className="text-blue-600 font-medium cursor-pointer hover:underline">Privacy Policy</span>.

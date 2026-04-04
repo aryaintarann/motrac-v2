@@ -11,11 +11,11 @@ export function Sidebar() {
       <div className={`mb-10 flex items-center ${isCollapsed ? 'justify-center w-full' : 'w-full'}`}>
         {!isCollapsed ? (
           <div className="flex items-center gap-2 text-xl font-bold text-gray-900 tracking-tight">
-            <span className="text-[22px] font-black tracking-[0.05em] text-[#2563EB] whitespace-nowrap overflow-hidden">MOTRAC</span>
+            <span className="text-[22px] font-black tracking-[0.05em] text-[#2563EB] whitespace-nowrap overflow-hidden">DANAROUTE</span>
           </div>
         ) : (
           <div className="flex h-10 w-10 items-center justify-center rounded-[10px] text-white bg-[#2563EB] font-black text-xl shadow-sm shrink-0">
-            M
+            D
           </div>
         )}
         

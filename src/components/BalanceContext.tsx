@@ -11,14 +11,14 @@ export function BalanceProvider({ children }: { children: React.ReactNode }) {
   const [isHidden, setIsHidden] = useState(false);
   
   useEffect(() => {
-    const stored = localStorage.getItem('motrac_hideBalance');
+    const stored = localStorage.getItem('DANAROUTE_hideBalance');
     if (stored) setIsHidden(stored === 'true');
   }, []);
   
   const toggle = () => {
     setIsHidden(prev => {
       const next = !prev;
-      localStorage.setItem('motrac_hideBalance', String(next));
+      localStorage.setItem('DANAROUTE_hideBalance', String(next));
       return next;
     });
   };
