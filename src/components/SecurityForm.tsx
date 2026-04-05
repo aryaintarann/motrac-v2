@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { deleteAccountServerAction } from '@/app/actions/deleteAccount'
 import { useRouter } from 'next/navigation'
+import { backupCodesManager, type BackupCode } from '@/lib/supabase-backup-codes'
 
 export function SecurityForm({ user }: { user: any }) {
   const supabase = createClient()
@@ -27,9 +28,17 @@ export function SecurityForm({ user }: { user: any }) {
   // Sessions State
   const [sessions, setSessions] = useState<any[]>([])
 
+  // Backup Codes State
+  const [backupCodes, setBackupCodes] = useState<BackupCode[]>([])
+  const [showBackupCodes, setShowBackupCodes] = useState(false)
+  const [isGeneratingCodes, setIsGeneratingCodes] = useState(false)
+  const [backupCodeMessage, setBackupCodeMessage] = useState({ text: '', type: '' })
+  const [isDatabaseSetup, setIsDatabaseSetup] = useState(true)
+
   useEffect(() => {
     checkMfaStatus()
     fetchSessions()
+    loadBackupCodes()
   }, [])
 
   const fetchSessions = async () => {
@@ -202,6 +211,86 @@ export function SecurityForm({ user }: { user: any }) {
     }
   }
 
+  // Backup Codes Functions
+  const loadBackupCodes = async () => {
+    try {
+      const codes = await backupCodesManager.getBackupCodes()
+      setBackupCodes(codes)
+      setBackupCodeMessage({ text: '', type: '' })
+      setIsDatabaseSetup(true)
+    } catch (error: any) {
+      console.error('Error loading backup codes:', error)
+      // Check if database table doesn't exist
+      if (error.message?.includes('user_backup_codes') || error.code === 'PGRST205') {
+        setIsDatabaseSetup(false)
+        setBackupCodeMessage({ 
+          text: 'Database setup required. Please run the SQL schema in Supabase Dashboard.', 
+          type: 'error' 
+        })
+      } else {
+        setBackupCodeMessage({ 
+          text: 'Unable to load backup codes. Please try again.', 
+          type: 'error' 
+        })
+      }
+    }
+  }
+
+  const generateBackupCodes = async () => {
+    if (!isDatabaseSetup) {
+      setBackupCodeMessage({ 
+        text: 'Database setup required. Please run the SQL schema first.', 
+        type: 'error' 
+      })
+      return
+    }
+
+    setIsGeneratingCodes(true)
+    setBackupCodeMessage({ text: '', type: '' })
+
+    try {
+      const newCodes = await backupCodesManager.generateBackupCodes()
+      await loadBackupCodes() // Reload to get full data
+      setShowBackupCodes(true)
+      setBackupCodeMessage({ 
+        text: '10 new backup codes generated! Download and store them safely.', 
+        type: 'success' 
+      })
+    } catch (error: any) {
+      if (error.message?.includes('user_backup_codes') || error.code === 'PGRST205') {
+        setIsDatabaseSetup(false)
+        setBackupCodeMessage({ 
+          text: 'Database setup required. Please run the SQL schema in Supabase Dashboard.', 
+          type: 'error' 
+        })
+      } else {
+        setBackupCodeMessage({ 
+          text: 'Failed to generate backup codes. Please try again.', 
+          type: 'error' 
+        })
+      }
+    } finally {
+      setIsGeneratingCodes(false)
+    }
+  }
+
+  const downloadBackupCodes = () => {
+    backupCodesManager.downloadBackupCodes(backupCodes, user.email)
+    setBackupCodeMessage({ 
+      text: 'Backup codes downloaded successfully!', 
+      type: 'success' 
+    })
+  }
+
+  const regenerateBackupCodes = async () => {
+    if (!confirm('This will invalidate all existing backup codes. Continue?')) return
+    await generateBackupCodes()
+    setBackupCodeMessage({ 
+      text: 'New backup codes generated. Previous codes are now invalid.', 
+      type: 'info' 
+    })
+  }
+
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
@@ -299,6 +388,140 @@ export function SecurityForm({ user }: { user: any }) {
           </div>
         )}
       </div>
+
+      {/* Backup Recovery Codes */}
+      {isMfaEnrolled && (
+        <div className="rounded-[20px] border border-[#E5E7EB] bg-white p-7 shadow-sm">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h3 className="font-bold text-[#0f172a] text-[18px] mb-2">Backup Recovery Codes</h3>
+              <p className="text-[14px] text-gray-500">
+                Backup codes help you regain access if you lose your authenticator app.
+              </p>
+            </div>
+            <div className="flex gap-2 ml-4">
+              {backupCodes.length > 0 ? (
+                <>
+                  <button
+                    onClick={() => setShowBackupCodes(!showBackupCodes)}
+                    className="rounded-lg bg-blue-600 px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700 transition-colors"
+                  >
+                    {showBackupCodes ? 'Hide' : 'Show'} Codes
+                  </button>
+                  <button
+                    onClick={regenerateBackupCodes}
+                    disabled={isGeneratingCodes}
+                    className="rounded-lg bg-orange-600 px-4 py-2 text-[13px] font-semibold text-white hover:bg-orange-700 disabled:opacity-50 transition-colors"
+                  >
+                    {isGeneratingCodes ? 'Generating...' : 'Regenerate'}
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={generateBackupCodes}
+                  disabled={isGeneratingCodes || !isDatabaseSetup}
+                  className="rounded-lg bg-green-600 px-4 py-2 text-[13px] font-semibold text-white hover:bg-green-700 disabled:opacity-50 transition-colors"
+                >
+                  {isGeneratingCodes ? 'Generating...' : !isDatabaseSetup ? 'Setup Required' : 'Generate Codes'}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {backupCodeMessage.text && (
+            <div className={`mb-4 p-3 rounded-lg border ${
+              backupCodeMessage.type === 'error' ? 'bg-red-50 border-red-200 text-red-700' :
+              backupCodeMessage.type === 'success' ? 'bg-green-50 border-green-200 text-green-700' :
+              'bg-blue-50 border-blue-200 text-blue-700'
+            }`}>
+              <p className="text-[13px] font-medium">{backupCodeMessage.text}</p>
+            </div>
+          )}
+
+          {backupCodes.length > 0 && (
+            <div className="mb-4">
+              <div className="flex items-center justify-between text-[13px] text-gray-600 mb-2">
+                <span>
+                  {backupCodes.filter(code => !code.used).length} of {backupCodes.length} codes available
+                </span>
+                {showBackupCodes && (
+                  <button
+                    onClick={downloadBackupCodes}
+                    className="text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    ⬇ Download as .txt file
+                  </button>
+                )}
+              </div>
+              
+              {showBackupCodes && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <div className="mb-3">
+                    <p className="text-[13px] font-semibold text-yellow-800 mb-1">⚠️ Important Security Notice:</p>
+                    <ul className="text-[12px] text-yellow-700 list-disc list-inside space-y-1">
+                      <li>Each backup code can only be used once</li>
+                      <li>Store these codes in a secure location (password manager recommended)</li>
+                      <li>Use these codes if you lose access to your authenticator app</li>
+                      <li>Generate new codes if you suspect these are compromised</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2">
+                    {backupCodes.map((code, index) => (
+                      <div
+                        key={code.id}
+                        className={`p-2 rounded-md border font-mono text-[13px] text-center ${
+                          code.used 
+                            ? 'bg-gray-100 text-gray-500 line-through border-gray-200' 
+                            : 'bg-white text-gray-900 border-gray-300'
+                        }`}
+                      >
+                        {code.code}
+                        {code.used && (
+                          <div className="text-[10px] text-gray-400 mt-1">
+                            Used {new Date(code.used_at!).toLocaleDateString()}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!isDatabaseSetup && backupCodes.length === 0 && !isGeneratingCodes && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <div className="text-yellow-600 mt-1">⚠️</div>
+                <div>
+                  <h4 className="text-[14px] font-semibold text-yellow-800 mb-2">Database Setup Required</h4>
+                  <p className="text-[13px] text-yellow-700 mb-3">
+                    To use backup codes, you need to run the database schema in your Supabase dashboard.
+                  </p>
+                  <div className="text-[12px] text-yellow-700">
+                    <p className="font-medium mb-1">Steps:</p>
+                    <ol className="list-decimal list-inside space-y-1 ml-2">
+                      <li>Open your Supabase Dashboard → SQL Editor</li>
+                      <li>Copy the contents of <code className="bg-yellow-100 px-1 rounded">supabase/backup_codes_schema.sql</code></li>
+                      <li>Paste and execute the SQL</li>
+                      <li>Refresh this page</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isDatabaseSetup && backupCodes.length === 0 && !isGeneratingCodes && (
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <p className="text-[13px] text-gray-600 text-center">
+                No backup codes generated yet. Click "Generate Codes" to create 10 recovery codes.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Session Management & Export */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
