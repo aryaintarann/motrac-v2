@@ -14,6 +14,8 @@ const TEMPLATES = [
   "How can I stick to the 50/30/20 rule?",
 ]
 
+const MAX_MESSAGES = 50 // Prevent unbounded memory growth
+
 export function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -34,24 +36,45 @@ export function AIChatbot() {
     if (!text.trim()) return
 
     const userMsg: Message = { role: 'user', content: text }
-    const newMessages = [...messages, userMsg]
-    setMessages(newMessages)
+    
+    // Limit message history to prevent memory bloat
+    // Keep only the most recent MAX_MESSAGES
+    setMessages(prev => {
+      const newMessages = [...prev, userMsg]
+      if (newMessages.length > MAX_MESSAGES) {
+        // Keep system message + recent messages
+        return [newMessages[0], ...newMessages.slice(-(MAX_MESSAGES - 1))]
+      }
+      return newMessages
+    })
+    
     setInput('')
     setIsLoading(true)
 
     try {
-      // Send the entire conversation history (excluding the first greeting if desired, but we'll send it all)
+      // Get current messages for API call (already limited)
+      const currentMessages = messages.length >= MAX_MESSAGES 
+        ? [messages[0], ...messages.slice(-(MAX_MESSAGES - 2)), userMsg]
+        : [...messages, userMsg]
+      
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newMessages })
+        body: JSON.stringify({ messages: currentMessages })
       })
 
       if (!res.ok) throw new Error('Failed to send message')
 
       const data = await res.json()
       if (data.text) {
-        setMessages(prev => [...prev, { role: 'model', content: data.text }])
+        setMessages(prev => {
+          const updated = [...prev, { role: 'model', content: data.text }]
+          // Ensure we still respect the limit after adding AI response
+          if (updated.length > MAX_MESSAGES) {
+            return [updated[0], ...updated.slice(-(MAX_MESSAGES - 1))]
+          }
+          return updated
+        })
       } else {
         setMessages(prev => [...prev, { role: 'model', content: "Sorry, I couldn't generate a response." }])
       }

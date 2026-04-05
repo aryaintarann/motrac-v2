@@ -40,27 +40,27 @@ export async function POST(req: Request) {
     const firstDay = `${currentMonth}-01`
     const lastDay = `${currentMonth}-31`
 
-    // Fetch user context
+    // Fetch user context with proper limits to prevent memory bloat
     const [
       { data: accounts },
       { data: debts },
       { data: budgets },
       { data: transactions }
     ] = await Promise.all([
-      supabase.from('accounts').select('name, balance, type').eq('user_id', user.id).eq('include_in_net_worth', true),
-      supabase.from('debts').select('name, total_amount, remaining_amount, type, status').eq('user_id', user.id).eq('status', 'active'),
+      supabase.from('accounts').select('name, balance, type').eq('user_id', user.id).eq('include_in_net_worth', true).limit(50),
+      supabase.from('debts').select('name, total_amount, remaining_amount, type, status').eq('user_id', user.id).eq('status', 'active').limit(50),
       supabase.from('budgets').select('*').eq('user_id', user.id).eq('month', currentMonth).limit(1),
-      supabase.from('transactions').select('amount, type, date, description, categories(name, budget_type)').eq('user_id', user.id).gte('date', firstDay).lte('date', lastDay)
+      supabase.from('transactions').select('amount, type, date, description, categories(name, budget_type)').eq('user_id', user.id).gte('date', firstDay).lte('date', lastDay).order('date', { ascending: false }).limit(100)
     ])
 
     const recentBudget = budgets?.[0] || null;
 
     const systemPrompt = `You are DANAROUTE AI, an expert, friendly, and concise financial advisor. Always format your responses clearly using Markdown.
 Here is the user's current financial context (DO NOT mention these exact records unless asked, just use them to provide accurate answers):
-- ACCOUNTS: ${JSON.stringify(accounts || [])}
-- ACTIVE DEBTS: ${JSON.stringify(debts || [])}
+- ACCOUNTS (up to 50 shown): ${JSON.stringify(accounts || [])}
+- ACTIVE DEBTS (up to 50 shown): ${JSON.stringify(debts || [])}
 - CURRENT MONTH BUDGET (${currentMonth}): ${JSON.stringify(recentBudget || {})}
-- TRANSACTIONS THIS MONTH: ${JSON.stringify(transactions || [])}
+- RECENT TRANSACTIONS THIS MONTH (up to 100 most recent shown): ${JSON.stringify(transactions || [])}
 
 Analyze their spending, debts, and budget to give tailored, actionable advice without asking questions about data you already possess.`
     

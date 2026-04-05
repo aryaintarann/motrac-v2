@@ -6,6 +6,25 @@ const nextConfig: NextConfig = {
     optimizeServerReact: true,
   },
 
+  // Webpack cache optimization to reduce memory usage
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
+    // In production builds, use memory cache instead of filesystem cache
+    // to reduce memory pressure from large disk caches
+    if (config.cache && !dev) {
+      config.cache = Object.freeze({
+        type: 'memory',
+      })
+      config.cache.maxMemoryGenerations = 1 // Limit cache generations
+    }
+    
+    // Reduce memory usage by limiting parallel processing
+    if (!dev) {
+      config.parallelism = 1
+    }
+    
+    return config
+  },
+
   // Add empty turbopack config to avoid warnings
   turbopack: {},
 

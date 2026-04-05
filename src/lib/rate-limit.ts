@@ -6,33 +6,63 @@ interface RateLimitEntry {
   resetAt: number
 }
 
-// Global cleanup interval tracker
-let globalCleanupInterval: NodeJS.Timeout | null = null
-const rateLimiters: InMemoryRateLimiter[] = []
+// Use Symbol for HMR-safe global tracking
+const CLEANUP_INTERVAL_SYMBOL = Symbol.for('__RATE_LIMIT_CLEANUP_INTERVAL__')
+const RATE_LIMITERS_SYMBOL = Symbol.for('__RATE_LIMITERS__')
+
+// Type-safe global access
+declare global {
+  var [CLEANUP_INTERVAL_SYMBOL]: NodeJS.Timeout | undefined
+  var [RATE_LIMITERS_SYMBOL]: InMemoryRateLimiter[] | undefined
+}
 
 class InMemoryRateLimiter {
   private storage: Map<string, RateLimitEntry> = new Map()
   private limit: number
   private windowMs: number
+  private maxStorageSize: number = 10000 // Prevent unbounded growth
 
   constructor(limit: number, windowMs: number) {
     this.limit = limit
     this.windowMs = windowMs
     
-    // Register this instance for global cleanup
-    rateLimiters.push(this)
+    // Use global symbol to survive HMR
+    if (!global[RATE_LIMITERS_SYMBOL]) {
+      global[RATE_LIMITERS_SYMBOL] = []
+    }
     
-    // Initialize global cleanup if not already running
-    if (!globalCleanupInterval) {
-      globalCleanupInterval = setInterval(() => {
-        rateLimiters.forEach(limiter => limiter.cleanup())
-      }, 5 * 60 * 1000)
+    // Only register if not already in the array (prevent duplicates on HMR)
+    const existingIndex = global[RATE_LIMITERS_SYMBOL]!.findIndex(
+      limiter => limiter.limit === this.limit && limiter.windowMs === this.windowMs
+    )
+    
+    if (existingIndex === -1) {
+      global[RATE_LIMITERS_SYMBOL]!.push(this)
+    } else {
+      // Reuse existing instance storage to maintain rate limits across HMR
+      this.storage = global[RATE_LIMITERS_SYMBOL]![existingIndex].storage
+    }
+    
+    // Initialize global cleanup if not already running (HMR-safe)
+    if (!global[CLEANUP_INTERVAL_SYMBOL]) {
+      global[CLEANUP_INTERVAL_SYMBOL] = setInterval(() => {
+        const limiters = global[RATE_LIMITERS_SYMBOL] || []
+        limiters.forEach(limiter => limiter.cleanup())
+      }, 5 * 60 * 1000) // Cleanup every 5 minutes
+      
+      // Unref so it doesn't keep process alive
+      global[CLEANUP_INTERVAL_SYMBOL]!.unref()
     }
   }
 
   async check(identifier: string): Promise<{ success: boolean; remaining: number }> {
     const now = Date.now()
     const entry = this.storage.get(identifier)
+
+    // Prevent memory overflow: cleanup if storage is too large
+    if (this.storage.size > this.maxStorageSize) {
+      this.cleanup()
+    }
 
     if (!entry || now > entry.resetAt) {
       // Create new entry
@@ -53,29 +83,46 @@ class InMemoryRateLimiter {
 
   public cleanup() {
     const now = Date.now()
+    let deletedCount = 0
+    
     for (const [key, entry] of this.storage.entries()) {
       if (now > entry.resetAt) {
         this.storage.delete(key)
+        deletedCount++
       }
     }
+    
+    // Log cleanup in dev mode for monitoring
+    if (deletedCount > 0 && process.env.NODE_ENV === 'development') {
+      console.log(`🧹 Rate limiter cleaned ${deletedCount} expired entries`)
+    }
+  }
+  
+  // Get current storage size (for debugging)
+  public getStorageSize(): number {
+    return this.storage.size
   }
 }
 
-// Cleanup on process exit (for development hot reloading)
+// Cleanup on process exit
 if (typeof process !== 'undefined') {
   const cleanupHandler = () => {
-    if (globalCleanupInterval) {
-      clearInterval(globalCleanupInterval)
-      globalCleanupInterval = null
+    if (global[CLEANUP_INTERVAL_SYMBOL]) {
+      clearInterval(global[CLEANUP_INTERVAL_SYMBOL])
+      global[CLEANUP_INTERVAL_SYMBOL] = undefined
     }
-    rateLimiters.forEach(limiter => limiter.cleanup())
-    rateLimiters.length = 0
+    
+    const limiters = global[RATE_LIMITERS_SYMBOL] || []
+    limiters.forEach(limiter => limiter.cleanup())
+    
+    if (global[RATE_LIMITERS_SYMBOL]) {
+      global[RATE_LIMITERS_SYMBOL] = undefined
+    }
   }
   
-  process.on('beforeExit', cleanupHandler)
-  process.on('exit', cleanupHandler)
-  process.on('SIGINT', cleanupHandler)
-  process.on('SIGTERM', cleanupHandler)
+  process.once('beforeExit', cleanupHandler)
+  process.once('SIGINT', cleanupHandler)
+  process.once('SIGTERM', cleanupHandler)
 }
 
 // Rate limiters for different endpoints

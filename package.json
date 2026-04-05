@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=--max-old-space-size=1024 next dev",
+    "dev": "cross-env NODE_OPTIONS=--max-old-space-size=4096 next dev",
     "build": "next build",
-    "start": "cross-env NODE_OPTIONS=--max-old-space-size=512 next start",
-    "lint": "eslint",
-    "analyze": "cross-env ANALYZE=true npm run build"
+    "build:analyze": "cross-env ANALYZE=true npm run build",
+    "build:debug-memory": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" next build --experimental-debug-memory-usage",
+    "build:heap-profile": "node --heap-prof --max-old-space-size=4096 node_modules/next/dist/bin/next build",
+    "start": "cross-env NODE_OPTIONS=--max-old-space-size=2048 next start",
+    "lint": "eslint"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.0.8",
