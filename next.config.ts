@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   // Memory and performance optimization
   experimental: {
     optimizeServerReact: true,
+    // Enable Turbopack filesystem cache for faster dev builds
+    turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForBuild: true,
   },
 
   // Webpack cache optimization to reduce memory usage
