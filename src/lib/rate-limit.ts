@@ -6,6 +6,10 @@ interface RateLimitEntry {
   resetAt: number
 }
 
+// Global cleanup interval tracker
+let globalCleanupInterval: NodeJS.Timeout | null = null
+const rateLimiters: InMemoryRateLimiter[] = []
+
 class InMemoryRateLimiter {
   private storage: Map<string, RateLimitEntry> = new Map()
   private limit: number
@@ -15,8 +19,15 @@ class InMemoryRateLimiter {
     this.limit = limit
     this.windowMs = windowMs
     
-    // Cleanup old entries every 5 minutes
-    setInterval(() => this.cleanup(), 5 * 60 * 1000)
+    // Register this instance for global cleanup
+    rateLimiters.push(this)
+    
+    // Initialize global cleanup if not already running
+    if (!globalCleanupInterval) {
+      globalCleanupInterval = setInterval(() => {
+        rateLimiters.forEach(limiter => limiter.cleanup())
+      }, 5 * 60 * 1000)
+    }
   }
 
   async check(identifier: string): Promise<{ success: boolean; remaining: number }> {
@@ -40,7 +51,7 @@ class InMemoryRateLimiter {
     return { success: true, remaining: this.limit - entry.count }
   }
 
-  private cleanup() {
+  public cleanup() {
     const now = Date.now()
     for (const [key, entry] of this.storage.entries()) {
       if (now > entry.resetAt) {
@@ -48,6 +59,23 @@ class InMemoryRateLimiter {
       }
     }
   }
+}
+
+// Cleanup on process exit (for development hot reloading)
+if (typeof process !== 'undefined') {
+  const cleanupHandler = () => {
+    if (globalCleanupInterval) {
+      clearInterval(globalCleanupInterval)
+      globalCleanupInterval = null
+    }
+    rateLimiters.forEach(limiter => limiter.cleanup())
+    rateLimiters.length = 0
+  }
+  
+  process.on('beforeExit', cleanupHandler)
+  process.on('exit', cleanupHandler)
+  process.on('SIGINT', cleanupHandler)
+  process.on('SIGTERM', cleanupHandler)
 }
 
 // Rate limiters for different endpoints

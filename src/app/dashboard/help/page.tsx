@@ -72,7 +72,7 @@ export default async function HelpPage() {
               Our support team is here for you. We aim to respond to all inquiries within 24 hours.
             </p>
             <a 
-              href="mailto:support@DANAROUTE.app" 
+              href="mailto:contact@varsaweb.com" 
               className="w-full rounded-lg bg-[#2563EB] px-4 py-2.5 text-[14px] font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
             >
               Contact Support

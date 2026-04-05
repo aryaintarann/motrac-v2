@@ -27,8 +27,8 @@ export default function SupportPage() {
             <p style={{ fontSize: '15px', color: '#4B5563', lineHeight: 1.7, marginBottom: '20px' }}>
               For general inquiries, account assistance, multi-factor authentication resets, or technical issues, please email our support desk. We aim to respond within 24 hours.
             </p>
-            <a href="mailto:support@DANAROUTE.app" style={{ display: 'inline-block', background: '#FAFAFA', border: '1px solid #E5E7EB', color: '#111827', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '8px', textDecoration: 'none' }}>
-              support@DANAROUTE.app
+            <a href="mailto:contact@varsaweb.com" style={{ display: 'inline-block', background: '#FAFAFA', border: '1px solid #E5E7EB', color: '#111827', fontSize: '14px', fontWeight: 700, padding: '10px 20px', borderRadius: '8px', textDecoration: 'none' }}>
+              contact@varsaweb.com
             </a>
           </div>
 
@@ -48,7 +48,7 @@ export default function SupportPage() {
       </main>
 
       <footer style={{ borderTop: '1px solid #E5E7EB', padding: '40px 24px', background: '#FAFAFA', textAlign: 'center' }}>
-        <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} DANAROUTE. All rights reserved.</p>
+        <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} DANAROUTE by VarsaWeb. All rights reserved.</p>
       </footer>
     </div>
   )

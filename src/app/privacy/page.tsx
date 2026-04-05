@@ -38,7 +38,7 @@ export default function PrivacyPage() {
       </main>
 
       <footer style={{ borderTop: '1px solid #E5E7EB', padding: '40px 24px', background: '#FAFAFA', textAlign: 'center' }}>
-        <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} DANAROUTE. All rights reserved.</p>
+        <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} DANAROUTE by VarsaWeb. All rights reserved.</p>
       </footer>
     </div>
   )

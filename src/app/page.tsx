@@ -607,7 +607,7 @@ export default function LandingPage() {
             <Link href="/terms" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Terms</Link>
             <Link href="/support" style={{ color: '#9CA3AF', textDecoration: 'none' }}>Support</Link>
           </div>
-          <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} DANAROUTE. All rights reserved.</p>
+          <p style={{ fontSize: '14px', color: '#9CA3AF', margin: 0 }}>© {new Date().getFullYear()} DANAROUTE by VarsaWeb. All rights reserved.</p>
         </div>
       </footer>
       <HashNavigationHandler />

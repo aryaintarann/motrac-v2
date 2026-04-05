@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Memory and performance optimization
+  experimental: {
+    optimizeServerReact: true,
+  },
+
+  // Add empty turbopack config to avoid warnings
+  turbopack: {},
+
   async headers() {
     return [
       {

@@ -30,9 +30,9 @@ export const metadata: Metadata = {
     "catat keuangan harian",
     "manajemen uang"
   ],
-  authors: [{ name: "DanaRoute Team" }],
-  creator: "DanaRoute",
-  publisher: "DanaRoute",
+  authors: [{ name: "DanaRoute Team by VarsaWeb" }],
+  creator: "DanaRoute by VarsaWeb",
+  publisher: "DanaRoute by VarsaWeb",
   
   // Canonical & Base URL
   metadataBase: new URL("https://danaroute.com"),
@@ -150,7 +150,7 @@ export default function RootLayout({
               "image": "https://danaroute.com/og-image.png",
               "author": {
                 "@type": "Organization",
-                "name": "DanaRoute"
+                "name": "DanaRoute by VarsaWeb"
               }
             })
           }}
