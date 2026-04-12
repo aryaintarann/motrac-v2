@@ -68,7 +68,7 @@ export function AIChatbot() {
       const data = await res.json()
       if (data.text) {
         setMessages(prev => {
-          const updated = [...prev, { role: 'model', content: data.text }]
+          const updated = [...prev, { role: 'model' as const, content: data.text }]
           // Ensure we still respect the limit after adding AI response
           if (updated.length > MAX_MESSAGES) {
             return [updated[0], ...updated.slice(-(MAX_MESSAGES - 1))]
@@ -76,11 +76,11 @@ export function AIChatbot() {
           return updated
         })
       } else {
-        setMessages(prev => [...prev, { role: 'model', content: "Sorry, I couldn't generate a response." }])
+        setMessages(prev => [...prev, { role: 'model' as const, content: "Sorry, I couldn't generate a response." }])
       }
     } catch (error) {
       console.error(error)
-      setMessages(prev => [...prev, { role: 'model', content: "An error occurred while reaching the server. Please try again later." }])
+      setMessages(prev => [...prev, { role: 'model' as const, content: "An error occurred while reaching the server. Please try again later." }])
     } finally {
       setIsLoading(false)
     }

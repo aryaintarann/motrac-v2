@@ -7,14 +7,11 @@ interface RateLimitEntry {
 }
 
 // Use Symbol for HMR-safe global tracking
-const CLEANUP_INTERVAL_SYMBOL = Symbol.for('__RATE_LIMIT_CLEANUP_INTERVAL__')
-const RATE_LIMITERS_SYMBOL = Symbol.for('__RATE_LIMITERS__')
+const CLEANUP_INTERVAL_SYMBOL = Symbol.for('__RATE_LIMIT_CLEANUP_INTERVAL__') as any;
+const RATE_LIMITERS_SYMBOL = Symbol.for('__RATE_LIMITERS__') as any;
 
-// Type-safe global access
-declare global {
-  var [CLEANUP_INTERVAL_SYMBOL]: NodeJS.Timeout | undefined
-  var [RATE_LIMITERS_SYMBOL]: InMemoryRateLimiter[] | undefined
-}
+// Setup generic global access to prevent TS errors on symbol indexing
+const g = global as any;
 
 class InMemoryRateLimiter {
   private storage: Map<string, RateLimitEntry> = new Map()
@@ -27,31 +24,31 @@ class InMemoryRateLimiter {
     this.windowMs = windowMs
     
     // Use global symbol to survive HMR
-    if (!global[RATE_LIMITERS_SYMBOL]) {
-      global[RATE_LIMITERS_SYMBOL] = []
+    if (!g[RATE_LIMITERS_SYMBOL]) {
+      g[RATE_LIMITERS_SYMBOL] = []
     }
     
     // Only register if not already in the array (prevent duplicates on HMR)
-    const existingIndex = global[RATE_LIMITERS_SYMBOL]!.findIndex(
-      limiter => limiter.limit === this.limit && limiter.windowMs === this.windowMs
+    const existingIndex = g[RATE_LIMITERS_SYMBOL]!.findIndex(
+      (limiter: InMemoryRateLimiter) => limiter.limit === this.limit && limiter.windowMs === this.windowMs
     )
     
     if (existingIndex === -1) {
-      global[RATE_LIMITERS_SYMBOL]!.push(this)
+      g[RATE_LIMITERS_SYMBOL]!.push(this)
     } else {
       // Reuse existing instance storage to maintain rate limits across HMR
-      this.storage = global[RATE_LIMITERS_SYMBOL]![existingIndex].storage
+      this.storage = g[RATE_LIMITERS_SYMBOL]![existingIndex].storage
     }
     
     // Initialize global cleanup if not already running (HMR-safe)
-    if (!global[CLEANUP_INTERVAL_SYMBOL]) {
-      global[CLEANUP_INTERVAL_SYMBOL] = setInterval(() => {
-        const limiters = global[RATE_LIMITERS_SYMBOL] || []
-        limiters.forEach(limiter => limiter.cleanup())
+    if (!g[CLEANUP_INTERVAL_SYMBOL]) {
+      g[CLEANUP_INTERVAL_SYMBOL] = setInterval(() => {
+        const limiters = g[RATE_LIMITERS_SYMBOL] || []
+        limiters.forEach((limiter: InMemoryRateLimiter) => limiter.cleanup())
       }, 5 * 60 * 1000) // Cleanup every 5 minutes
       
       // Unref so it doesn't keep process alive
-      global[CLEANUP_INTERVAL_SYMBOL]!.unref()
+      g[CLEANUP_INTERVAL_SYMBOL]!.unref()
     }
   }
 
@@ -107,16 +104,16 @@ class InMemoryRateLimiter {
 // Cleanup on process exit
 if (typeof process !== 'undefined') {
   const cleanupHandler = () => {
-    if (global[CLEANUP_INTERVAL_SYMBOL]) {
-      clearInterval(global[CLEANUP_INTERVAL_SYMBOL])
-      global[CLEANUP_INTERVAL_SYMBOL] = undefined
+    if (g[CLEANUP_INTERVAL_SYMBOL]) {
+      clearInterval(g[CLEANUP_INTERVAL_SYMBOL])
+      g[CLEANUP_INTERVAL_SYMBOL] = undefined
     }
     
-    const limiters = global[RATE_LIMITERS_SYMBOL] || []
-    limiters.forEach(limiter => limiter.cleanup())
+    const limiters = g[RATE_LIMITERS_SYMBOL] || []
+    limiters.forEach((limiter: InMemoryRateLimiter) => limiter.cleanup())
     
-    if (global[RATE_LIMITERS_SYMBOL]) {
-      global[RATE_LIMITERS_SYMBOL] = undefined
+    if (g[RATE_LIMITERS_SYMBOL]) {
+      g[RATE_LIMITERS_SYMBOL] = undefined
     }
   }
   
