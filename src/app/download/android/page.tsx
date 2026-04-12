@@ -4,16 +4,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 export default function AndroidDownloadPage() {
-  const [showAlert, setShowAlert] = useState(false)
-
-  const handleDownload = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    setShowAlert(true)
-    setTimeout(() => setShowAlert(false), 5000)
-    // TODO: Replace with actual APK download link
-    // window.location.href = '/path/to/DANAROUTE.apk'
-  }
-
   return (
     <div
       className="flex min-h-screen flex-col items-center justify-center"
@@ -27,21 +17,7 @@ export default function AndroidDownloadPage() {
         .alert-slide { animation: slideDown 0.3s ease forwards; }
       `}</style>
 
-      {/* Alert Message */}
-      {showAlert && (
-        <div className="alert-slide" style={{ position: 'fixed', top: '24px', left: '50%', transform: 'translateX(-50%)', zIndex: 100, background: '#FEF3C7', border: '1px solid #FCD34D', borderRadius: '12px', padding: '16px 24px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', maxWidth: '90%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#92400E" strokeWidth="2" strokeLinecap="round">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="16" x2="12" y2="12"/>
-              <line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
-            <p style={{ fontSize: '14px', fontWeight: 600, color: '#92400E', margin: 0 }}>
-              Link download APK akan segera ditambahkan. Silakan hubungi admin untuk mendapatkan file APK.
-            </p>
-          </div>
-        </div>
-      )}
+
 
       <div style={{ maxWidth: '600px', width: '100%', background: '#fff', borderRadius: '24px', padding: '48px', boxShadow: '0 20px 60px rgba(0,0,0,0.08)', textAlign: 'center' }}>
         
@@ -83,8 +59,9 @@ export default function AndroidDownloadPage() {
 
         {/* Download Button */}
         <a 
-          href="#" 
-          onClick={handleDownload}
+          href="https://drive.google.com/file/d/1ZvsX_tbSyqWpQjMseYSfvrSMSnpcAzU6/view?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{ 
             display: 'block', 
             width: '100%', 
