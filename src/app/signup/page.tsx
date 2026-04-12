@@ -110,10 +110,11 @@ export default async function SignUpPage(props: {
                 "use server"
                 const next = formData.get('next') as string | null
                 const supabase = await createClient()
+                const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.NODE_ENV === 'production' ? 'https://danaroute.varsaweb.com' : 'http://localhost:3000')
                 const { data } = await supabase.auth.signInWithOAuth({
                   provider: 'google',
                   options: {
-                    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
+                    redirectTo: `${siteUrl}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ''}`
                   }
                 })
                 if (data.url) redirect(data.url)
