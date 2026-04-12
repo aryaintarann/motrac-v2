@@ -108,9 +108,14 @@ export default async function SignUpPage(props: {
             <button
               formAction={async (formData: FormData) => {
                 "use server"
+                const { headers } = await import('next/headers')
+                const headersList = await headers()
+                const host = headersList.get('x-forwarded-host') || headersList.get('host') || 'localhost:3000'
+                const protocol = host.includes('localhost') ? 'http' : 'https'
+                const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.includes('localhost') === false ? process.env.NEXT_PUBLIC_SITE_URL : `${protocol}://${host}`
+                
                 const next = formData.get('next') as string | null
                 const supabase = await createClient()
-                const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.NODE_ENV === 'production' ? 'https://danaroute.varsaweb.com' : 'http://localhost:3000')
                 const { data } = await supabase.auth.signInWithOAuth({
                   provider: 'google',
                   options: {
