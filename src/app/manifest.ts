@@ -63,36 +63,20 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: 'any',
       },
     ],
-    screenshots: [
-      {
-        src: '/screenshots/dashboard.png',
-        sizes: '1280x720',
-        type: 'image/png',
-        form_factor: 'wide',
-        label: 'Dashboard DanaRoute',
-      },
-      {
-        src: '/screenshots/mobile-dashboard.png',
-        sizes: '750x1334',
-        type: 'image/png',
-        form_factor: 'narrow',
-        label: 'Dashboard DanaRoute Mobile',
-      },
-    ],
     shortcuts: [
       {
         name: 'Tambah Transaksi',
         short_name: 'Tambah',
         description: 'Tambah transaksi baru',
         url: '/dashboard/transactions?action=add',
-        icons: [{ src: '/icons/add-transaction.png', sizes: '96x96' }],
+        icons: [{ src: '/icons/icon-96x96.png', sizes: '96x96' }],
       },
       {
         name: 'AI Advisor',
         short_name: 'AI',
         description: 'Konsultasi dengan AI advisor',
         url: '/dashboard/ai-advisor',
-        icons: [{ src: '/icons/ai-advisor.png', sizes: '96x96' }],
+        icons: [{ src: '/icons/icon-96x96.png', sizes: '96x96' }],
       },
     ],
   }
