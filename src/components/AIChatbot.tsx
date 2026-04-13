@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { createClient } from '@/utils/supabase/client'
 
 type Message = {
   role: 'user' | 'model'
@@ -57,9 +58,16 @@ export function AIChatbot() {
         ? [messages[0], ...messages.slice(-(MAX_MESSAGES - 2)), userMsg]
         : [...messages, userMsg]
       
+      const supabase = createClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      const accessToken = session?.access_token ?? ''
+
       const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
         body: JSON.stringify({ messages: currentMessages })
       })
 
