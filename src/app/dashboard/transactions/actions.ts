@@ -29,7 +29,15 @@ export async function createTransaction(formData: FormData) {
     rawData.date = finalDate
   }
   
-  const validatedData = validateFormData(transactionSchema, new FormData())
+  const formToValidate = new FormData()
+  formToValidate.set('type', rawData.type)
+  formToValidate.set('account_id', rawData.account_id)
+  if (rawData.category_id) formToValidate.set('category_id', rawData.category_id)
+  formToValidate.set('amount', String(rawData.amount))
+  if (rawData.note) formToValidate.set('note', rawData.note)
+  formToValidate.set('date', finalDate)
+  
+  const validatedData = validateFormData(transactionSchema, formToValidate)
   
   // Manual validation since we transformed the data
   if (!['income', 'expense'].includes(rawData.type)) {
